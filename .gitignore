@@ -54,3 +54,5 @@ Thumbs.db
 
 # Crashlytics generated file
 Assets/StreamingAssets/crashlytics-build.properties
+
+Log/ApiUpdaterCheck.txt
