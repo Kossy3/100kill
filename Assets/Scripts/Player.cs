@@ -6,6 +6,10 @@ using System;
 public class Player : MonoBehaviour
 {
     Animator anim;
+    public void start()
+    {
+        anim = GetComponent<Animator>();
+    }
 
     public void jump()
     {
