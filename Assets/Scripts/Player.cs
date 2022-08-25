@@ -6,11 +6,18 @@ using System;
 public class Player : MonoBehaviour
 {
     Animator anim;
-    public void start()
+    // Start is called before the first frame update
+    public void Start()
     {
         anim = GetComponent<Animator>();
     }
 
+    // Update is called once per frame
+    public void Update()
+    {
+
+    }
+    
     public void jump()
     {
         anim.SetTrigger("jump");

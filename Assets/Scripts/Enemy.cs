@@ -5,10 +5,12 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
     Animator anim;
-    public void start()
+    // Start is called before the first frame update
+    public void Start()
     {
         anim = GetComponent<Animator>();
     }
+
     public void good()
     {
         anim.SetTrigger("enemy_yarare");
