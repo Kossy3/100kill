@@ -1,18 +1,29 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class Player : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    Animator anim;
+
+    public void jump()
     {
-        
+        anim.SetTrigger("jump");
     }
 
-    // Update is called once per frame
-    void Update()
+    public void sliding()
     {
-        
+        anim.SetTrigger("sliding");
+    }
+
+    public void slash()
+    {
+        anim.SetTrigger("slash");
+    }
+
+    public void skill()
+    {
+        anim.SetTrigger("skill");
     }
 }
