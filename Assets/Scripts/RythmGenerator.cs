@@ -6,9 +6,26 @@ public class RythmGenerator : MonoBehaviour
 {
     public int[] Rhythm;
 
+    private Database database;
+
+    void Start()
+    {
+        database = GameObject.Find("Database").GetComponent<Database>();
+    }
+
     public int[] generate_8bar_rhythm()
     {
-        int[] Probability = {0, 1, 3, 4};
+        int[] Probability_List;
+
+        if (database.Stages <= 2)
+        {
+            Probability_List = new int[] {0, 0, 4, 4};
+        }
+
+        else
+        {
+            Probability_List = new int[] {0 , 1, 3, 4};
+        }
 
         Rhythm = new int[64];
         
@@ -18,7 +35,7 @@ public class RythmGenerator : MonoBehaviour
         {
             int rnd1 = Random.Range(0, 4);
 
-            Rhythm[i] = Probability[rnd1]; 
+            Rhythm[i] = Probability_List[rnd1]; 
 
             if (Rhythm[i] == 4)
             {
@@ -30,6 +47,8 @@ public class RythmGenerator : MonoBehaviour
 
         int rnd2 = Random.Range(0, change_point.Length - 1);
         Rhythm[change_point[rnd2]] = 2;
+
+        database.Stages ++;
 
         return Rhythm;
     }
