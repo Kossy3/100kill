@@ -1,10 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
-<<<<<<< HEAD
---- !u!1 &2792789313024677322
-=======
---- !u!1 &2480746431868560622
->>>>>>> M_move_enemy
+--- !u!1 &684922195759503345
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -12,17 +8,10 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-<<<<<<< HEAD
-  - component: {fileID: 2792789313024677332}
-  - component: {fileID: 2792789313024677323}
-  - component: {fileID: 2792789313024677333}
-  - component: {fileID: 2792789313024677334}
-=======
-  - component: {fileID: 2480746431868560624}
-  - component: {fileID: 2480746431868560623}
-  - component: {fileID: 2480746431868560625}
-  - component: {fileID: 2480746431868560626}
->>>>>>> M_move_enemy
+  - component: {fileID: 5242680483011630878}
+  - component: {fileID: 6296798713064850707}
+  - component: {fileID: 1669278557639994653}
+  - component: {fileID: 4694569766406489598}
   m_Layer: 0
   m_Name: enemy1
   m_TagString: Untagged
@@ -30,45 +19,27 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
-<<<<<<< HEAD
---- !u!4 &2792789313024677332
-=======
---- !u!4 &2480746431868560624
->>>>>>> M_move_enemy
+--- !u!4 &5242680483011630878
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-<<<<<<< HEAD
-  m_GameObject: {fileID: 2792789313024677322}
+  m_GameObject: {fileID: 684922195759503345}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.0854, z: 0}
-=======
-  m_GameObject: {fileID: 2480746431868560622}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 10, y: 0, z: 0}
->>>>>>> M_move_enemy
-  m_LocalScale: {x: 1, y: 0.9928, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-<<<<<<< HEAD
---- !u!212 &2792789313024677323
-=======
---- !u!212 &2480746431868560623
->>>>>>> M_move_enemy
+--- !u!212 &6296798713064850707
 SpriteRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-<<<<<<< HEAD
-  m_GameObject: {fileID: 2792789313024677322}
-=======
-  m_GameObject: {fileID: 2480746431868560622}
->>>>>>> M_move_enemy
+  m_GameObject: {fileID: 684922195759503345}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
@@ -113,22 +84,14 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
-<<<<<<< HEAD
---- !u!95 &2792789313024677333
-=======
---- !u!95 &2480746431868560625
->>>>>>> M_move_enemy
+--- !u!95 &1669278557639994653
 Animator:
   serializedVersion: 3
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-<<<<<<< HEAD
-  m_GameObject: {fileID: 2792789313024677322}
-=======
-  m_GameObject: {fileID: 2480746431868560622}
->>>>>>> M_move_enemy
+  m_GameObject: {fileID: 684922195759503345}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: 5a05fe5fac773c944a9e0c486a511a19, type: 2}
@@ -140,27 +103,16 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
-<<<<<<< HEAD
---- !u!114 &2792789313024677334
-=======
---- !u!114 &2480746431868560626
->>>>>>> M_move_enemy
+--- !u!114 &4694569766406489598
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-<<<<<<< HEAD
-  m_GameObject: {fileID: 2792789313024677322}
-=======
-  m_GameObject: {fileID: 2480746431868560622}
->>>>>>> M_move_enemy
+  m_GameObject: {fileID: 684922195759503345}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0bbcc687586cfbc4cb76e53ac05f6b5e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-<<<<<<< HEAD
-=======
   database: {fileID: 0}
->>>>>>> M_move_enemy
