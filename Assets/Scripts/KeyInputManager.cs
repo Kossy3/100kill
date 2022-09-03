@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class KeyInputManager : MonoBehaviour
 {
+    
+    public TimingManager timingmanager;
     // Start is called before the first frame update
     void Start()
     {
@@ -16,23 +18,23 @@ public class KeyInputManager : MonoBehaviour
         //エラーがでるのでコメントアウト
         if (Input.GetKey(KeyCode.W))
         {
-            //gameObject.GetComponent<TimingManager>().getkey(1);
+            //timingmanager.getkey(1);
         }
         else if (Input.GetKey(KeyCode.A))
         {
-            //gameObject.GetComponent<TimingManager>().getkey(2);
+            //timingmanager.getkey(2);
         }
         else if (Input.GetKey(KeyCode.S))
         {
-            //gameObject.GetComponent<TimingManager>().getkey(3);
+            //timingmanager.getkey(3);
         }
         else if (Input.GetKey(KeyCode.D))
         {
-            //gameObject.GetComponent<TimingManager>().getkey(4);
+            //timingmanager.getkey(4);
         }
         else
         {
-            //gameObject.GetComponent<TimingManager>().getkey(0);
+            //timingmanager.getkey(0);
         }
     }
 }

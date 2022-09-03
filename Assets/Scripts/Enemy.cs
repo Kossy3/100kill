@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class Enemy : MonoBehaviour
 {
@@ -11,6 +12,10 @@ public class Enemy : MonoBehaviour
         anim = GetComponent<Animator>();
     }
 
+    public void Update()
+    {
+        transform.Translate(new Vector2(-1 * Time.deltaTime, 0));
+    }
     public void good()
     {
         anim.SetTrigger("enemy_yarare");
@@ -20,4 +25,15 @@ public class Enemy : MonoBehaviour
     {
         
     }
+
+    public void OnBecameInvisible()
+    {
+        StartCoroutine("sleep");
+        Destroy(gameObject);   
+    }
+
+    private IEnumerator sleep()
+    {
+        yield return new WaitForSeconds(0.2f);
+    } 
 }
