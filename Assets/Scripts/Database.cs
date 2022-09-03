@@ -8,13 +8,15 @@ public class Database : MonoBehaviour
     public int BPM = 108;
     public List<Enemy> defeated_enemies;
     public int Bars;
+    public int Stages;
     public int HP = 5;
     public float skill_gauge;
 
     private void Start()
     {
         skill_gauge = 0;
-        Bars = 0;
+        Bars = 1;
+        Stages = 1;
     }
 
     public void rise_BPM()
