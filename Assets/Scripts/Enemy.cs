@@ -5,16 +5,22 @@ using System;
 
 public class Enemy : MonoBehaviour
 {
+    public Database database;
     Animator anim;
     // Start is called before the first frame update
     public void Start()
     {
         anim = GetComponent<Animator>();
+        database = GameObject.Find("Database").GetComponent<Database>();
     }
 
-    public void Update()
+    public void FixedUpdate()
     {
-        transform.Translate(new Vector2(-1 * Time.deltaTime, 0));
+        transform.Translate(new Vector2( -(16 / (60 / (database.BPM / 4))) * Time.deltaTime, 0));
+        if (Mathf.Floor(transform.position.x) == -10)
+        {
+            Destroy(gameObject);
+        }
     }
     public void good()
     {
@@ -26,14 +32,4 @@ public class Enemy : MonoBehaviour
         
     }
 
-    public void OnBecameInvisible()
-    {
-        StartCoroutine("sleep");
-        Destroy(gameObject);   
-    }
-
-    private IEnumerator sleep()
-    {
-        yield return new WaitForSeconds(0.2f);
-    } 
 }
