@@ -1,77 +1,174 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using AudioSynthesis.Synthesis;
-using System;
 using System.Runtime.InteropServices;
+using System.Text;
+using System;
 
 public class MusicPlayer : MonoBehaviour
 {
-    Synthesizer synth;
-
-    IntPtr hMidi;
-    bool flag = true;
-    void start()
+    static string res;
+    [SerializeField]
+    private Database database;
+    public const int MAXPNAMELEN = 32;
+    public struct MidiOutCaps
     {
-        Debug.Log(midiOutOpen(out hMidi, 1, null, 0, 0));
-        Debug.Log(hMidi);
-        midiOutMsgFixed(hMidi, 0x9, 0, 0x45, 40);
-        Debug.Log("on");
+        public short wMid;
+        public short wPid;
+        public int vDriverVersion;
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = MAXPNAMELEN)]
+        public string szPname;
+        public short wTechnology;
+        public short wVoices;
+        public short wNotes;
+        public short wChannelMask;
+        public int dwSupport;
     }
-
-    void update()
-    {
-        if (flag && Time.time > 1){
-            Debug.Log("off");
-            midiOutMsgFixed(hMidi, 0x9, 0, 0x45, 0);
-            flag = false;
-            midiOutReset(hMidi);
-            midiOutClose(hMidi);
-        }
-    }
-
-    [DllImport("Winmm.dll", EntryPoint="midiOutOpen")]
-    public static extern uint midiOutOpen(
-        out IntPtr lphmo,
-        int uDeviceID,
-        MidiOutProc dwCallback,
-        int dwCallbackInstance,
-        CALLBACK dwFlags
-    );
-
-    public enum CALLBACK
-    {
-        EVENT = 0x50000,
-        FUNCTION = 0x30000,
-        NULL = 0x0,
-        THREAD = 0x20000,
-        WINDOW = 0x10000,
-    }
-
-    public delegate void MidiOutProc(
-        IntPtr hmo,
-        uint hwnd,
-        int dwInstance,
-        int dwParam1,
-        int dwParam2
-    );
+ 
+    IntPtr handle;
+    public bool KeyOn = false;
+    public bool device_init = false;
+ 
+ 
+    // MCI INterface
+    [DllImport("winmm.dll")]
+    private static extern long mciSendString(string command, StringBuilder returnValue, int returnLength, System.IntPtr winHandle);
+ 
+    // Midi API
+    [DllImport("winmm.dll")]
+    private static extern int midiOutGetNumDevs();
 
     [DllImport("winmm.dll")]
+    private static extern int  midiOutReset(IntPtr handle);
+ 
+ 
+    [DllImport("winmm.dll")]
+    private static extern int midiOutGetDevCaps(System.Int32 uDeviceID, ref MidiOutCaps lpMidiOutCaps, System.UInt32 cbMidiOutCaps);
+ 
+    [DllImport("winmm.dll")]
+    private static extern int midiOutOpen(out IntPtr handle, int deviceID, MidiCallBack proc, int instance, int flags);
+ 
+    [DllImport("winmm.dll")]
     private static extern int midiOutShortMsg(IntPtr handle, int message);
+ 
+    //[DllImport("winmm.dll")]
     public int midiOutMsgFixed(IntPtr hmo, byte status, byte channel, byte data1, byte data2)
     {
         return midiOutShortMsg(hmo, (status << 4) | channel | (data1 << 8) | (data2 << 16));
     }
+    //public static uint midiOutShortMsg(int hmo, byte status, byte channel, GMProgram data1, byte data2) { return midiOutShortMsg(hmo, (status &lt;&lt; 4) | channel | ((byte)data1 &lt;&lt; 8) | (data2 &lt;&lt; 16)); }
+ 
+    [DllImport("winmm.dll")]
+    private static extern int  midiOutClose(IntPtr handle);
+ 
+    private delegate void MidiCallBack(int handle, int msg, int instance, int param1, int param2);
+ 
+    static string Mci(string command)
+    {
+        StringBuilder reply = new StringBuilder(256);
+        mciSendString(command, reply, 256, System.IntPtr.Zero);
+        return reply.ToString();
+    }
+ 
+    void Start()
+    {
+        var numDevs = midiOutGetNumDevs();
+        //Debug.Log(numDevs);
+        MidiOutCaps myCaps = new MidiOutCaps();
+ 
+        //0番ポートの調査を行う。
+        var res = midiOutGetDevCaps(1, ref myCaps, (System.UInt32)Marshal.SizeOf(myCaps));
+ 
+        //引数１はポインタ扱いの模様。
+#if UNITY_EDITOR
+        //Debug.Log(myCaps.szPname);
+#endif
+        DeviceInitialize();
+        //StartCoroutine("play_music_c");
+    }
 
-    [DllImport("Winmm.dll")]
-    public static extern uint midiOutReset(IntPtr hmo);
-    [DllImport("Winmm.dll")]
-    public static extern uint midiOutClose(IntPtr hmo);
+    int [] test_score(){
+        int[] score = new int[64];
+        for (var i=0; i<64; i++){
+            score[i] = UnityEngine.Random.Range(0, 2);
+        }
+        return score;
+    }
 
+    void play_note(byte ch, byte noteno, float delta, float ms,byte velocity){
+        StartCoroutine( play_note_c(ch, noteno, delta, ms, velocity));
+    }
+    IEnumerator play_note_c(byte ch, byte noteno, float delta, float ms,byte velocity){
+        yield return new WaitForSeconds(delta);
+        //Debug.Log((ch, noteno, delta, ms, velocity));
+        midiOutMsgFixed(handle, 0x9, ch, noteno, velocity);
+        yield return new WaitForSeconds(ms);
+        midiOutMsgFixed(handle, 0x8, ch, noteno, velocity);
+    }
+    IEnumerator play_music_c(){
+        yield return new WaitForSeconds(2f);
+        play_music(test_score());
+    }
+ 
+    public void Test1(){
+            midiOutMsgFixed(handle, 0x9, 0, 0x45, 40);
+    }
+ 
+    public void Test2(){
+            midiOutMsgFixed(handle, 0x9, 0, 0x45, 0);
+    }
+ 
+    public void DeviceInitialize(){
+        int midi_no=-1;
+        if( device_init == false){
+            var res = midiOutOpen( out handle, midi_no , null , 0 , 0);
+            device_init = true;
+#if UNITY_EDITOR
+ 
+            //Debug.Log(handle);
+            //Debug.Log(res);
+#endif
+        }
+    }
+ 
+    public void DeviceClose(){
+        if( device_init == true){
+            midiOutReset(handle);
+            var res=midiOutClose(handle);
+#if UNITY_EDITOR
+            //Debug.Log(handle);
+           // Debug.Log(res);
+#endif
+            device_init = false;
+        }
+    }
 
-    // Start is called before the first frame updat
+ 
+    void OnDestroy()
+    {
+        res = Mci("close music");
+        DeviceClose();
+    }
+ 
+    void OnDisable()
+    {
+        res = Mci("close music");
+    }
 
-    // Update is called once per frame
+    public void play_music(int[] score){
+        var BPM = 120;
+        var delta_time = (60f/(float)BPM/2f);
+        for (int i=0; i<score.Length; i++){
+            if (i % 4 == 2){
+                play_note(9, 38, i*delta_time, delta_time-0.03f, 127);
+            }
+            if (i % 4 == 0){
+                play_note(9, 38, i*delta_time, delta_time-0.03f, 80);
+            }
+            if (score[i] > 0){
+                play_note(9, 57, i*delta_time, delta_time-0.03f, 127);
+            }
+            
+        }
+    }
 }
-
-
