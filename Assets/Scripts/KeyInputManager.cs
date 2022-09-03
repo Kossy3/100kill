@@ -16,19 +16,19 @@ public class KeyInputManager : MonoBehaviour
     void Update()
     {
         //エラーがでるのでコメントアウト
-        if (Input.GetKey(KeyCode.W))
+        if (Input.GetKeyDown(KeyCode.W))
         {
             //timingmanager.getkey(1);
         }
-        else if (Input.GetKey(KeyCode.A))
+        else if (Input.GetKeyDown(KeyCode.A))
         {
             //timingmanager.getkey(2);
         }
-        else if (Input.GetKey(KeyCode.S))
+        else if (Input.GetKeyDown(KeyCode.S))
         {
             //timingmanager.getkey(3);
         }
-        else if (Input.GetKey(KeyCode.D))
+        else if (Input.GetKeyDown(KeyCode.D))
         {
             //timingmanager.getkey(4);
         }
