@@ -11,12 +11,14 @@ public class Database : MonoBehaviour
     public int Stages;
     public int HP = 5;
     public float skill_gauge;
+    public int defeat_count;
 
     private void Start()
     {
         skill_gauge = 0;
         Bars = 1;
         Stages = 1;
+        defeat_count = 0;
     }
 
     public void rise_BPM()
