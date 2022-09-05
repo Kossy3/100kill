@@ -2,13 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RythmGenerator : MonoBehaviour
+public class RhythmGenerator : MonoBehaviour
 {
     public int[] Rhythm;
 
-    private Database database;
+    public Database database;
 
-    void Start()
+    public void Start()
     {
         database = GameObject.Find("Database").GetComponent<Database>();
     }
@@ -24,12 +24,12 @@ public class RythmGenerator : MonoBehaviour
 
         else
         {
-            Probability_List = new int[] {0 , 1, 3, 4};
+            Probability_List = new int[] {0, 1, 3, 4};
         }
 
         Rhythm = new int[64];
-        
-        int n = 0;
+
+        List<int> change_point = new List<int>();
 
         for (int i = 0; i < 64; i++)
         {
@@ -39,13 +39,11 @@ public class RythmGenerator : MonoBehaviour
 
             if (Rhythm[i] == 4)
             {
-                n ++;
+                change_point.Add(i);
             }
         }
 
-        int[] change_point = new int[n];
-
-        int rnd2 = Random.Range(0, change_point.Length - 1);
+        int rnd2 = Random.Range(0, change_point.Count);
         Rhythm[change_point[rnd2]] = 2;
 
         database.Stages ++;

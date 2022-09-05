@@ -12,7 +12,7 @@ public class Database : MonoBehaviour
     public int HP = 5;
     public float skill_gauge;
 
-    private void Start()
+    public void Start()
     {
         skill_gauge = 0;
         Bars = 1;
