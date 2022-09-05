@@ -13,7 +13,7 @@ public class Database : MonoBehaviour
     public float skill_gauge;
     public int defeat_count;
 
-    private void Start()
+    public void Start()
     {
         skill_gauge = 0;
         Bars = 1;
