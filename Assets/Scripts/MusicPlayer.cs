@@ -79,7 +79,7 @@ public class MusicPlayer : MonoBehaviour
         //0番ポートの調査を行う。
         var res = midiOutGetDevCaps(1, ref myCaps, (System.UInt32)Marshal.SizeOf(myCaps));
  
-        //引数１はポインタ扱いの模様。
+        //引数１はポインタ扱い。
 #if UNITY_EDITOR
         //Debug.Log(myCaps.szPname);
 #endif
@@ -95,29 +95,22 @@ public class MusicPlayer : MonoBehaviour
         return score;
     }
 
-    void play_note(byte ch, byte noteno, float delta, float ms,byte velocity){
-        StartCoroutine( play_note_c(ch, noteno, delta, ms, velocity));
+    void play_note(byte ch, byte no, float delta, float ms,byte velocity){
+        StartCoroutine( play_note_c(ch, no, delta, ms, velocity));
     }
-    IEnumerator play_note_c(byte ch, byte noteno, float delta, float ms,byte velocity){
+
+    IEnumerator play_note_c(byte ch, byte no, float delta, float ms,byte velocity){
         yield return new WaitForSeconds(delta);
         //Debug.Log((ch, noteno, delta, ms, velocity));
-        midiOutMsgFixed(handle, 0x9, ch, noteno, velocity);
+        midiOutMsgFixed(handle, 0x9, ch, no, velocity);
         yield return new WaitForSeconds(ms);
-        midiOutMsgFixed(handle, 0x8, ch, noteno, velocity);
+        midiOutMsgFixed(handle, 0x8, ch, no, velocity);
     }
-    IEnumerator play_music_c(){
-        yield return new WaitForSeconds(2f);
-        play_music(test_score());
+    public IEnumerator play_music_c(List<List<Note>> score){
+        yield return new WaitForSeconds(1f);
+        play_music(score);
     }
- 
-    public void Test1(){
-            midiOutMsgFixed(handle, 0x9, 0, 0x45, 40);
-    }
- 
-    public void Test2(){
-            midiOutMsgFixed(handle, 0x9, 0, 0x45, 0);
-    }
- 
+
     public void DeviceInitialize(){
         int midi_no=-1;
         if( device_init == false){
@@ -155,20 +148,16 @@ public class MusicPlayer : MonoBehaviour
         res = Mci("close music");
     }
 
-    public void play_music(int[] score){
-        var BPM = 120;
-        var delta_time = (60f/(float)BPM/2f);
-        for (int i=0; i<score.Length; i++){
-            if (i % 4 == 2){
-                play_note(9, 38, i*delta_time, delta_time-0.03f, 127);
+    public void play_music(List<List<Note>> score){
+        float C = 60f/(float)database.BPM;
+        for (int j=0; j<score.Count; j++){
+            float delta_time = 0;
+            List<Note> track = score[j];
+            for (int i=0; i<track.Count; i++){
+                Note note = track[i];
+                delta_time += note.delta*C;
+                play_note(note.ch, note.no, delta_time, note.len*C, note.velocity);
             }
-            if (i % 4 == 0){
-                play_note(9, 38, i*delta_time, delta_time-0.03f, 80);
-            }
-            if (score[i] > 0){
-                play_note(9, 57, i*delta_time, delta_time-0.03f, 127);
-            }
-            
         }
     }
 }
