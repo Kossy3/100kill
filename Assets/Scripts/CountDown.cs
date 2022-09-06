@@ -15,7 +15,7 @@ public class CountDown : MonoBehaviour
     {
         timingmanager = GameObject.Find("TimingManager").GetComponent<TimingManager>();
         image = GetComponent<UnityEngine.UI.Image>();
-        text = transform.Find("Text").gameObject.GetComponent<Text>();
+        text = transform.Find("Text(CountDown)").gameObject.GetComponent<Text>();
 
         count_num = 0;
 
