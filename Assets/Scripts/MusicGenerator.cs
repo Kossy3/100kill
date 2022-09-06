@@ -5,7 +5,7 @@ using UnityEngine;
 public class MusicGenerator : MonoBehaviour
 {
 #if UNITY_EDITOR
-    RythmGenerator rythmGenerator;
+    RhythmGenerator rhythmGenerator;
     MusicPlayer musicPlayer;
 #endif
     // Start is called before the first frame update
@@ -16,8 +16,8 @@ public class MusicGenerator : MonoBehaviour
 
     void test_start(){
         musicPlayer = GameObject.Find("MusicPlayer").GetComponent<MusicPlayer>();
-        rythmGenerator = GameObject.Find("RhythmGenerator").GetComponent<RythmGenerator>();
-        var rhythm = rythmGenerator.generate_8bar_rhythm();
+        rhythmGenerator = GameObject.Find("RhythmGenerator").GetComponent<RhythmGenerator>();
+        var rhythm = rhythmGenerator.generate_8bar_rhythm();
         List<List<Note>> score = generate_8bar_music(rhythm);
         StartCoroutine(musicPlayer.play_music_c(score));
     }
