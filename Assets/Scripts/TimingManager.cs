@@ -28,7 +28,7 @@ public class TimingManager : MonoBehaviour
     {
         database = GameObject.Find("Database").GetComponent<Database>();
         rhythmgenerator = GameObject.Find("RhythmGenerator").GetComponent<RhythmGenerator>();
-        player = GameObject.Find("tatie").GetComponent<Player>();
+        player = GameObject.Find("Player").GetComponent<Player>();
 
         spawn_num = 0;
         spawn_enemy = new List<Enemy>();
