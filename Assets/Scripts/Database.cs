@@ -5,25 +5,21 @@ using UnityEngine.SceneManagement;
 
 public class Database : MonoBehaviour
 {
-    public int BPM = 108;
+    public int BPM = 100;
     public List<Enemy> defeated_enemies;
-    public int Bars;
     public int Stages;
     public int HP = 5;
     public float skill_gauge;
-    public int defeat_count;
 
     public void Start()
     {
         skill_gauge = 0;
-        Bars = 1;
-        Stages = 1;
-        defeat_count = 0;
+        Stages = 0;
     }
 
     public void rise_BPM()
     {
-        BPM += 8;
+        BPM += 4;
     }
 
     public void add_defeat_enemy(Enemy enemy)
