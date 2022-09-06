@@ -36,8 +36,6 @@ public class TimingManager : MonoBehaviour
 
         keyinput_time = 0f;
         
-
-        StartCoroutine("start_game");
     }
 
     public void FixedUpdate()
@@ -61,9 +59,8 @@ public class TimingManager : MonoBehaviour
         }
     }
 
-    public IEnumerator start_game()
+    public void start_game()
     {
-        yield return new WaitForSecondsRealtime(1.0f);
         StartCoroutine("EnemyGenerator");
     }
 
@@ -122,7 +119,7 @@ public class TimingManager : MonoBehaviour
 
             rhythm_num ++;
 
-            yield return new WaitForSecondsRealtime((60 / (float)database.BPM) / 2);
+            yield return new WaitForSeconds((60 / (float)database.BPM) / 2);
 
             if ( rhythm_num == 64)
             {
