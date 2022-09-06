@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: c89d6d4508107a6418dbd8de1537c6c2
+guid: 16cd1f16ebd40c3468097176c3adec03
 TrueTypeFontImporter:
   externalObjects: {}
   serializedVersion: 4
@@ -9,7 +9,7 @@ TrueTypeFontImporter:
   characterPadding: 1
   includeFontData: 1
   fontNames:
-  - HakusyuGyosyoNenga
+  - HOT-Gyoshokk
   fallbackFontReferences: []
   customCharacters: 
   fontRenderingMode: 0
