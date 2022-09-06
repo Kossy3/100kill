@@ -16,7 +16,7 @@ public class Enemy : MonoBehaviour
 
     public void FixedUpdate()
     {
-        transform.Translate(new Vector2( -(16 / (60 / (database.BPM / 4))) * Time.deltaTime, -2));
+        transform.Translate(new Vector2( -(16 / (60 / (database.BPM / 4))) * Time.deltaTime, 0));
         if (Mathf.Floor(transform.position.x) == -10)
         {
             Destroy(gameObject);

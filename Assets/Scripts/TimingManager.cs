@@ -112,7 +112,7 @@ public class TimingManager : MonoBehaviour
         {
             if (rhythm[rhythm_num] != 0)
             {
-                enemy = Instantiate(enemy1, new Vector3(10, 0, 0), Quaternion.identity);
+                enemy = Instantiate(enemy1, new Vector3(10, -2, 0), Quaternion.identity);
                 spawn_enemy.Add(enemy);
                 spawn_time.Add(Time.time);
             }
