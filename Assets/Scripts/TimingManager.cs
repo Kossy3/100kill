@@ -49,16 +49,14 @@ public class TimingManager : MonoBehaviour
             {
                 spawn_enemy[spawn_num].good();
                 spawn_num ++;
-                Debug.Log(spawn_num);
             }
 
-            else if (Time.time > spawn_time[spawn_num] + (60 / (float)database.BPM * 4) ||
+            else if (Time.time > spawn_time[spawn_num] + (60 / (float)database.BPM * 4) + 0.2f ||
             (keyinput_time <= spawn_time[spawn_num] + (60 / (float)database.BPM * 4) + 0.2f &&
             keyinput_time >= spawn_time[spawn_num] + (60 / (float)database.BPM * 4) - 0.2f))
             {
                 spawn_enemy[spawn_num].miss();
                 spawn_num ++;
-                Debug.Log(spawn_num);
             }
         }
     }
