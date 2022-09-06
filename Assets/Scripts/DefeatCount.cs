@@ -3,44 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Timer : MonoBehaviour
+public class DefeatCount : MonoBehaviour
 {
+    private Database database;
     private Text text;
-
-    private int minutes;
-    private float seconds;
 
     public void Start()
     {
+        database = GameObject.Find("Database").GetComponent<Database>();
         text = GetComponent<Text>();
-
-        minutes = 0;
-        seconds = 0f;
     }
 
     public void FixedUpdate()
     {
-        seconds += Time.deltaTime;
-
-        if (seconds >= 60f)
-        {
-            minutes ++;
-            seconds -= 60f;
-        }
-
-        string time_str;
-
-        if (minutes == 0)
-        {
-            time_str = toKansuji((int)seconds) + "秒";
-        }
-
-        else
-        {
-            time_str = toKansuji(minutes) + "分" + toKansuji((int)seconds) + "秒";
-        }
-
-        text.text = time_str;
+        text.text = toKansuji(database.defeated_enemies.Count) + "人切り";
     }
 
     private string toKansuji(long number) 
@@ -48,10 +24,10 @@ public class Timer : MonoBehaviour
 
         if (number == 0) 
         {
-            return "-";
+            return "〇";
         }
         
-        string[] kl = new string[] { "", "十", "百", "千" };
+        string[] kl = new string[] { "", "十", "百", "千", "万"};
         string[] nl = new string[] { "", "一", "二", "三", "四", "五", "六", "七", "八", "九" };
         string str = "";
 
