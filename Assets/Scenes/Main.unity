@@ -212,11 +212,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BPM: 108
   defeated_enemies: []
-  Bars: 0
   Stages: 0
   HP: 5
   skill_gauge: 0
-  defeat_count: 0
 --- !u!1 &923912043
 GameObject:
   m_ObjectHideFlags: 0
@@ -407,6 +405,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58dda0160733f5e42860b2aba782dcb3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enemy1: {fileID: 4694569766406489598, guid: 6079a4dfaf91354409bde96f379ec0d4, type: 3}
 --- !u!4 &1128221679
 Transform:
   m_ObjectHideFlags: 0
@@ -451,6 +450,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Rhythm: 
+  database: {fileID: 0}
 --- !u!4 &1179085160
 Transform:
   m_ObjectHideFlags: 0
