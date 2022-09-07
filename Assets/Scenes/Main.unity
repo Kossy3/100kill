@@ -319,7 +319,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   BPM: 108
-  defeated_enemies: []
+  color_list:
+  - {r: 0, g: 0, b: 0, a: 0}
+  - {r: 1, g: 1, b: 0, a: 0}
+  - {r: 1, g: 0, b: 0, a: 0}
+  - {r: 0, g: 0, b: 1, a: 0}
+  defeated_enemies: 0
+  defeated_color_number: 
   Stages: 0
   HP: 5
   skill_gauge: 0
