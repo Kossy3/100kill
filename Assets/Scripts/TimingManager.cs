@@ -133,6 +133,12 @@ public class TimingManager : MonoBehaviour
             if (enemy_type[rhythm[rhythm_num]])
             {
                 enemy = Instantiate(enemy_type[rhythm[rhythm_num]], new Vector3(10, -2, 0), Quaternion.identity);
+
+                if (rhythm[rhythm_num] == 4)
+                {
+                    enemy.color_number = 0;
+                }
+
                 spawn_enemy.Add(enemy);
                 spawn_time.Add(Time.time);
             }
@@ -141,6 +147,8 @@ public class TimingManager : MonoBehaviour
             {
                 int rnd = Random.Range(1, 4);
                 enemy = Instantiate(color_type[rnd], new Vector3(10, -2, 0), Quaternion.identity);
+                enemy.color_number = rnd;
+
                 spawn_enemy.Add(enemy);
                 spawn_time.Add(Time.time);
             }
