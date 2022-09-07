@@ -15,26 +15,21 @@ public class KeyInputManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //エラーがでるのでコメントアウト
         if (Input.GetKeyDown(KeyCode.W))
         {
-            //timingmanager.getkey(1);
+            timingmanager.getkey(1);
         }
         else if (Input.GetKeyDown(KeyCode.A))
         {
-            //timingmanager.getkey(2);
+            timingmanager.getkey(2);
         }
         else if (Input.GetKeyDown(KeyCode.S))
         {
-            //timingmanager.getkey(3);
+            timingmanager.getkey(3);
         }
         else if (Input.GetKeyDown(KeyCode.D))
         {
-            //timingmanager.getkey(4);
-        }
-        else
-        {
-            //timingmanager.getkey(0);
-        }
+            timingmanager.getkey(4);
+        } 
     }
 }
