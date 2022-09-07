@@ -1368,6 +1368,34 @@ MonoBehaviour:
   enemy1_3: {fileID: 9207934393172352549, guid: 564a1cb23a953dd4e88d58490d934d6e, type: 3}
   stone: {fileID: 421391495617002568, guid: fc0976f6e57761942bf643a4e32c59e6, type: 3}
   upthing: {fileID: 8507077371486527527, guid: 20256b4cc176a964f8d907225d7db138, type: 3}
+  background_order:
+  - {fileID: 4180953931411658302, guid: f7b94f6cd856e464bbafd181bd12d2da, type: 3}
+  - {fileID: 4180953931411658302, guid: f7b94f6cd856e464bbafd181bd12d2da, type: 3}
+  - {fileID: 4180953931411658302, guid: f7b94f6cd856e464bbafd181bd12d2da, type: 3}
+  - {fileID: 4180953931411658302, guid: f7b94f6cd856e464bbafd181bd12d2da, type: 3}
+  - {fileID: 4180953931411658302, guid: f7b94f6cd856e464bbafd181bd12d2da, type: 3}
+  - {fileID: 4180953931411658302, guid: f7b94f6cd856e464bbafd181bd12d2da, type: 3}
+  - {fileID: 4180953931411658302, guid: f7b94f6cd856e464bbafd181bd12d2da, type: 3}
+  - {fileID: -8416866748609059647, guid: a7c4a24e9d1baf04e9222eee4cf3c4b5, type: 3}
+  - {fileID: 4746338068159443495, guid: 690cd1a5871d3a54d991ee2e611a80da, type: 3}
+  - {fileID: -5645706790483373408, guid: 2f51e2b251e9c1547855f34392fb4ac4, type: 3}
+  - {fileID: -5645706790483373408, guid: 2f51e2b251e9c1547855f34392fb4ac4, type: 3}
+  - {fileID: -5645706790483373408, guid: 2f51e2b251e9c1547855f34392fb4ac4, type: 3}
+  - {fileID: -5645706790483373408, guid: 2f51e2b251e9c1547855f34392fb4ac4, type: 3}
+  - {fileID: -5645706790483373408, guid: 2f51e2b251e9c1547855f34392fb4ac4, type: 3}
+  - {fileID: -5645706790483373408, guid: 2f51e2b251e9c1547855f34392fb4ac4, type: 3}
+  - {fileID: -6004658323515212544, guid: f463746b1681e5b418b2a1a8a5c6625a, type: 3}
+  - {fileID: 369511142891994906, guid: c3beb689ab163d64e84af6a90ef31e3f, type: 3}
+  - {fileID: -7954800692541050445, guid: ca89b6d33ddf8bd4291b850d003aae45, type: 3}
+  - {fileID: -7954800692541050445, guid: ca89b6d33ddf8bd4291b850d003aae45, type: 3}
+  - {fileID: -7954800692541050445, guid: ca89b6d33ddf8bd4291b850d003aae45, type: 3}
+  - {fileID: -7954800692541050445, guid: ca89b6d33ddf8bd4291b850d003aae45, type: 3}
+  - {fileID: -7954800692541050445, guid: ca89b6d33ddf8bd4291b850d003aae45, type: 3}
+  - {fileID: -7954800692541050445, guid: ca89b6d33ddf8bd4291b850d003aae45, type: 3}
+  - {fileID: -8474116593512424013, guid: 4251b9cee0cc3114098931ee403811de, type: 3}
+  - {fileID: -4916669489053624503, guid: dec3b29bfde3cab4687a15c0032c5730, type: 3}
+  Stage1_frist: {fileID: 5822776120438863270, guid: aa29cdd5c3fc0c94680fe22c1f5de1d1, type: 3}
+  Stage4: {fileID: 8688319569606571847, guid: 79ba16dd3bd6e2f4dad4796015450b93, type: 3}
 --- !u!4 &1128221679
 Transform:
   m_ObjectHideFlags: 0
@@ -1412,7 +1440,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Rhythm: 
-  database: {fileID: 0}
+  database: {fileID: 450839139}
 --- !u!4 &1179085160
 Transform:
   m_ObjectHideFlags: 0
