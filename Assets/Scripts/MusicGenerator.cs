@@ -31,7 +31,7 @@ public class MusicGenerator : MonoBehaviour
 
     List<Note> generate_trak0(int[] rhythm){
         List<Note> track = new List<Note>();
-        track.Add(new Note(0, 117, 0, 1f/4f, 128));
+        track.Add(new Note(0, 117, 0, 1f/4f, 0).program_change());
         for (var i=0; i<rhythm.Length; i++){
             if (i == 0){
                 track.Add(new Note(9, 38+30, 0, 1f/4f, 80));
@@ -62,7 +62,8 @@ public class Note {
         this.velocity = velocity;
     }
 
-    public void program_change(){
+    public Note program_change(){
         this.velocity = 128;
+        return this;
     }
 }
