@@ -8,6 +8,7 @@ public class TimingManager : MonoBehaviour
     private RhythmGenerator rhythmgenerator;
     private Player player;
     private Enemy enemy;
+    private BackGround background;
 
     public Enemy enemy1_0;
     public Enemy enemy1;
@@ -15,6 +16,10 @@ public class TimingManager : MonoBehaviour
     public Enemy enemy1_3;
     public Enemy stone;
     public Enemy upthing;
+
+    public BackGround[] background_order = new BackGround[25];
+    public BackGround Stage1_frist;
+    public BackGround Stage4;
 
     private Enemy[] enemy_type;
     private Enemy[] color_type;
@@ -28,6 +33,7 @@ public class TimingManager : MonoBehaviour
 
     private int rhythm_num;
     private int spawn_num;
+    private int background_num;
 
     public void Start()
     {
@@ -43,12 +49,16 @@ public class TimingManager : MonoBehaviour
 
         spawn_enemy = new List<Enemy>();
         
+        rhythm_num = 0;
         spawn_num = 0;
+        background_num = 0;
+
+        start_game();
     }
 
     public void FixedUpdate()
     {
-        if (spawn_time.Count > 1 && spawn_num < rhythm_num)
+        if (spawn_enemy.Count > 1 && spawn_num < rhythm_num)
         {
             if (keyinput_time <= spawn_time[spawn_num] + (60 / (float)database.BPM * 4) + 0.1f &&
             keyinput_time >= spawn_time[spawn_num] + (60 / (float)database.BPM * 4) - 0.1f)
@@ -69,7 +79,9 @@ public class TimingManager : MonoBehaviour
 
     public void start_game()
     {
+        background = Instantiate(Stage1_frist, new Vector3(0.5f, 0, 0), Quaternion.identity);
         StartCoroutine("EnemyGenerator");
+        StartCoroutine("ScrollBackGround");
     }
 
     public void getkey(int KeyID)
@@ -144,6 +156,26 @@ public class TimingManager : MonoBehaviour
 
                 break;
             }
+        }
+    }
+
+    private IEnumerator ScrollBackGround()
+    {
+        while (true)
+        {
+            if (background_num < 25)
+            {
+                background = Instantiate(background_order[background_num], new Vector3(18, 0, 0), Quaternion.identity);
+
+                background_num ++;
+            }
+
+            else
+            {
+                background = Instantiate(Stage4, new Vector3(18, 0, 0), Quaternion.identity);
+            }
+
+            yield return new WaitForSeconds (60 / (float)database.BPM * 4);
         }
     }
 }
