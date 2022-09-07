@@ -16,7 +16,7 @@ public class DefeatCount : MonoBehaviour
 
     public void FixedUpdate()
     {
-        text.text = toKansuji(database.defeated_enemies.Count) + "人切り";
+        text.text = toKansuji(database.defeated_enemies) + "人切り";
     }
 
     private string toKansuji(long number) 

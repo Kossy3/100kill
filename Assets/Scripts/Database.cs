@@ -6,15 +6,18 @@ using UnityEngine.SceneManagement;
 public class Database : MonoBehaviour
 {
     public int BPM = 100;
-    public List<Enemy> defeated_enemies;
+    public Color[] color_list = new Color[4];
+    public int defeated_enemies;
+    public List<int> defeated_color_number;
     public int Stages;
     public int HP = 5;
     public float skill_gauge;
 
     public void Start()
     {
-        skill_gauge = 0;
+        defeated_enemies = 0;
         Stages = 0;
+        skill_gauge = 0;
     }
 
     public void rise_BPM()
@@ -22,9 +25,9 @@ public class Database : MonoBehaviour
         BPM += 4;
     }
 
-    public void add_defeat_enemy(Enemy enemy)
+    public void add_defeat_color_number(int color_num)
     {
-        defeated_enemies.Add(enemy);
+        defeated_color_number.Add(color_num);
     }
 
     public void charge_HP(int n)
