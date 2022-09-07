@@ -17,7 +17,7 @@ public class RhythmGenerator : MonoBehaviour
     {
         int[] Probability_List;
 
-        if (database.Stages <= 2)
+        if (database.Stages <= 1)
         {
             Probability_List = new int[] {0, 0, 4, 4};
         }
