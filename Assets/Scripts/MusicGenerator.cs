@@ -31,7 +31,7 @@ public class MusicGenerator : MonoBehaviour
 
     List<Note> generate_trak0(int[] rhythm){
         List<Note> track = new List<Note>();
-        track.Add(new Note(0, 57, 0, 1f/4f, 128));
+        track.Add(new Note(0, 117, 0, 1f/4f, 128));
         for (var i=0; i<rhythm.Length; i++){
             if (i == 0){
                 track.Add(new Note(9, 38+30, 0, 1f/4f, 80));
