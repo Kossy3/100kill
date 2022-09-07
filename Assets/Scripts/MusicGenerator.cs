@@ -32,7 +32,9 @@ public class MusicGenerator : MonoBehaviour
     List<Note> generate_trak0(int[] rhythm){
         List<Note> track = new List<Note>();
         for (var i=0; i<rhythm.Length; i++){
-            if (i % 4 == 2){
+            if (i == 0){
+                track.Add(new Note(9, 38, 0, 1f/4f, 80));
+            } else if (i % 4 == 2){
                 track.Add(new Note(9, 38, 1f/2f, 1f/4f, 127));
             }else{
                 track.Add(new Note(9, 38, 1f/2f, 1f/4f, 80));
