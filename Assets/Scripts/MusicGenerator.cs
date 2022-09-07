@@ -41,7 +41,7 @@ public class MusicGenerator : MonoBehaviour
                 track.Add(new Note(9, 38+30, 1f/2f, 1f/4f, 80));
             }
             if (rhythm[i] > 0){
-                track.Add(new Note(0, 60, 0f, 1f/4f, 127));
+                track.Add(new Note(0, 50, 0f, 1f/4f, 127));
             }        
         }
         return track;
