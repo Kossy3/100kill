@@ -132,8 +132,8 @@ public class MusicPlayer : MonoBehaviour
             device_init = true;
 #if UNITY_EDITOR
  
-            //Debug.Log(handle);
-            //Debug.Log(res);
+            Debug.Log(handle);
+            Debug.Log(res);
 #endif
         }
     }
