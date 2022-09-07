@@ -5,6 +5,7 @@ using System;
 
 public class Enemy : MonoBehaviour
 {
+    public int color_number = 0;
     public Database database;
     Animator anim;
     // Start is called before the first frame update
@@ -24,7 +25,15 @@ public class Enemy : MonoBehaviour
     }
     public void good()
     {
-        anim.SetTrigger("enemy_yarare");
+        if (gameObject.tag == "Enemy")
+        {
+            anim.SetTrigger("enemy_yarare");
+            database.add_defeat_color_number(color_number);
+        }
+        if (gameObject.tag == "Obstacle")
+        {
+
+        }
     }
 
     public void miss()
