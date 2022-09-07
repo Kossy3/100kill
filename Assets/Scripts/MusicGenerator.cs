@@ -11,7 +11,7 @@ public class MusicGenerator : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //test_start();
+        test_start();
     }
 
     void test_start(){
@@ -31,16 +31,17 @@ public class MusicGenerator : MonoBehaviour
 
     List<Note> generate_trak0(int[] rhythm){
         List<Note> track = new List<Note>();
+        track.Add(new Note(0, 57, 0, 1f/4f, 128));
         for (var i=0; i<rhythm.Length; i++){
             if (i == 0){
-                track.Add(new Note(9, 38, 0, 1f/4f, 80));
+                track.Add(new Note(9, 38+30, 0, 1f/4f, 80));
             } else if (i % 4 == 2){
-                track.Add(new Note(9, 38, 1f/2f, 1f/4f, 127));
+                track.Add(new Note(9, 38+42, 1f/2f, 1f/4f, 127));
             }else{
-                track.Add(new Note(9, 38, 1f/2f, 1f/4f, 80));
+                track.Add(new Note(9, 38+30, 1f/2f, 1f/4f, 80));
             }
             if (rhythm[i] > 0){
-                track.Add(new Note(9, 57, 0f, 1f/4f, 127));
+                track.Add(new Note(0, 60, 0f, 1f/4f, 127));
             }        
         }
         return track;
@@ -59,5 +60,9 @@ public class Note {
         this.delta = delta;
         this.len = len;
         this.velocity = velocity;
+    }
+
+    public void program_change(){
+        this.velocity = 128;
     }
 }

@@ -96,7 +96,11 @@ public class MusicPlayer : MonoBehaviour
     }
 
     void play_note(byte ch, byte no, float delta, float ms,byte velocity){
-        StartCoroutine( play_note_c(ch, no, delta, ms, velocity));
+        if (velocity == 128){
+            StartCoroutine( program_change_c(ch, no, delta));
+        } else {
+            StartCoroutine( play_note_c(ch, no, delta, ms, velocity));
+        }
     }
 
     IEnumerator play_note_c(byte ch, byte no, float delta, float ms,byte velocity){
@@ -105,6 +109,11 @@ public class MusicPlayer : MonoBehaviour
         midiOutMsgFixed(handle, 0x9, ch, no, velocity);
         yield return new WaitForSeconds(ms);
         midiOutMsgFixed(handle, 0x8, ch, no, velocity);
+    }
+    IEnumerator program_change_c(byte ch, byte no, float delta){
+        yield return new WaitForSeconds(delta);
+        //Debug.Log((ch, noteno, delta, ms, velocity));
+        midiOutMsgFixed(handle, 0xC, ch, no, 0);
     }
     public IEnumerator play_music_c(List<List<Note>> score){
         yield return new WaitForSeconds(1f);
