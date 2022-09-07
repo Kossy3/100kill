@@ -1362,12 +1362,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58dda0160733f5e42860b2aba782dcb3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemy1_0: {fileID: 0}
-  enemy1: {fileID: 0}
-  enemy1_2: {fileID: 0}
-  enemy1_3: {fileID: 0}
-  stone: {fileID: 0}
-  upthing: {fileID: 0}
+  enemy1_0: {fileID: 7828358698777580899, guid: c494672cdde84b54c8391b0616f6feff, type: 3}
+  enemy1: {fileID: 5050000691190220249, guid: 6079a4dfaf91354409bde96f379ec0d4, type: 3}
+  enemy1_2: {fileID: 7884093566016312761, guid: 9bd3ca6d612725243a2c5bf42a875502, type: 3}
+  enemy1_3: {fileID: 9207934393172352549, guid: 564a1cb23a953dd4e88d58490d934d6e, type: 3}
+  stone: {fileID: 421391495617002568, guid: fc0976f6e57761942bf643a4e32c59e6, type: 3}
+  upthing: {fileID: 8507077371486527527, guid: 20256b4cc176a964f8d907225d7db138, type: 3}
 --- !u!4 &1128221679
 Transform:
   m_ObjectHideFlags: 0
