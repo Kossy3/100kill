@@ -9,10 +9,15 @@ public class TimingManager : MonoBehaviour
     private Player player;
     private Enemy enemy;
 
+    public Enemy enemy1_0;
     public Enemy enemy1;
-    //public Enemy enemy2;
-    //public Enemy enemy3;
-    //public Enemy enemy4;
+    public Enemy enemy1_2;
+    public Enemy enemy1_3;
+    public Enemy stone;
+    public Enemy upthing;
+
+    private Enemy[] enemy_type;
+    private Enemy[] color_type;
 
     private int[] rhythm;
 
@@ -30,17 +35,20 @@ public class TimingManager : MonoBehaviour
         rhythmgenerator = GameObject.Find("RhythmGenerator").GetComponent<RhythmGenerator>();
         player = GameObject.Find("Player").GetComponent<Player>();
 
-        spawn_num = 0;
-        spawn_enemy = new List<Enemy>();
-        spawn_time = new List<float>();
+        enemy_type = new Enemy[] {null, upthing, null, stone, enemy1_0};
+        color_type = new Enemy[] {null, enemy1, enemy1_2, enemy1_3};
 
         keyinput_time = 0f;
+        spawn_time = new List<float>();
+
+        spawn_enemy = new List<Enemy>();
         
+        spawn_num = 0;
     }
 
     public void FixedUpdate()
     {
-        if (spawn_time.Count > 1 && spawn_num < 64)
+        if (spawn_time.Count > 1 && spawn_num < rhythm_num)
         {
             if (keyinput_time <= spawn_time[spawn_num] + (60 / (float)database.BPM * 4) + 0.1f &&
             keyinput_time >= spawn_time[spawn_num] + (60 / (float)database.BPM * 4) - 0.1f)
@@ -95,24 +103,32 @@ public class TimingManager : MonoBehaviour
 
     public IEnumerator EnemyGenerator()
     {
-        if (rhythm_num == 0 || rhythm_num == 64)
+        if (rhythm_num == 0)
         {
-            rhythm_num = 0;
             rhythm = rhythmgenerator.generate_8bar_rhythm();
-
-            spawn_num = 0;
-            spawn_enemy = new List<Enemy>();
-            spawn_time = new List<float>();
 
             database.charge_skill_gauge(1);
             database.rise_BPM();
+
+            spawn_enemy = new List<Enemy>();
+            spawn_time = new List<float>();
+
+            spawn_num = 0;
         }
 
         while (rhythm_num < 64)
         {
-            if (rhythm[rhythm_num] != 0)
+            if (enemy_type[rhythm[rhythm_num]])
             {
-                enemy = Instantiate(enemy1, new Vector3(10, -2, 0), Quaternion.identity);
+                enemy = Instantiate(enemy_type[rhythm[rhythm_num]], new Vector3(10, -2, 0), Quaternion.identity);
+                spawn_enemy.Add(enemy);
+                spawn_time.Add(Time.time);
+            }
+
+            else if (rhythm[rhythm_num] == 2)
+            {
+                int rnd = Random.Range(1, 4);
+                enemy = Instantiate(color_type[rnd], new Vector3(10, -2, 0), Quaternion.identity);
                 spawn_enemy.Add(enemy);
                 spawn_time.Add(Time.time);
             }
@@ -123,7 +139,9 @@ public class TimingManager : MonoBehaviour
 
             if ( rhythm_num == 64)
             {
+                rhythm_num = 0;
                 StartCoroutine("EnemyGenerator");
+
                 break;
             }
         }

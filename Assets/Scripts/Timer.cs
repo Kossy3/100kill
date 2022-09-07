@@ -45,7 +45,6 @@ public class Timer : MonoBehaviour
 
     private string toKansuji(long number) 
     {
-
         if (number == 0) 
         {
             return "-";
