@@ -27,7 +27,7 @@ public class Defeats : MonoBehaviour
         empty_list = new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
         defeated_color_list = new List<int>();
         List<int> defeated_color_number = database.defeated_color_number;
