@@ -17,6 +17,8 @@ public class Defeats : MonoBehaviour
     {
         database = GameObject.Find("Database").GetComponent<Database>();
 
+        defeats_image_list = new List<GameObject>();
+
         for (int i = 0; i < 10; i++)
         {
             defeats_image_list.Add(gameObject.transform.GetChild(i).gameObject);
