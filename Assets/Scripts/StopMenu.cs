@@ -140,6 +140,7 @@ public class StopMenu : MonoBehaviour
 
     public void On_click_startover()
     {
+        Destroy(GameObject.Find("Database"));
         SceneManager.LoadScene("Main");
     }
 
