@@ -100,11 +100,11 @@ public class MusicPlayer : MonoBehaviour
         return score;
     }
 
-    void play_note(byte ch, byte no, float delta, float ms,byte velocity){
-        if (velocity == 128){
-            StartCoroutine( program_change_c(ch, no, delta));
-        } else {
+    void play_note(int mode, byte ch, byte no, float delta, float ms,byte velocity){
+        if (mode == 0x9){
             StartCoroutine( play_note_c(ch, no, delta, ms, velocity));
+        } else if (mode == 0xC){
+            StartCoroutine( program_change_c(ch, no, delta));
         }
     }
 
@@ -170,7 +170,7 @@ public class MusicPlayer : MonoBehaviour
             for (int i=0; i<track.Count; i++){
                 Note note = track[i];
                 delta_time += note.delta*C;
-                play_note(note.ch, note.no, delta_time, note.len*C, note.velocity);
+                play_note(note.mode, note.ch, note.no, delta_time, note.len*C, note.velocity);
             }
         }
     }
