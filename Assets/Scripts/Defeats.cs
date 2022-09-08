@@ -7,7 +7,7 @@ public class Defeats : MonoBehaviour
 {
     private Database database;
 
-    private List<GameObject> defeats_image_list;
+    public List<GameObject> defeats_image_list;
 
     private List<int> defeated_color_list;
 

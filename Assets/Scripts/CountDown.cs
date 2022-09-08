@@ -55,6 +55,8 @@ public class CountDown : MonoBehaviour
             {
                 text.text = "";
 
+                count_num = 0;
+
                 image.enabled = false;
                 Time.timeScale = 1;
 
