@@ -22,7 +22,7 @@ public class MusicGenerator : MonoBehaviour
         StartCoroutine(musicPlayer.play_music_c(score));
     }
 
-    List<List<Note>> generate_8bar_music(int[] rhythm){
+    public List<List<Note>> generate_8bar_music(int[] rhythm){
         List<List<Note>> score = new List<List<Note>>();
         //基本トラック
         score.Add(generate_trak0(rhythm));

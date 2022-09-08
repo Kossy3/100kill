@@ -6,6 +6,8 @@ public class TimingManager : MonoBehaviour
 {
     private Database database;
     private RhythmGenerator rhythmgenerator;
+    private MusicGenerator musicgenerator;
+    private MusicPlayer musicplayer;
     private Player player;
     private Enemy enemy;
     private BackGround background;
@@ -25,8 +27,10 @@ public class TimingManager : MonoBehaviour
     private Enemy[] color_type;
 
     private int[] rhythm;
+    private List<List<Note>> score;
 
     private List<Enemy> spawn_enemy;
+    private List<int> spawn_type;
 
     private float keyinput_time;
     private List<float> spawn_time;
@@ -39,42 +43,24 @@ public class TimingManager : MonoBehaviour
     {
         database = GameObject.Find("Database").GetComponent<Database>();
         rhythmgenerator = GameObject.Find("RhythmGenerator").GetComponent<RhythmGenerator>();
+        musicgenerator = GameObject.Find("MusicGenerator").GetComponent<MusicGenerator>();
+        musicplayer = GameObject.Find("MusicPlayer").GetComponent<MusicPlayer>();
         player = GameObject.Find("Player").GetComponent<Player>();
 
         enemy_type = new Enemy[] {null, upthing, null, stone, enemy1_0};
         color_type = new Enemy[] {null, enemy1, enemy1_2, enemy1_3};
 
+        spawn_enemy = new List<Enemy>();
+        spawn_type = new List<int>();
+
         keyinput_time = 0f;
         spawn_time = new List<float>();
 
-        spawn_enemy = new List<Enemy>();
-        
         rhythm_num = 0;
         spawn_num = 0;
         background_num = 0;
 
         start_game();
-    }
-
-    public void FixedUpdate()
-    {
-        if (spawn_enemy.Count > 1 && spawn_num < rhythm_num)
-        {
-            if (keyinput_time <= spawn_time[spawn_num] + (60 / (float)database.BPM * 4) + 0.1f &&
-            keyinput_time >= spawn_time[spawn_num] + (60 / (float)database.BPM * 4) - 0.1f)
-            {
-                spawn_enemy[spawn_num].good();
-                spawn_num ++;
-            }
-
-            else if (Time.time > spawn_time[spawn_num] + (60 / (float)database.BPM * 4) + 0.2f ||
-            (keyinput_time <= spawn_time[spawn_num] + (60 / (float)database.BPM * 4) + 0.2f &&
-            keyinput_time >= spawn_time[spawn_num] + (60 / (float)database.BPM * 4) - 0.2f))
-            {
-                spawn_enemy[spawn_num].miss();
-                spawn_num ++;
-            }
-        }
     }
 
     public void start_game()
@@ -88,28 +74,55 @@ public class TimingManager : MonoBehaviour
     {
         keyinput_time = Time.time;
 
+        if (spawn_enemy.Count > 1 && spawn_num < rhythm_num)
+        {
+            if (keyinput_time <= spawn_time[spawn_num] + (60 / (float)database.BPM * 4) + 0.1f &&
+            keyinput_time >= spawn_time[spawn_num] + (60 / (float)database.BPM * 4) - 0.1f)
+            {
+                if (KeyID == spawn_type[spawn_num])
+                {
+                    spawn_enemy[spawn_num].good();
+                    spawn_num ++;
+                }
+
+                else
+                {
+                    spawn_enemy[spawn_num].miss();
+                    spawn_num ++;
+                }
+            }
+
+            else if (Time.time > spawn_time[spawn_num] + (60 / (float)database.BPM * 4) + 0.2f ||
+            (keyinput_time <= spawn_time[spawn_num] + (60 / (float)database.BPM * 4) + 0.2f &&
+            keyinput_time >= spawn_time[spawn_num] + (60 / (float)database.BPM * 4) - 0.2f))
+            {
+                spawn_enemy[spawn_num].miss();
+                spawn_num ++;
+            }
+        }
+        
         if (KeyID == 1)
         {
             player.jump();
-            Debug.Log(KeyID);
         }
 
         else if (KeyID == 2)
         {
-            player.skill();
-            Debug.Log(KeyID);
+            if (database.skill_gauge == 1)
+            {
+                player.skill();
+                database.charge_skill_gauge(-1);
+            }
         }
 
         else if (KeyID == 3)
         {
             player.sliding();
-            Debug.Log(KeyID);
         }
 
         else if (KeyID == 4)
         {
             player.slash();
-            Debug.Log(KeyID);
         }
     }
 
@@ -118,11 +131,15 @@ public class TimingManager : MonoBehaviour
         if (rhythm_num == 0)
         {
             rhythm = rhythmgenerator.generate_8bar_rhythm();
+            score = musicgenerator.generate_8bar_music(rhythm);
+            musicplayer.play_music(score);
 
             database.charge_skill_gauge(1);
             database.rise_BPM();
 
             spawn_enemy = new List<Enemy>();
+            spawn_type = new List<int>();
+
             spawn_time = new List<float>();
 
             spawn_num = 0;
@@ -130,16 +147,15 @@ public class TimingManager : MonoBehaviour
 
         while (rhythm_num < 64)
         {
+            
+
             if (enemy_type[rhythm[rhythm_num]])
             {
                 enemy = Instantiate(enemy_type[rhythm[rhythm_num]], new Vector3(10, -2, 0), Quaternion.identity);
 
-                if (rhythm[rhythm_num] == 4)
-                {
-                    enemy.color_number = 0;
-                }
-
                 spawn_enemy.Add(enemy);
+                spawn_type.Add(rhythm[rhythm_num]);
+
                 spawn_time.Add(Time.time);
             }
 
@@ -150,6 +166,8 @@ public class TimingManager : MonoBehaviour
                 enemy.color_number = rnd;
 
                 spawn_enemy.Add(enemy);
+                spawn_type.Add(rhythm[rhythm_num]);
+
                 spawn_time.Add(Time.time);
             }
 
