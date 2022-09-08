@@ -6,7 +6,6 @@ using UnityEngine.SceneManagement;
 public class Database : MonoBehaviour
 {
     public int BPM = 100;
-    public Color[] color_list = new Color[4];
     public int defeated_enemies;
     public List<int> defeated_color_number;
     public int Stages;
