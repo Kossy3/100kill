@@ -27,8 +27,12 @@ public class Enemy : MonoBehaviour
     {
         if (gameObject.tag == "Enemy")
         {
+            database.defeated_enemies += 1;
             anim.SetTrigger("enemy_yarare");
-            database.add_defeat_color_number(color_number);
+            if (color_number != 0)
+            {
+                database.add_defeat_color_number(color_number);
+            }
         }
         if (gameObject.tag == "Obstacle")
         {
