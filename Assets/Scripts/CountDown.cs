@@ -15,14 +15,14 @@ public class CountDown : MonoBehaviour
     {
         timingmanager = GameObject.Find("TimingManager").GetComponent<TimingManager>();
         image = GetComponent<UnityEngine.UI.Image>();
-        text = transform.Find("Text").gameObject.GetComponent<Text>();
+        text = transform.Find("Text(CountDown)").gameObject.GetComponent<Text>();
 
         count_num = 0;
 
-        StartCoroutine(count_down(0));
+        StartCoroutine("count_down");
     }
 
-    public IEnumerator count_down(int n)
+    public IEnumerator count_down()
     {
         if (image.enabled == false)
         {
@@ -55,20 +55,17 @@ public class CountDown : MonoBehaviour
             {
                 text.text = "";
 
-                if (n == 0)
-                {
-                    timingmanager.start_game();
-                }
+                count_num = 0;
 
                 image.enabled = false;
                 Time.timeScale = 1;
 
                 break;
             }
+            
+            count_num ++;
 
             yield return new WaitForSecondsRealtime (1.0f);
-
-            count_num ++;
         }
     }
 }

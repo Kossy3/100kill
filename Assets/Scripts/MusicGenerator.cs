@@ -26,7 +26,7 @@ public class MusicGenerator : MonoBehaviour
         StartCoroutine(musicPlayer.play_music_c(score));
     }
 
-    List<List<Note>> generate_8bar_music(int[] rhythm){
+    public List<List<Note>> generate_8bar_music(int[] rhythm){
         List<List<Note>> score = new List<List<Note>>();
         var colors = defeated_colors;
         //アクションに合わせた音
