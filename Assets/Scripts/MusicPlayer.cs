@@ -77,8 +77,13 @@ public class MusicPlayer : MonoBehaviour
         MidiOutCaps myCaps = new MidiOutCaps();
  
         //0番ポートの調査を行う。
-        var res = midiOutGetDevCaps(1, ref myCaps, (System.UInt32)Marshal.SizeOf(myCaps));
- 
+        //var res = midiOutGetDevCaps(-1, ref myCaps, (System.UInt32)Marshal.SizeOf(myCaps));
+        /*for (var i=0; i<numDevs; i++){
+            var res = midiOutGetDevCaps(i, ref myCaps, (System.UInt32)Marshal.SizeOf(myCaps));
+            Debug.Log(myCaps.szPname);
+        }*/
+        var res1 = midiOutGetDevCaps(-1, ref myCaps, (System.UInt32)Marshal.SizeOf(myCaps));
+        //Debug.Log(myCaps.szPname);
         //引数１はポインタ扱い。
 #if UNITY_EDITOR
         //Debug.Log(myCaps.szPname);
@@ -95,8 +100,12 @@ public class MusicPlayer : MonoBehaviour
         return score;
     }
 
-    void play_note(byte ch, byte no, float delta, float ms,byte velocity){
-        StartCoroutine( play_note_c(ch, no, delta, ms, velocity));
+    void play_note(int mode, byte ch, byte no, float delta, float ms,byte velocity){
+        if (mode == 0x9){
+            StartCoroutine( play_note_c(ch, no, delta, ms, velocity));
+        } else if (mode == 0xC){
+            StartCoroutine( program_change_c(ch, no, delta));
+        }
     }
 
     IEnumerator play_note_c(byte ch, byte no, float delta, float ms,byte velocity){
@@ -105,6 +114,11 @@ public class MusicPlayer : MonoBehaviour
         midiOutMsgFixed(handle, 0x9, ch, no, velocity);
         yield return new WaitForSeconds(ms);
         midiOutMsgFixed(handle, 0x8, ch, no, velocity);
+    }
+    IEnumerator program_change_c(byte ch, byte no, float delta){
+        yield return new WaitForSeconds(delta);
+        //Debug.Log((ch, noteno, delta, ms, velocity));
+        midiOutMsgFixed(handle, 0xC, ch, no, 0);
     }
     public IEnumerator play_music_c(List<List<Note>> score){
         yield return new WaitForSeconds(1f);
@@ -156,7 +170,7 @@ public class MusicPlayer : MonoBehaviour
             for (int i=0; i<track.Count; i++){
                 Note note = track[i];
                 delta_time += note.delta*C;
-                play_note(note.ch, note.no, delta_time, note.len*C, note.velocity);
+                play_note(note.mode, note.ch, note.no, delta_time, note.len*C, note.velocity);
             }
         }
     }
