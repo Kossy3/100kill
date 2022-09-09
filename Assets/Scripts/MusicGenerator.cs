@@ -15,7 +15,7 @@ public class MusicGenerator : MonoBehaviour
     void Start()
     {
         database = GameObject.Find("Database").GetComponent<Database>();
-        test_start();
+        //test_start();
     }
 
     void test_start(){
@@ -31,12 +31,13 @@ public class MusicGenerator : MonoBehaviour
         var colors = defeated_colors;
         //アクションに合わせた音
         score.Add(generate_track0(rhythm));
-        if (defeated_colors.Count <= 1){
+        if (defeated_colors.Count < 1){
             //刻みだけ
+            
             score.Add(generate_track1(rhythm));
         } else {
             //ドラム
-            score.Add(generate_track1(rhythm));
+            score.Add(generate_track1_drum(colors[0]));
         }
         
         //メインリズム変化形
@@ -61,11 +62,11 @@ public class MusicGenerator : MonoBehaviour
         List<Note> track = new List<Note>();
         for (var i=0; i<rhythm.Length; i++){
             if (i == 0){
-                track.Add(new Note(9, 36, 0, 1f/4f, 80));
+                track.Add(new Note(9, 36,     0, 1f/4f, 100));
             } else if (i % 4 == 2){
                 track.Add(new Note(9, 38, 1f/2f, 1f/4f, 127));
             }else{
-                track.Add(new Note(9, 36, 1f/2f, 1f/4f, 80));
+                track.Add(new Note(9, 36, 1f/2f, 1f/4f, 100));
             }       
         }
         return track;
@@ -74,14 +75,15 @@ public class MusicGenerator : MonoBehaviour
         List<Note> track = new List<Note>();
         float delta = 0;
         if(type == type+0){
-            for (var i=0; i<4; i++){
-                track.Add(new Note(9, 36, delta, 1f/8f, 80));
-                track.Add(new Note(9, 38, 1f, 1f/8f, 80));
-                track.Add(new Note(9, 36, 1f/2f, 1f/8f, 80));
-                track.Add(new Note(9, 38, 1f/4f, 1f/8f, 80));
-                track.Add(new Note(9, 38, 1f/2f, 1f/8f, 80));
-                track.Add(new Note(9, 36, 1f/4f, 1f/8f, 80));
-                track.Add(new Note(9, 38, 1f/2f, 1f/8f, 80));
+            for (var i=0; i<8; i++){
+                track.Add(new Note(9, 36, delta, 1f/8f, 100));
+                track.Add(new Note(9, 36, 1f/2f, 1f/8f, 100));
+                track.Add(new Note(9, 38, 1f/2f, 1f/8f, 127));
+                track.Add(new Note(9, 36, 1f/2f, 1f/8f, 100));
+                track.Add(new Note(9, 38, 1f/4f, 1f/8f, 127));
+                track.Add(new Note(9, 38, 1f/2f, 1f/8f, 127));
+                track.Add(new Note(9, 36, 1f/4f, 1f/8f, 100));
+                track.Add(new Note(9, 38, 1f/2f, 1f/8f, 127));
                 delta = 1f;
             }
         } 
