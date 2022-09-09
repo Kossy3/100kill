@@ -63,18 +63,34 @@ public class TimingManager : MonoBehaviour
         start_game();
     }
 
+    public void FixedUpdate()
+    {
+        try
+        {
+            if (Time.time > spawn_time[spawn_num] + (60 / (float)database.BPM * 4) + 0.2f)
+            {
+                spawn_enemy[spawn_num].miss();
+                spawn_num ++;
+            }
+        }
+
+        catch (System.ArgumentOutOfRangeException)
+        {
+        }
+    }
+
     public void start_game()
     {
         background = Instantiate(Stage1_frist, new Vector3(0.5f, 0, 0), Quaternion.identity);
-        StartCoroutine("EnemyGenerator");
-        StartCoroutine("ScrollBackGround");
+        StartCoroutine("enemy_generator");
+        StartCoroutine("scroll_background");
     }
 
     public void getkey(int KeyID)
     {
         keyinput_time = Time.time;
 
-        if (spawn_enemy.Count > 1 && spawn_num < rhythm_num)
+        try
         {
             if (keyinput_time <= spawn_time[spawn_num] + (60 / (float)database.BPM * 4) + 0.1f &&
             keyinput_time >= spawn_time[spawn_num] + (60 / (float)database.BPM * 4) - 0.1f)
@@ -92,13 +108,16 @@ public class TimingManager : MonoBehaviour
                 }
             }
 
-            else if (Time.time > spawn_time[spawn_num] + (60 / (float)database.BPM * 4) + 0.2f ||
-            (keyinput_time <= spawn_time[spawn_num] + (60 / (float)database.BPM * 4) + 0.2f &&
-            keyinput_time >= spawn_time[spawn_num] + (60 / (float)database.BPM * 4) - 0.2f))
+            else if (keyinput_time <= spawn_time[spawn_num] + (60 / (float)database.BPM * 4) + 0.2f &&
+            keyinput_time >= spawn_time[spawn_num] + (60 / (float)database.BPM * 4) - 0.2f)
             {
                 spawn_enemy[spawn_num].miss();
                 spawn_num ++;
             }
+        }
+
+        catch (System.ArgumentOutOfRangeException)
+        {
         }
         
         if (KeyID == 1)
@@ -126,29 +145,30 @@ public class TimingManager : MonoBehaviour
         }
     }
 
-    public IEnumerator EnemyGenerator()
+    public void stage_up()
+    {
+        database.charge_skill_gauge(1);
+        database.rise_BPM(8);
+    }
+
+    public void music_player()
+    {
+        musicplayer.play_music(score);
+    }
+
+    public IEnumerator enemy_generator()
     {
         if (rhythm_num == 0)
         {
             rhythm = rhythmgenerator.generate_8bar_rhythm();
             score = musicgenerator.generate_8bar_music(rhythm);
-            musicplayer.play_music(score);
 
-            database.charge_skill_gauge(1);
-            database.rise_BPM();
-
-            spawn_enemy = new List<Enemy>();
-            spawn_type = new List<int>();
-
-            spawn_time = new List<float>();
-
-            spawn_num = 0;
+            Invoke("stage_up", (60 / (float)database.BPM) / 2);
+            Invoke("music_player", ((60 / (float)database.BPM) / 2) - 1);
         }
 
         while (rhythm_num < 64)
         {
-            
-
             if (enemy_type[rhythm[rhythm_num]])
             {
                 enemy = Instantiate(enemy_type[rhythm[rhythm_num]], new Vector3(10, -2, 0), Quaternion.identity);
@@ -178,14 +198,15 @@ public class TimingManager : MonoBehaviour
             if ( rhythm_num == 64)
             {
                 rhythm_num = 0;
-                StartCoroutine("EnemyGenerator");
+
+                StartCoroutine("enemy_generator");
 
                 break;
             }
         }
     }
 
-    private IEnumerator ScrollBackGround()
+    private IEnumerator scroll_background()
     {
         while (true)
         {
