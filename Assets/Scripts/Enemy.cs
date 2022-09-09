@@ -42,7 +42,10 @@ public class Enemy : MonoBehaviour
 
     public void miss()
     {
-        
+        if (database.HP > 0)
+        {
+            database.HP -= 1;
+        }
     }
 
 }
