@@ -78,12 +78,12 @@ public class MusicPlayer : MonoBehaviour
  
         //0番ポートの調査を行う。
         //var res = midiOutGetDevCaps(-1, ref myCaps, (System.UInt32)Marshal.SizeOf(myCaps));
-        for (var i=0; i<numDevs; i++){
+        /*for (var i=0; i<numDevs; i++){
             var res = midiOutGetDevCaps(i, ref myCaps, (System.UInt32)Marshal.SizeOf(myCaps));
             Debug.Log(myCaps.szPname);
-        }
+        }*/
         var res1 = midiOutGetDevCaps(-1, ref myCaps, (System.UInt32)Marshal.SizeOf(myCaps));
-        Debug.Log(myCaps.szPname);
+        //Debug.Log(myCaps.szPname);
         //引数１はポインタ扱い。
 #if UNITY_EDITOR
         //Debug.Log(myCaps.szPname);
@@ -132,8 +132,8 @@ public class MusicPlayer : MonoBehaviour
             device_init = true;
 #if UNITY_EDITOR
  
-            Debug.Log(handle);
-            Debug.Log(res);
+            //Debug.Log(handle);
+            //Debug.Log(res);
 #endif
         }
     }
