@@ -5,21 +5,25 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.EventSystems;
 
-public class StartGame : MonoBehaviour
+public class BackStartScene : MonoBehaviour
 {
     private EventSystem eventsystem;
 
+    private GameObject text;
+
     private List<RaycastResult> rayresult;
 
-    void Start()
+    public void Start()
     {
+        text = transform.Find("Text(ESCAPE)").gameObject;
+
         rayresult = new List<RaycastResult>();
     }
 
-    void Update()
+    public void Update()
     {
-        transform.Find("Text").gameObject.GetComponent<Text>().color = new Color(0, 0, 0, 1);
-        transform.Find("Text").gameObject.GetComponent<Shadow>().effectColor = new Color(1, 1, 1, 1);
+        transform.Find("Text(ESCAPE)").gameObject.GetComponent<Text>().color = new Color(0, 0, 0, 1);
+        transform.Find("Text(ESCAPE)").gameObject.GetComponent<Shadow>().effectColor = new Color(1, 1, 1, 1);
 
         rayresult.Clear();
 
@@ -31,23 +35,26 @@ public class StartGame : MonoBehaviour
         {
             if (raycastresult.gameObject.CompareTag("Button"))
             {
-                GameObject text = raycastresult.gameObject.transform.Find("Text").gameObject;
+                GameObject text = raycastresult.gameObject.transform.Find("Text(ESCAPE)").gameObject;
                 text.GetComponent<Text>().color = new Color(1, 1, 1, 0.5f);
                 text.GetComponent<Shadow>().effectColor = new Color(0, 0, 0, 1);
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKey(KeyCode.Escape) )
+        {
+            text.GetComponent<Text>().color = new Color(1, 1, 1, 0.5f);
+            text.GetComponent<Shadow>().effectColor = new Color(0, 0, 0, 1);
+        }
+
+        if (Input.GetKeyUp(KeyCode.Escape))
         {
             gameObject.GetComponent<Button>().onClick.Invoke();
-            transform.Find("Text").gameObject.GetComponent<Text>().color = new Color(0, 0, 0, 1);
-            transform.Find("Text").gameObject.GetComponent<Shadow>().effectColor = new Color(1, 1, 1, 1);
         }
     }
 
-    public void On_Click()
+    public void on_click()
     {
-        Destroy(GameObject.Find("Database"));
-        SceneManager.LoadScene("Main");
+        SceneManager.LoadScene("Start");
     }
 }
