@@ -26,6 +26,7 @@ public class TimingManager : MonoBehaviour
     private Enemy[] enemy_type;
     private Enemy[] color_type;
 
+    //private int[] frist_bar_rhythm;
     private int[] rhythm;
     private List<List<Note>> score;
 
@@ -49,6 +50,8 @@ public class TimingManager : MonoBehaviour
 
         enemy_type = new Enemy[] {null, upthing, null, stone, enemy1_0};
         color_type = new Enemy[] {null, enemy1, enemy1_2, enemy1_3};
+
+        //frist_bar_rhythm = new int[] {0, 0, 0, 0, 0, 0};
 
         spawn_enemy = new List<Enemy>();
         spawn_type = new List<int>();
@@ -82,6 +85,10 @@ public class TimingManager : MonoBehaviour
     public void start_game()
     {
         background = Instantiate(Stage1_frist, new Vector3(0.5f, 0, 0), Quaternion.identity);
+
+        //score = musicgenerator.generate_8bar_music(frist_bar_rhythm);
+        //musicplayer.play_music(score);
+
         StartCoroutine("enemy_generator");
         StartCoroutine("scroll_background");
     }
@@ -125,13 +132,11 @@ public class TimingManager : MonoBehaviour
             player.jump();
         }
 
-        else if (KeyID == 2)
+        else if (KeyID == 2 && database.skill_gauge == 1)
         {
-            if (database.skill_gauge == 1)
-            {
-                player.skill();
-                database.charge_skill_gauge(-1);
-            }
+
+            player.skill();
+            database.charge_skill_gauge(-1);
         }
 
         else if (KeyID == 3)
@@ -163,8 +168,8 @@ public class TimingManager : MonoBehaviour
             rhythm = rhythmgenerator.generate_8bar_rhythm();
             score = musicgenerator.generate_8bar_music(rhythm);
 
-            Invoke("stage_up", (60 / (float)database.BPM) / 2);
-            Invoke("music_player", ((60 / (float)database.BPM) / 2) - 1);
+            Invoke("stage_up", (60 / (float)database.BPM) * 4);
+            Invoke("music_player", ((60 / (float)database.BPM) * 4) - 0.3f);
         }
 
         while (rhythm_num < 64)
