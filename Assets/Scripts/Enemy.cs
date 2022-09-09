@@ -32,6 +32,7 @@ public class Enemy : MonoBehaviour
             if (color_number != 0)
             {
                 database.add_defeat_color_number(color_number);
+                database.charge_HP(1);
             }
         }
         if (gameObject.tag == "Obstacle")
@@ -42,10 +43,7 @@ public class Enemy : MonoBehaviour
 
     public void miss()
     {
-        if (database.HP > 0)
-        {
-            database.HP -= 1;
-        }
+        database.charge_HP(-1);
     }
 
 }
