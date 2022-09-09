@@ -11,7 +11,9 @@ public class Database : MonoBehaviour
     public int Stages;
     public int HP;
     public float skill_gauge;
+
     public List<int> score_list;
+    public int scene_number;
 
     public void Start()
     {
@@ -21,6 +23,7 @@ public class Database : MonoBehaviour
         Stages = 0;
         HP = 5;
         skill_gauge = 0;
+
         score_list = new List<int>();
 
         DontDestroyOnLoad(gameObject);
@@ -43,6 +46,7 @@ public class Database : MonoBehaviour
 
         if (HP == 0)
         {
+            scene_number = 0;
             SceneManager.LoadScene("Score");
         }
     }
