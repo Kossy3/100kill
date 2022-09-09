@@ -5,7 +5,8 @@ using System.Linq;
 
 public class MusicGenerator : MonoBehaviour
 {
-    Database database;
+    [SerializeField]
+    private Database database;
     RhythmGenerator rhythmGenerator;
     MusicPlayer musicPlayer;
     //テスト用スクリプト
@@ -14,7 +15,7 @@ public class MusicGenerator : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        database = GameObject.Find("Database").GetComponent<Database>();
+        //database = GameObject.Find("Database").GetComponent<Database>();
         //test_start();
     }
 
