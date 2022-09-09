@@ -155,13 +155,14 @@ public class StopMenu : MonoBehaviour
 
         for (int i = 0; i < 3; i++)
         {
-            button_list[i].SetActive(false);
+            button_list[i + 1].SetActive(false);
         }
     }
 
     public void on_click_startover()
     {
         GameObject.Find("Database").GetComponent<Database>().reset();
+        //Destroy(GameObject.Find("Database"));
         SceneManager.LoadScene("Main");
     }
 

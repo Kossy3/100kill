@@ -120,11 +120,22 @@ public class SceneNavigator : MonoBehaviour
         {
         }
 
+        //Destroy(GameObject.Find("Database"));
         SceneManager.LoadScene("Main");
     }
 
     public void on_click_escape()
     {
+        //Destroy(GameObject.Find("Database"));
+        try
+        {
+            GameObject.Find("Database").GetComponent<Database>().scene_number = 1;
+        }
+
+        catch (System.NullReferenceException)
+        {
+        }
+
         SceneManager.LoadScene("Score");
     }
 }

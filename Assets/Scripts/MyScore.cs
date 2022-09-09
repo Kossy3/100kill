@@ -15,9 +15,7 @@ public class MyScore : MonoBehaviour
     private Image image;
     private Text text;
 
-    private int my_score;
-
-    public List<int> score_ranking;
+    public int my_score;
 
     void Start()
     {
@@ -36,24 +34,23 @@ public class MyScore : MonoBehaviour
         try
         {
             database =  GameObject.Find("Database").GetComponent<Database>(); 
-               
+            bool[] scene_number_identifier = new bool[1];
+
+            if (scene_number_identifier[database.scene_number])
+            {
+            }
+
             my_score = database.defeated_enemies;
             text.text = tokansuji.to_kansuji(my_score, "〇") + "人切り";
-            database.score_list.Add(my_score);
-            database.score_list.Sort((a, b) => b - a);
-
-            score_ranking = database.score_list;
         }
 
-        catch (System.NullReferenceException)
+        catch (System.Exception)
         {
             gameObject.SetActive(false);
             text.gameObject.SetActive(false);
             ranking.transform.Find("Text(RANKING)").gameObject.SetActive(true);
             ranking.transform.Find("Table").gameObject.SetActive(true);
             escapebutton.transform.Find("Text(ESCAPE)").gameObject.SetActive(true);  
-
-            rankingtable.ranking_displayer();          
         }
     }
 
@@ -71,8 +68,6 @@ public class MyScore : MonoBehaviour
         gameObject.SetActive(false);
         ranking.transform.Find("Text(RANKING)").gameObject.SetActive(true);
         ranking.transform.Find("Table").gameObject.SetActive(true);
-        escapebutton.transform.Find("Text(ESCAPE)").gameObject.SetActive(true);
-
-        rankingtable.ranking_displayer();   
+        escapebutton.transform.Find("Text(ESCAPE)").gameObject.SetActive(true); 
     }
 }
