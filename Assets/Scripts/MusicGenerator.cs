@@ -1,16 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class MusicGenerator : MonoBehaviour
 {
     Database database;
-#if UNITY_EDITOR
     RhythmGenerator rhythmGenerator;
     MusicPlayer musicPlayer;
     //テスト用スクリプト
     List<int> defeated_colors = new List<int>();
-#endif
+
     // Start is called before the first frame update
     void Start()
     {
@@ -25,10 +25,26 @@ public class MusicGenerator : MonoBehaviour
         List<List<Note>> score = generate_8bar_music(rhythm);
         StartCoroutine(musicPlayer.play_music_c(score));
     }
+    int GetRandomIndex(int[] weightTable)
+    {
+        var totalWeight = weightTable.Sum();
+        var value = UnityEngine.Random.Range(1, totalWeight + 1);
+        var retIndex = -1;
+        for (var i = 0; i < weightTable.Length; ++i)
+        {
+            if (weightTable[i] >= value)
+            {
+                retIndex = i;
+                break;
+            }
+            value -= weightTable[i];
+        }
+        return retIndex;
+    }
 
     public List<List<Note>> generate_8bar_music(int[] rhythm){
         List<List<Note>> score = new List<List<Note>>();
-        var colors = defeated_colors;
+        var colors = database.defeated_color_number;
         //アクションに合わせた音
         score.Add(generate_track0(rhythm));
         if (defeated_colors.Count < 1){
@@ -74,7 +90,7 @@ public class MusicGenerator : MonoBehaviour
     List<Note> generate_track1_drum(int type){
         List<Note> track = new List<Note>();
         float delta = 0;
-        if(type == type+0){
+        if(type == 1){
             for (var i=0; i<8; i++){
                 track.Add(new Note(9, 36, delta, 1f/8f, 100));
                 track.Add(new Note(9, 36, 1f/2f, 1f/8f, 100));
@@ -84,9 +100,36 @@ public class MusicGenerator : MonoBehaviour
                 track.Add(new Note(9, 38, 1f/2f, 1f/8f, 127));
                 track.Add(new Note(9, 36, 1f/4f, 1f/8f, 100));
                 track.Add(new Note(9, 38, 1f/2f, 1f/8f, 127));
-                delta = 1f;
+                track.Add(new Note(9, 36, 1f/2f, 1f/8f, 100));
+                delta = 1f/2f;
             }
-        } 
+        } else if (type ==2){
+            for (var i=0; i<16; i++){
+                track.Add(new Note(9, 36, delta, 1f/8f, 100));
+                track.Add(new Note(9, 36, 1f/4f, 1f/8f, 100));
+                track.Add(new Note(9, 36, 1f/4f, 1f/8f, 100));
+                track.Add(new Note(9, 36, 1f/4f, 1f/8f, 100));
+                track.Add(new Note(9, 38, 1f/4f, 1f/8f, 127));
+                track.Add(new Note(9, 36, 1f/4f, 1f/8f, 100));
+                track.Add(new Note(9, 36, 1f/4f, 1f/8f, 100));
+                track.Add(new Note(9, 36, 1f/4f, 1f/8f, 100));
+                delta = 1f/4f;
+            }
+        } else {
+            for (var i=0; i<16; i++){
+                track.Add(new Note(9, 36, delta, 1f/8f, 100));
+                track.Add(new Note(9, 38, 1f/2f, 1f/8f, 100));
+                track.Add(new Note(9, 36, 1f/2f, 1f/8f, 100));
+                track.Add(new Note(9, 38, 1f/4f, 1f/8f, 100));
+                track.Add(new Note(9, 36, 1f/4f, 1f/8f, 127));
+                track.Add(new Note(9, 38, 1f/2f, 1f/8f, 100));
+                track.Add(new Note(9, 36, 1f/2f, 1f/8f, 100));
+                track.Add(new Note(9, 38, 1f/4f, 1f/8f, 100));
+                track.Add(new Note(9, 36, 1f/4f, 1f/8f, 100));
+                track.Add(new Note(9, 38, 1f/2f, 1f/8f, 100));
+                delta = 1f/2f;
+            }
+        }
         return track;
     }
     List<Note> generate_track2(int[] rhythm){
@@ -110,6 +153,7 @@ public class MusicGenerator : MonoBehaviour
         }
         return track;
     }
+
 }
 
 public class Note {
