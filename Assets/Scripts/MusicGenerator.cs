@@ -33,14 +33,13 @@ public class MusicGenerator : MonoBehaviour
         score.Add(generate_track0(rhythm));
         if (defeated_colors.Count <= 1){
             //刻みだけ
-            generate_track1(rhythm);
+            score.Add(generate_track1(rhythm));
         } else {
             //ドラム
-            generate_track1_drum(colors[0]);
+            score.Add(generate_track1(rhythm));
         }
         
         //メインリズム変化形
-        score.Add(generate_track1(rhythm));
         defeated_colors.Add(UnityEngine.Random.Range(1,1+3));
         return score;
     }
