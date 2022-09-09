@@ -11,6 +11,7 @@ public class Database : MonoBehaviour
     public int Stages;
     public int HP;
     public float skill_gauge;
+    public List<int> score_list;
 
     public void Start()
     {
@@ -20,6 +21,7 @@ public class Database : MonoBehaviour
         Stages = 0;
         HP = 5;
         skill_gauge = 0;
+        score_list = new List<int>();
 
         DontDestroyOnLoad(gameObject);
     }

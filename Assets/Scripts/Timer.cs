@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class Timer : MonoBehaviour
 {
+    private ToKansuji tokansuji;
+
     private Text text;
 
     private int minutes;
@@ -12,6 +14,8 @@ public class Timer : MonoBehaviour
 
     public void Start()
     {
+        tokansuji = GameObject.Find("ToKansuji").GetComponent<ToKansuji>();
+
         text = GetComponent<Text>();
 
         minutes = 0;
@@ -32,49 +36,14 @@ public class Timer : MonoBehaviour
 
         if (minutes == 0)
         {
-            time_str = toKansuji((int)seconds) + "秒";
+            time_str = tokansuji.to_kansuji((int)seconds, "-") + "秒";
         }
 
         else
         {
-            time_str = toKansuji(minutes) + "分" + toKansuji((int)seconds) + "秒";
+            time_str = tokansuji.to_kansuji(minutes, "-") + "分" + tokansuji.to_kansuji((int)seconds, "-") + "秒";
         }
 
         text.text = time_str;
-    }
-
-    private string toKansuji(long number) 
-    {
-        if (number == 0) 
-        {
-            return "-";
-        }
-        
-        string[] kl = new string[] { "", "十", "百", "千" };
-        string[] nl = new string[] { "", "一", "二", "三", "四", "五", "六", "七", "八", "九" };
-        string str = "";
-
-        int keta = 0;
-
-        while (number > 0) 
-        {
-            int k = keta % 4;
-            int n = (int)(number % 10);
-                         
-            if (k != 0 && n == 1) 
-            {
-                str = kl[k] + str;
-            } 
-            
-            else if (n != 0) 
-            {
-                str = nl[n] + kl[k] + str;
-            }
-                
-            keta++;
-            number /= 10;
-        }
-
-        return str;
     }
 }
