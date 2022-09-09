@@ -5,6 +5,9 @@ using UnityEngine.SceneManagement;
 
 public class Database : MonoBehaviour
 {
+    //デバッグ用に手に追加
+    [SerializeField]
+    private bool debug = false;
     public int BPM;
     public int defeated_enemies;
     public List<int> defeated_color_number;
@@ -20,6 +23,9 @@ public class Database : MonoBehaviour
         Stages = 0;
         HP = 5;
         skill_gauge = 0;
+        #if !UNITY_EDITOR //デバッグ用に手に追加
+            debug = false;
+        #endif
 
         DontDestroyOnLoad(gameObject);
     }
@@ -39,7 +45,7 @@ public class Database : MonoBehaviour
         HP += n;
         HP = Mathf.Clamp(HP, 0, 5);
 
-        if (HP == 0)
+        if (HP == 0 && !debug)
         {
             SceneManager.LoadScene("Score");
         }
