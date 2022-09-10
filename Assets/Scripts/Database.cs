@@ -5,6 +5,9 @@ using UnityEngine.SceneManagement;
 
 public class Database : MonoBehaviour
 {
+    [SerializeField]
+    [Header("Debug_mode : trueで死亡時のシーン変更無効化")]
+    private bool debug_mode;
     public int BPM;
     public int defeated_enemies;
     public List<int> defeated_color_number;
@@ -23,6 +26,10 @@ public class Database : MonoBehaviour
         Stages = 0;
         HP = 5;
         skill_gauge = 0;
+
+#if !UNITY_EDITOR  //開発環境以外でデバッグモードを強制解除
+        debug_mode = false;
+#endif 
 
         score_list = new List<int>();
 
@@ -44,7 +51,7 @@ public class Database : MonoBehaviour
         HP += n;
         HP = Mathf.Clamp(HP, 0, 5);
 
-        if (HP == 0)
+        if (HP == 0 && !debug_mode)
         {
             scene_number = 0;
             SceneManager.LoadScene("Score");
