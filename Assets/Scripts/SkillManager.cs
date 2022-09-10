@@ -10,7 +10,7 @@ public class SkillManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        database = GameObject.Find("Database").GetComponent<Database>();
     }
 
     // Update is called once per frame
