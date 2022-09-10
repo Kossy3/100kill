@@ -169,7 +169,7 @@ public class TimingManager : MonoBehaviour
         rhythm = rhythmgenerator.generate_8bar_rhythm();
         score = musicgenerator.generate_8bar_music(rhythm);
 
-        Invoke("music_player", ((60 / (float)database.BPM) * 4 * 2) - 0.2f);
+        Invoke("music_player", ((60 / (float)database.BPM) * 4 * 2) - 0.3f);
         Invoke("stage_up", (60 / (float)database.BPM) * 4 * 2);
         yield return new WaitForSeconds((60 / (float)database.BPM) * 4 - (Time.time - init_time));
 
