@@ -25,9 +25,9 @@ public class MyScore : MonoBehaviour
         ranking = GameObject.Find("Ranking");
         escapebutton = GameObject.Find("EscapeButton");
 
-        ranking.transform.Find("Text(RANKING)").gameObject.SetActive(false);
-        ranking.transform.Find("Table").gameObject.SetActive(false);
-        escapebutton.transform.Find("Text(ESCAPE)").gameObject.SetActive(false);
+        gameObject.SetActive(true);
+        ranking.SetActive(false);
+        escapebutton.SetActive(false);
 
         text = transform.Find("Text(MYSCORE)").gameObject.GetComponent<Text>();
 
@@ -47,10 +47,8 @@ public class MyScore : MonoBehaviour
         catch (System.Exception)
         {
             gameObject.SetActive(false);
-            text.gameObject.SetActive(false);
-            ranking.transform.Find("Text(RANKING)").gameObject.SetActive(true);
-            ranking.transform.Find("Table").gameObject.SetActive(true);
-            escapebutton.transform.Find("Text(ESCAPE)").gameObject.SetActive(true);  
+            ranking.SetActive(true);
+            escapebutton.SetActive(true);  
         }
     }
 
@@ -65,9 +63,7 @@ public class MyScore : MonoBehaviour
     public void on_click()
     {
         gameObject.SetActive(false);
-        gameObject.SetActive(false);
-        ranking.transform.Find("Text(RANKING)").gameObject.SetActive(true);
-        ranking.transform.Find("Table").gameObject.SetActive(true);
-        escapebutton.transform.Find("Text(ESCAPE)").gameObject.SetActive(true); 
+        ranking.SetActive(true);
+        escapebutton.SetActive(true); 
     }
 }
