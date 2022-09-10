@@ -19,7 +19,7 @@ public class SceneNavigator : MonoBehaviour
 
         rayresult = new List<RaycastResult>();
 
-        for (int i = 0; i < 2; i++)
+        for (int i = 0; i < 3; i++)
         {
             button_list.Add(transform.GetChild(i).gameObject);
         }
@@ -43,38 +43,55 @@ public class SceneNavigator : MonoBehaviour
 
         if (select_button == null)
         {
-            if (Input.GetKeyDown(KeyCode.A))
-            {
-                select_button = button_list[0];
-            }
 
-            else if (Input.GetKeyDown(KeyCode.W))
+            if (Input.GetKeyDown(KeyCode.W))
             {
                 select_button = button_list[0];
             }
 
             else if (Input.GetKeyDown(KeyCode.S))
             {
-                select_button = button_list[1];
+                select_button = button_list[0];
             }
 
             else if (Input.GetKeyDown(KeyCode.D))
             {
                 select_button = button_list[1];
             }
+
+            else if (Input.GetKeyDown(KeyCode.A))
+            {
+                select_button = button_list[2];
+            }
+
         }
 
-        else if (select_button == button_list[0] && (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.S)))
+        else if (select_button == button_list[0] && Input.GetKeyDown(KeyCode.D))
         {
             select_button = button_list[1];
+        }        
+
+        else if (select_button == button_list[0] && Input.GetKeyDown(KeyCode.A))
+        {
+            select_button = button_list[2];
         }
 
-        else if (select_button == button_list[1] && (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.W)))
+        else if (select_button == button_list[1] && Input.GetKeyDown(KeyCode.A))
         {
             select_button = button_list[0];
         }
 
-        if(Input.GetKey(KeyCode.Space))
+        else if (select_button == button_list[2] && Input.GetKeyDown(KeyCode.D))
+        {
+            select_button = button_list[0];
+        }
+        
+        if (select_button && Input.GetKeyDown(KeyCode.Space))
+        {
+            select_button.gameObject.GetComponent<Button>().onClick.Invoke();
+        }
+
+        else if(Input.GetKey(KeyCode.Space))
         {
             select_button = button_list[0];
         }
@@ -93,8 +110,18 @@ public class SceneNavigator : MonoBehaviour
         {
             button_list[1].gameObject.GetComponent<Button>().onClick.Invoke();
         }
+
+        if (Input.GetKey(KeyCode.Tab))
+        {
+            select_button = button_list[2];
+        }
+
+        if (Input.GetKeyUp(KeyCode.Tab))
+        {
+            button_list[2].gameObject.GetComponent<Button>().onClick.Invoke();
+        }
         
-        for (int i = 0; i < 2; i++)
+        for (int i = 0; i < 3; i++)
         {
             GameObject all_text = button_list[i].transform.Find("Text").gameObject;
             all_text.GetComponent<Text>().color = new Color(0, 0, 0, 1);
@@ -137,5 +164,10 @@ public class SceneNavigator : MonoBehaviour
         }
 
         SceneManager.LoadScene("Score");
+    }
+
+    public void on_click_Tab()
+    {
+        //SceneManager.LoadScene("");
     }
 }
