@@ -122,7 +122,7 @@ public class MusicPlayer : MonoBehaviour
     }
     public IEnumerator play_music_c(List<List<Note>> score){
         yield return new WaitForSeconds(1f);
-        play_music(score);
+        play_music(score, database.BPM);
     }
 
     public void DeviceInitialize(){
@@ -162,8 +162,8 @@ public class MusicPlayer : MonoBehaviour
         res = Mci("close music");
     }
 
-    public void play_music(List<List<Note>> score){
-        float C = 60f/(float)database.BPM;
+    public void play_music(List<List<Note>> score, float BPM){
+        float C = 60f/(float)BPM;
         for (int j=0; j<score.Count; j++){
             float delta_time = 0;
             List<Note> track = score[j];

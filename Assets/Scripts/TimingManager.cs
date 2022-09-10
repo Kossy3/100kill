@@ -154,23 +154,24 @@ public class TimingManager : MonoBehaviour
     {
         database.charge_skill_gauge(1);
         database.rise_BPM(8);
+        musicplayer.play_music(score, database.BPM);
     }
 
     public void music_player()
     {
-        musicplayer.play_music(score);
+        //musicplayer.play_music(score, (database.BPM + 8));
     }
 
     public IEnumerator enemy_generator()
     {
-        if (rhythm_num == 0)
-        {
-            rhythm = rhythmgenerator.generate_8bar_rhythm();
-            score = musicgenerator.generate_8bar_music(rhythm);
+        int rhythm_num = 0;
+        float init_time = Time.time;
+        rhythm = rhythmgenerator.generate_8bar_rhythm();
+        score = musicgenerator.generate_8bar_music(rhythm);
 
-            Invoke("stage_up", (60 / (float)database.BPM) * 4);
-            Invoke("music_player", ((60 / (float)database.BPM) * 4) - 0.3f);
-        }
+        //Invoke("music_player", ((60 / (float)database.BPM) * 4) - 0.1f);
+        Invoke("stage_up", (60 / (float)database.BPM) * 4 * 2);
+        yield return new WaitForSeconds((60 / (float)database.BPM) * 4 - (Time.time - init_time));
 
         while (rhythm_num < 64)
         {
@@ -199,14 +200,14 @@ public class TimingManager : MonoBehaviour
             rhythm_num ++;
 
             yield return new WaitForSeconds((60 / (float)database.BPM) / 2);
-
+            Debug.Log(new Vector3(rhythm_num, Time.time,0f));
             if ( rhythm_num == 64)
             {
                 rhythm_num = 0;
-
-                StartCoroutine("enemy_generator");
-
                 break;
+            }
+            if (rhythm_num == 56){
+                StartCoroutine("enemy_generator");
             }
         }
     }
