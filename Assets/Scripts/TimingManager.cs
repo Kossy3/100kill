@@ -154,12 +154,12 @@ public class TimingManager : MonoBehaviour
     {
         database.charge_skill_gauge(1);
         database.rise_BPM(8);
-        musicplayer.play_music(score, database.BPM);
+        //musicplayer.play_music(score, database.BPM);
     }
 
     public void music_player()
     {
-        //musicplayer.play_music(score, (database.BPM + 8));
+        musicplayer.play_music(score, (database.BPM + 8));
     }
 
     public IEnumerator enemy_generator()
@@ -169,7 +169,7 @@ public class TimingManager : MonoBehaviour
         rhythm = rhythmgenerator.generate_8bar_rhythm();
         score = musicgenerator.generate_8bar_music(rhythm);
 
-        //Invoke("music_player", ((60 / (float)database.BPM) * 4) - 0.1f);
+        Invoke("music_player", ((60 / (float)database.BPM) * 4 * 2) - 0.2f);
         Invoke("stage_up", (60 / (float)database.BPM) * 4 * 2);
         yield return new WaitForSeconds((60 / (float)database.BPM) * 4 - (Time.time - init_time));
 
