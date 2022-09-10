@@ -36,7 +36,7 @@ public class TimingManager : MonoBehaviour
     private float keyinput_time;
     private List<float> spawn_time;
 
-    private int rhythm_num;
+    //private int rhythm_num;
     private int spawn_num;
     private int background_num;
 
@@ -59,7 +59,7 @@ public class TimingManager : MonoBehaviour
         keyinput_time = 0f;
         spawn_time = new List<float>();
 
-        rhythm_num = 0;
+        //rhythm_num = 0;
         spawn_num = 0;
         background_num = 0;
 

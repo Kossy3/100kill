@@ -5,18 +5,19 @@ using UnityEngine;
 public class MusicGenerator : MonoBehaviour
 {
     Database database;
-#if UNITY_EDITOR
+
     RhythmGenerator rhythmGenerator;
     MusicPlayer musicPlayer;
     //テスト用スクリプト
     List<int> defeated_colors = new List<int>();
-#endif
+
     // Start is called before the first frame update
     void Start()
     {
         database = GameObject.Find("Database").GetComponent<Database>();
         //test_start();
     }
+
 
     void test_start(){
         musicPlayer = GameObject.Find("MusicPlayer").GetComponent<MusicPlayer>();
