@@ -149,6 +149,7 @@ public class TimingManager : MonoBehaviour
     {
         database.charge_skill_gauge(1);
         database.rise_BPM(8);
+        musicplayer.play_music(score);
     }
 
     public void music_player()
@@ -158,14 +159,17 @@ public class TimingManager : MonoBehaviour
 
     public IEnumerator enemy_generator()
     {
+        var init_time = Time.time;
         if (rhythm_num == 0)
         {
             rhythm = rhythmgenerator.generate_8bar_rhythm();
             score = musicgenerator.generate_8bar_music(rhythm);
 
-            Invoke("stage_up", (60 / (float)database.BPM) / 2);
-            Invoke("music_player", ((60 / (float)database.BPM) / 2) - 1);
+            
+            //Invoke("music_player", ((60 / (float)database.BPM) / 2) - 1);
         }
+        yield return new WaitForSeconds((60 / (float)database.BPM) *4 - (Time.time -init_time));
+        Invoke("stage_up", (60 / (float)database.BPM) * 4);
 
         while (rhythm_num < 64)
         {
@@ -195,7 +199,7 @@ public class TimingManager : MonoBehaviour
 
             yield return new WaitForSeconds((60 / (float)database.BPM) / 2);
 
-            if ( rhythm_num == 64)
+            if ( rhythm_num == 56)
             {
                 rhythm_num = 0;
 

@@ -9,6 +9,10 @@ public class MusicGenerator : MonoBehaviour
     private Database database;
     RhythmGenerator rhythmGenerator;
     MusicPlayer musicPlayer;
+    [SerializeField]
+    int base_note = 60;
+    [SerializeField]
+    int[] scale;
     //テスト用スクリプト
     List<int> defeated_colors = new List<int>();
 
@@ -48,7 +52,7 @@ public class MusicGenerator : MonoBehaviour
         var colors = database.defeated_color_number;
         //アクションに合わせた音
         score.Add(generate_track0(rhythm));
-        if (defeated_colors.Count < 1){
+        if (colors.Count < 1){
             //刻みだけ
             
             score.Add(generate_track1(rhythm));
@@ -56,9 +60,10 @@ public class MusicGenerator : MonoBehaviour
             //ドラム
             score.Add(generate_track1_drum(colors[0]));
         }
+        if (colors.Count >= 2){
+            score.Add(generate_track2(colors[1]));
+        }
         
-        //メインリズム変化形
-        defeated_colors.Add(UnityEngine.Random.Range(1,1+3));
         return score;
     }
 
@@ -75,6 +80,8 @@ public class MusicGenerator : MonoBehaviour
         return track;
     }
 
+    // 初期刻み
+
     List<Note> generate_track1(int[] rhythm){
         List<Note> track = new List<Note>();
         for (var i=0; i<rhythm.Length; i++){
@@ -88,6 +95,8 @@ public class MusicGenerator : MonoBehaviour
         }
         return track;
     }
+
+    //ドラムパターン（適当）
     List<Note> generate_track1_drum(int type){
         List<Note> track = new List<Note>();
         float delta = 0;
@@ -133,27 +142,32 @@ public class MusicGenerator : MonoBehaviour
         }
         return track;
     }
-    List<Note> generate_track2(int[] rhythm){
+    List<Note> generate_track2(int type){
         List<Note> track = new List<Note>();
-        track.Add(new Note(0, 117, 0, 0, 0).program_change());
-        int[] rhythm2 = new int[128];
-        for (var i=0; i<rhythm2.Length; i++){
-            if (i%2 == 0){
-                rhythm2[i] = rhythm[i/2]; 
-            } else {
-                rhythm2[i] = UnityEngine.Random.Range(0, 2); 
-            }
-        }
+        track.Add(new Note(0, 39, 0, 0, 0).program_change());
+        int bass_base_note = base_note - 24;
         float delta = 0;
-        for (var i=0; i<rhythm2.Length; i++){
-            if (rhythm2[i] > 0){
-                track.Add(new Note(0, 30, delta, 1f/8f, 80));
-                delta = 0;
+        if(type == 1){
+            for (var i=0; i<2; i++){
+                track.Add(new Note(0, (byte)(bass_base_note + scale[6]), delta, 4f, 100));
+                track.Add(new Note(0, (byte)(bass_base_note + scale[4]), 4f, 4f, 100));
+                track.Add(new Note(0, (byte)(bass_base_note + scale[1]), 4f, 4f, 100));
+                track.Add(new Note(0, (byte)(bass_base_note + scale[5]), 4f, 4f, 100));
+                delta = 4f;
             }
-            delta += 1f/4f;
+        } else {
+            for (var i=0; i<2; i++){
+                track.Add(new Note(0, (byte)(bass_base_note + scale[6]), delta, 4f, 100));
+                track.Add(new Note(0, (byte)(bass_base_note + scale[4]), 4f, 4f, 100));
+                track.Add(new Note(0, (byte)(bass_base_note + scale[1]), 4f, 4f, 100));
+                track.Add(new Note(0, (byte)(bass_base_note + scale[5]), 4f, 4f, 100));
+                delta = 4f;
+            }
         }
         return track;
     }
+
+    
 
 }
 

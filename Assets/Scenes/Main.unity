@@ -1934,7 +1934,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 927cdb60f6b691f40844e8aa831c59df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  debug: 0
+  debug: 1
   BPM: 108
   defeated_enemies: 0
   defeated_color_number: 
@@ -5886,6 +5886,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   database: {fileID: 450839139}
+  base_note: 60
+  scale: e70300000000000002000000040000000500000007000000090000000b000000
 --- !u!4 &1744753915
 Transform:
   m_ObjectHideFlags: 0
