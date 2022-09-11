@@ -7,7 +7,7 @@ public class Enemy : MonoBehaviour
 {
     public int color_number = 0;
     public Database database;
-    Animator anim;
+    public Animator anim;
     // Start is called before the first frame update
     public void Start()
     {
