@@ -41,6 +41,11 @@ public class SceneNavigator : MonoBehaviour
             }
         }
 
+        if (rayresult.Count == 0)
+        {
+            select_button = null;
+        }
+
         if (select_button == null)
         {
             if (Input.GetKeyDown(KeyCode.A))
@@ -205,7 +210,7 @@ public class SceneNavigator : MonoBehaviour
 
     public void on_click_alt()
     {
-        //SceneManager.LoadScene("");
+        SceneManager.LoadScene("Method");
     }
 
     public void on_click_Tab()
