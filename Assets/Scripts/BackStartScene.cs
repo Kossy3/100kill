@@ -9,21 +9,29 @@ public class BackStartScene : MonoBehaviour
 {
     private EventSystem eventsystem;
 
-    private GameObject text;
+    private GameObject text1;
+    private GameObject text2;
 
     private List<RaycastResult> rayresult;
 
     public void Start()
     {
-        text = transform.Find("Text(ESCAPE)").gameObject;
+        text1 = transform.Find("Text1").gameObject;
+        text2 = transform.Find("Text2").gameObject;
 
         rayresult = new List<RaycastResult>();
     }
 
     public void Update()
     {
-        transform.Find("Text(ESCAPE)").gameObject.GetComponent<Text>().color = new Color(0, 0, 0, 1);
-        transform.Find("Text(ESCAPE)").gameObject.GetComponent<Shadow>().effectColor = new Color(1, 1, 1, 1);
+        text1.GetComponent<Text>().color = new Color (0, 0, 0, 1);
+        text1.GetComponent<Shadow>().effectColor = new Color (1, 1, 1, 0.5f);
+
+        text2.GetComponent<Text>().color = new Color (0, 0, 0, 1);
+        text2.GetComponent<Shadow>().effectColor = new Color (1, 1, 1, 0.5f);
+        text2.transform.Find("BorderLine").gameObject.GetComponent<Image>().color = new Color (0, 0, 0, 1);
+        text2.transform.Find("BorderLine").gameObject.GetComponent<Shadow>().effectColor = new Color (1, 1, 1, 0.5f);
+
 
         rayresult.Clear();
 
@@ -35,16 +43,27 @@ public class BackStartScene : MonoBehaviour
         {
             if (raycastresult.gameObject.CompareTag("Button"))
             {
-                GameObject text = raycastresult.gameObject.transform.Find("Text(ESCAPE)").gameObject;
-                text.GetComponent<Text>().color = new Color(1, 1, 1, 0.5f);
-                text.GetComponent<Shadow>().effectColor = new Color(0, 0, 0, 1);
+                GameObject text1 = raycastresult.gameObject.transform.Find("Text1").gameObject;
+                text1.GetComponent<Text>().color = new Color(1, 1, 1, 0.5f);
+                text1.GetComponent<Shadow>().effectColor = new Color(0, 0, 0, 1);
+
+                GameObject text2 = raycastresult.gameObject.transform.Find("Text2").gameObject;
+                text2.GetComponent<Text>().color = new Color(1, 1, 1, 0.5f);
+                text2.GetComponent<Shadow>().effectColor = new Color(0, 0, 0, 1);
+                text2.transform.Find("BorderLine").gameObject.GetComponent<Image>().color = new Color (1, 1, 1, 0.5f);
+                text2.transform.Find("BorderLine").gameObject.GetComponent<Shadow>().effectColor = new Color (0, 0, 0, 1);
             }
         }
 
         if (Input.GetKey(KeyCode.Escape) )
         {
-            text.GetComponent<Text>().color = new Color(1, 1, 1, 0.5f);
-            text.GetComponent<Shadow>().effectColor = new Color(0, 0, 0, 1);
+            text1.GetComponent<Text>().color = new Color(1, 1, 1, 0.5f);
+            text1.GetComponent<Shadow>().effectColor = new Color(0, 0, 0, 1);
+
+            text2.GetComponent<Text>().color = new Color(1, 1, 1, 0.5f);
+            text2.GetComponent<Shadow>().effectColor = new Color(0, 0, 0, 1);
+            text2.transform.Find("BorderLine").gameObject.GetComponent<Image>().color = new Color (1, 1, 1, 0.5f);
+            text2.transform.Find("BorderLine").gameObject.GetComponent<Shadow>().effectColor = new Color (0, 0, 0, 1);
         }
 
         if (Input.GetKeyUp(KeyCode.Escape))
