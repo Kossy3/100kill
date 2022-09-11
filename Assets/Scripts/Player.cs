@@ -5,7 +5,7 @@ using System;
 
 public class Player : MonoBehaviour
 {
-    Animator anim;
+    public Animator anim;
     // Start is called before the first frame update
     public void Start()
     {

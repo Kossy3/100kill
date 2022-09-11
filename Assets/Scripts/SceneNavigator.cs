@@ -138,9 +138,4 @@ public class SceneNavigator : MonoBehaviour
 
         SceneManager.LoadScene("Score");
     }
-
-    public void on_click_method()
-    {
-        SceneManager.LoadScene("Method");
-    }
 }
