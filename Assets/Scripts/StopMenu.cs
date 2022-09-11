@@ -135,6 +135,16 @@ public class StopMenu : MonoBehaviour
             GameObject all_text = button_list[i].transform.Find("Text").gameObject;
             all_text.GetComponent<Text>().color = new Color(0, 0, 0, 1);
             all_text.GetComponent<Shadow>().effectColor = new Color(1, 1, 1, 1);
+
+            if (i == 0)
+            {
+                button_list[i].transform.Find("Text2").gameObject.GetComponent<Text>().color = new Color (0, 0, 0, 1);
+                button_list[i].transform.Find("Text2").gameObject.GetComponent<Shadow>().effectColor = new Color (1, 1, 1, 1);
+                button_list[i].transform.Find("Text2").gameObject.transform.Find("BorderLine").gameObject.GetComponent<Image>().color =
+                new Color (0, 0, 0, 1);
+                button_list[i].transform.Find("Text2").gameObject.transform.Find("BorderLine").gameObject.GetComponent<Shadow>().effectColor =
+                new Color (1, 1, 1, 1);
+            }
         }
 
         if (select_button)
@@ -142,6 +152,16 @@ public class StopMenu : MonoBehaviour
             GameObject text_1 = select_button.transform.Find("Text").gameObject;
             text_1.GetComponent<Text>().color = new Color(1, 1, 1, 1);
             text_1.GetComponent<Shadow>().effectColor = new Color(0, 0, 0, 1);
+
+            if (select_button == button_list[0])
+            {
+                select_button.transform.Find("Text2").gameObject.GetComponent<Text>().color = new Color (1, 1, 1, 1);
+                select_button.transform.Find("Text2").gameObject.GetComponent<Shadow>().effectColor = new Color (0, 0, 0, 1);
+                select_button.transform.Find("Text2").gameObject.transform.Find("BorderLine").gameObject.GetComponent<Image>().color =
+                new Color (1, 1, 1, 1);
+                select_button.transform.Find("Text2").gameObject.transform.Find("BorderLine").gameObject.GetComponent<Shadow>().effectColor =
+                new Color (0, 0, 0, 1);
+            }
         }
     }
 
