@@ -48,7 +48,7 @@ public class TimingManager : MonoBehaviour
         musicplayer = GameObject.Find("MusicPlayer").GetComponent<MusicPlayer>();
         player = GameObject.Find("Player").GetComponent<Player>();
 
-        enemy_type = new Enemy[] {null, upthing, null, stone, enemy1_0};
+        enemy_type = new Enemy[] {null, stone, null, upthing, enemy1_0};
         color_type = new Enemy[] {null, enemy1, enemy1_2, enemy1_3};
 
         //frist_bar_rhythm = new int[] {0, 0, 0, 0, 0, 0};
