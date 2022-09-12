@@ -36,9 +36,14 @@ public class Database : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
-    public void rise_BPM(int n)
+    public int get_rised_BPM()
     {
-        BPM += n;
+        return BPM + 8;
+    }
+
+    public void rise_BPM()
+    {
+        BPM = get_rised_BPM();
     }
 
     public void add_defeat_color_number(int color_num)

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
+
 public class TimingManager : MonoBehaviour
 {
     private Database database;
@@ -135,50 +136,54 @@ public class TimingManager : MonoBehaviour
         }
     }
 
-    public IEnumerator stage_up(List<List<Note>> score)
-    {
-        yield return new WaitForSeconds((60 / (float)database.BPM) * 4 - 0.1f);
-        database.rise_BPM(8);
+    IEnumerator stage_up(int[] rhythm){
+        yield return new WaitForSeconds((60 / (float)database.BPM) * 4);
+        database.rise_BPM();
         wave_start_time.Add(Time.time);
+        List<List<Note>> score = musicgenerator.generate_8bar_music(rhythm);
         musicplayer.play_music(score, database.BPM);
     }
-
     public IEnumerator enemy_generator()
     {
-        Enemy enemy;
         database.charge_skill_gauge(1);
-        int rhythm_num = 0;
         //int [] rhythm = rhythmgenerator.generate_8bar_rhythm();
         int [] rhythm = new int[]{4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4};
-        List<List<Note>> score = musicgenerator.generate_8bar_music(rhythm);
-        StartCoroutine(stage_up(score));
 
+        int rhythm_num = 0;
+        float delta = 0f;
         while (rhythm_num < 64)
         {
             if(rhythm[rhythm_num] > 0){
-                if(rhythm[rhythm_num] == 2){
-                    int rnd = UnityEngine.Random.Range(1, 4);
-                    enemy = Instantiate(color_type[rnd], new Vector3(10, -2, 0), Quaternion.identity);
-                    enemy.color_number = rnd;
-                } else {
-                    enemy = Instantiate(enemy_type[rhythm[rhythm_num]], new Vector3(10, -2, 0), Quaternion.identity);
-                }
-                
-                spawn_enemy.Add(enemy);
+                StartCoroutine(create_enemy(rhythm[rhythm_num], delta));
                 spawn_type.Add(rhythm[rhythm_num]);
                 spawn_index.Add(rhythm_num);
             }
 
-            rhythm_num ++;
-
-            yield return new WaitForSeconds((60 / (float)database.BPM) / 2);
-
-            if ( rhythm_num == 64)
-            {
-                StartCoroutine("enemy_generator");
-                break;
+            if (rhythm_num < 8){
+                delta += (60 / (float)database.BPM / 2);
+            } else {
+                delta += (60 / (float)database.get_rised_BPM() / 2);
             }
+
+            rhythm_num ++;
         }
+
+        StartCoroutine(stage_up(rhythm));
+        yield return new WaitForSeconds(delta);
+        StartCoroutine("enemy_generator");
+    }
+
+    private IEnumerator create_enemy(int rhythm, float delta){
+        yield return new WaitForSeconds(delta);
+        Enemy enemy;
+        if(rhythm == 2){
+            int rnd = UnityEngine.Random.Range(1, 4);
+            enemy = Instantiate(color_type[rnd], new Vector3(10, -2, 0), Quaternion.identity);
+            enemy.color_number = rnd;
+        } else {
+            enemy = Instantiate(enemy_type[rhythm], new Vector3(10, -2, 0), Quaternion.identity);
+        }
+        spawn_enemy.Add(enemy);
     }
 
     private IEnumerator scroll_background()
