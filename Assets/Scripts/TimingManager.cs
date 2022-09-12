@@ -64,7 +64,7 @@ public class TimingManager : MonoBehaviour
             if (Time.time > perfect_time + 0.2f)
             {
                 spawn_enemy[spawn_num].miss();
-                Debug.Log(perfect_time);
+                //Debug.Log(perfect_time);
                 spawn_num++;
             }
         }
@@ -148,8 +148,8 @@ public class TimingManager : MonoBehaviour
     }
     public IEnumerator enemy_generator()
     {
-        //int [] rhythm = rhythmgenerator.generate_8bar_rhythm();
-        int[] rhythm = new int[] { 2, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4 };
+        int [] rhythm = rhythmgenerator.generate_8bar_rhythm();
+        //int[] rhythm = new int[] { 2, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4 };
 
         int rhythm_num = 0;
         float delta = 0f;
