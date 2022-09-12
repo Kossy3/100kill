@@ -138,16 +138,20 @@ public class TimingManager : MonoBehaviour
 
     IEnumerator stage_up(int[] rhythm){
         yield return new WaitForSeconds((60 / (float)database.BPM) * 4);
+        var sw = new System.Diagnostics.Stopwatch();
+        sw.Start();
         database.rise_BPM();
         wave_start_time.Add(Time.time);
         List<List<Note>> score = musicgenerator.generate_8bar_music(rhythm);
         musicplayer.play_music(score, database.BPM);
+        sw.Stop();
+        Debug.Log($"処理時間 {sw.Elapsed}");
     }
     public IEnumerator enemy_generator()
     {
         database.charge_skill_gauge(1);
         //int [] rhythm = rhythmgenerator.generate_8bar_rhythm();
-        int [] rhythm = new int[]{4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4};
+        int [] rhythm = new int[]{2,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4};
 
         int rhythm_num = 0;
         float delta = 0f;
