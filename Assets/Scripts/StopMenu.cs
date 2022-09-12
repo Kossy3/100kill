@@ -181,6 +181,7 @@ public class StopMenu : MonoBehaviour
 
     public void on_click_startover()
     {
+        Debug.Log(9);
         GameObject.Find("Database").GetComponent<Database>().reset();
         //Destroy(GameObject.Find("Database"));
         SceneManager.LoadScene("Main");
