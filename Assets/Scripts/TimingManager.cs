@@ -140,6 +140,7 @@ public class TimingManager : MonoBehaviour
         var sw = new System.Diagnostics.Stopwatch();
         sw.Start();
         database.rise_BPM();
+        database.charge_skill_gauge(1);
         List<List<Note>> score = musicgenerator.generate_8bar_music(rhythm);
         musicplayer.play_music(score, database.BPM);
         sw.Stop();
@@ -147,7 +148,6 @@ public class TimingManager : MonoBehaviour
     }
     public IEnumerator enemy_generator()
     {
-        database.charge_skill_gauge(1);
         //int [] rhythm = rhythmgenerator.generate_8bar_rhythm();
         int[] rhythm = new int[] { 2, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4 };
 
@@ -156,13 +156,13 @@ public class TimingManager : MonoBehaviour
         float time = Time.time;
         while (rhythm_num < 64)
         {
+            delta += get_delta(rhythm_num, 1);
             if (rhythm[rhythm_num] > 0)
             {
                 StartCoroutine(create_enemy(rhythm[rhythm_num], delta));
                 spawn_type.Add(rhythm[rhythm_num]);
                 spawn_time.Add(time + delta + get_delta(rhythm_num, 8));
             }
-            delta += get_delta(rhythm_num, 1);
             rhythm_num++;
         }
 
