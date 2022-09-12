@@ -1,12 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
+
+[Serializable]
+public class ProbabilityPattern
+{
+    public int[] pattern = new int[20];
+}
 
 public class RhythmGenerator : MonoBehaviour
 {
     public int[] Rhythm;
 
     public Database database;
+
+    public ProbabilityPattern[] patterns = new ProbabilityPattern[5];
 
     public void Start()
     {
@@ -15,16 +24,16 @@ public class RhythmGenerator : MonoBehaviour
 
     public int[] generate_8bar_rhythm()
     {
-        int[] Probability_List;
+        int[] probability_pattern = new int[20];
 
-        if (database.Stages <= 2)
+        if (database.Stages > 3)
         {
-            Probability_List = new int[] {0, 0, 4, 4};
+            probability_pattern = patterns[4].pattern;
         }
 
         else
         {
-            Probability_List = new int[] {0, 1, 3, 4};
+            probability_pattern = patterns[database.Stages + 1].pattern;
         }
 
         Rhythm = new int[64];
@@ -33,9 +42,9 @@ public class RhythmGenerator : MonoBehaviour
 
         for (int i = 0; i < 64; i++)
         {
-            int rnd1 = Random.Range(0, 4);
+            int rnd1 = UnityEngine.Random.Range(0, 20);
 
-            Rhythm[i] = Probability_List[rnd1]; 
+            Rhythm[i] = probability_pattern[rnd1]; 
 
             if (Rhythm[i] == 4)
             {
@@ -43,7 +52,7 @@ public class RhythmGenerator : MonoBehaviour
             }
         }
 
-        int rnd2 = Random.Range(0, change_point.Count);
+        int rnd2 = UnityEngine.Random.Range(0, change_point.Count);
         Rhythm[change_point[rnd2]] = 2;
 
         database.Stages ++;
