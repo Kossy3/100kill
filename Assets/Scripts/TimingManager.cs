@@ -60,7 +60,7 @@ public class TimingManager : MonoBehaviour
 
     public void FixedUpdate()
     {
-        if(spawn_enemy.Count > spawn_num && wave_start_time.Count > spawn_num%64)
+        if(spawn_enemy.Count > spawn_num && wave_start_time.Count > (spawn_num/64))
         {
             float perfect_time = get_perfect_time();
             if (Time.time >= perfect_time )
@@ -73,7 +73,7 @@ public class TimingManager : MonoBehaviour
     }
 
     public float get_perfect_time(){
-        return wave_start_time[spawn_num%64] + (60 / ((float)database.BPM) / 2) * spawn_index[spawn_num];
+        return wave_start_time[(int)(spawn_num/64)] + (60 / ((float)database.BPM) / 2) * spawn_index[spawn_num];
     }
 
     public void start_game()
@@ -90,10 +90,9 @@ public class TimingManager : MonoBehaviour
     public void getkey(int KeyID)
     {
         float keyinput_time = Time.time;
-
-        if(spawn_enemy.Count > spawn_num && wave_start_time.Count > spawn_num%64)
+        if(spawn_enemy.Count > spawn_num && wave_start_time.Count > (spawn_num/64))
         {
-            float perfect_time = wave_start_time[spawn_num%64] + (60 / ((float)database.BPM) / 2) * spawn_index[spawn_num];
+            float perfect_time = get_perfect_time();
             if (Math.Abs(perfect_time - keyinput_time) <= 0.1f)
             {
                 if (KeyID == spawn_type[spawn_num])
