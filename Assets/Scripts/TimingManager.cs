@@ -63,7 +63,7 @@ public class TimingManager : MonoBehaviour
         if(spawn_enemy.Count > spawn_num && wave_start_time.Count > (spawn_num/64))
         {
             float perfect_time = get_perfect_time();
-            if (Time.time >= perfect_time )
+            if (Time.time > perfect_time + 0.2f)
             {
                 spawn_enemy[spawn_num].miss();
                 Debug.Log(perfect_time);
@@ -137,7 +137,7 @@ public class TimingManager : MonoBehaviour
 
     public IEnumerator stage_up(List<List<Note>> score)
     {
-        yield return new WaitForSeconds((60 / (float)database.BPM) * 4 -0.1f);
+        yield return new WaitForSeconds((60 / (float)database.BPM) * 4 - 0.1f);
         database.rise_BPM(8);
         wave_start_time.Add(Time.time);
         musicplayer.play_music(score, database.BPM);
