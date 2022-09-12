@@ -1,12 +1,22 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
+
+[Serializable]
+public class EnemyPattern
+{
+    public int[] enemy_pattern = new int[64];
+}
 
 public class RhythmGenerator : MonoBehaviour
 {
     public int[] Rhythm;
 
     public Database database;
+
+    [SerializeField]
+    public EnemyPattern[] patterns = new EnemyPattern[5];
 
     public void Start()
     {
@@ -15,38 +25,32 @@ public class RhythmGenerator : MonoBehaviour
 
     public int[] generate_8bar_rhythm()
     {
-        int[] Probability_List;
+        Rhythm = new int[64];
 
-        if (database.Stages <= 2)
+        if (database.Stages > 3)
         {
-            Probability_List = new int[] {0, 0, 4, 4};
+            Rhythm = patterns[4].enemy_pattern;
         }
 
         else
         {
-            Probability_List = new int[] {0, 1, 3, 4};
+            Rhythm = patterns[database.Stages + 1].enemy_pattern;
         }
 
-        Rhythm = new int[64];
+        int n = 64;
 
-        List<int> change_point = new List<int>();
-
-        for (int i = 0; i < 64; i++)
+        while (n > 1)
         {
-            int rnd1 = Random.Range(0, 4);
+            int m = UnityEngine.Random.Range(0, n);
 
-            Rhythm[i] = Probability_List[rnd1]; 
+            int temp = Rhythm[m];
+            Rhythm[m] = Rhythm[n - 1];
+            Rhythm[n - 1] = temp;
 
-            if (Rhythm[i] == 4)
-            {
-                change_point.Add(i);
-            }
+            n--;
         }
 
-        int rnd2 = Random.Range(0, change_point.Count);
-        Rhythm[change_point[rnd2]] = 2;
-
-        database.Stages ++;
+        database.Stages++;
 
         return Rhythm;
     }
