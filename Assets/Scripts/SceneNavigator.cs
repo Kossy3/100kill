@@ -136,12 +136,12 @@ public class SceneNavigator : MonoBehaviour
             button_list[0].gameObject.GetComponent<Button>().onClick.Invoke();
         }
 
-        if (Input.GetKey(KeyCode.AltGr))
+        if (Input.GetKey(KeyCode.AltGr) || Input.GetKey(KeyCode.LeftAlt))
         {
             select_button = button_list[1];
         }
 
-        if (Input.GetKeyUp(KeyCode.AltGr))
+        if (Input.GetKeyUp(KeyCode.AltGr) || Input.GetKeyUp(KeyCode.LeftAlt))
         {
             button_list[1].gameObject.GetComponent<Button>().onClick.Invoke();
         }
