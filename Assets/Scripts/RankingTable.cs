@@ -2,11 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Linq;
 
 public class RankingTable : MonoBehaviour
 {
     private Database database;
     private ToKansuji tokansuji;
+    private MyScore myscore;
 
     public GameObject flame;
 
@@ -18,140 +20,35 @@ public class RankingTable : MonoBehaviour
     private int my_score;
     private int my_ranking;
 
-    private List<GameObject> flame_list;
-    public List<int> score_ranking;
+    private Dictionary<string, int> ranking_list;
 
-    private bool on_left;
-    private bool on_right;
+    private List<GameObject> flame_list;
+
+    private bool on_bottom;
+    private bool on_top;
+
+    public int mode;
 
     public void Start()
     {
+        tokansuji = GameObject.Find("ToKansuji").GetComponent<ToKansuji>();
+        myscore = GameObject.Find("MyScore").GetComponent<MyScore>();
+
         scrollbar = GameObject.Find("Scrollbar").GetComponent<Scrollbar>();
 
-        flame_list = new List<GameObject>();
-        score_ranking = new List<int>() {0};
-
-        tokansuji = GameObject.Find("ToKansuji").GetComponent<ToKansuji>();
-
+        mode = 0;
+        
         try
         {
             database = GameObject.Find("Database").GetComponent<Database>();
-
-            bool[] scene_number_identifier = new bool[] {true, false};
-
-            if (scene_number_identifier[database.scene_number])
+            if (database.scene_number == 1)
             {
-                database.score_list.Add(database.defeated_enemies);
-                my_score = database.defeated_enemies;
+                generate_ranking();
             }
-
-            //score_ranking.Add(database.defeated_enemies);
-            score_ranking.AddRange(database.score_list);
         }
 
         catch (System.Exception)
         {
-            my_score = -1;
-        }
-
-        score_ranking.Sort((a, b) => b - a);
-
-        if (score_ranking.Count > 14)
-        {
-            GameObject panel = GameObject.Find("Panel");
-            panel.GetComponent<RectTransform>().sizeDelta = new Vector2 (1044 + ((score_ranking.Count - 14) * 80), 620);
-            panel.transform.localPosition = new Vector3 (- ((1044 + ((score_ranking.Count - 14) * 80)) / 2), 0, 0);
-        }
-
-
-        for (int i = 0; i < score_ranking.Count - 1; i++)
-        {
-            GameObject obj = Instantiate(flame, new Vector3 ((40 - 80 * (i + 1) - 2), 8, 0), Quaternion.identity);
-            obj.transform.SetParent(transform.Find("Viewport").gameObject.transform.Find("Panel").gameObject.transform, false);
-            
-            obj.transform.Find("Rank").gameObject.transform.Find("Text(RANK)").gameObject.GetComponent<Text>().text =
-            tokansuji.to_kansuji(i + 1, "-") + "位";
-            obj.transform.Find("Score").gameObject.transform.Find("Text(SCORE)").gameObject.GetComponent<Text>().text =
-            tokansuji.to_kansuji(score_ranking[i], "〇") + "人切り";
-
-            flame_list.Add(obj);
-        }
-        
-        if (score_ranking.Count > 1)
-        {
-            flame_list[0].transform.Find("Rank").gameObject.
-            transform.Find("Text(RANK)").gameObject.GetComponent<Text>().color = 
-            new Color (0.85f, 0.7f, 0, 1);
-            flame_list[0].transform.Find("Rank").gameObject.
-            transform.Find("Text(RANK)").gameObject.GetComponent<Shadow>().effectColor =
-            new Color (0, 0, 0, 1);
-            flame_list[0].transform.Find("Score").gameObject.
-            transform.Find("Text(SCORE)").gameObject.GetComponent<Text>().color =
-            new Color (0.85f, 0.7f, 0, 1);
-            flame_list[0].transform.Find("Score").gameObject.
-            transform.Find("Text(SCORE)").gameObject.GetComponent<Shadow>().effectColor =
-            new Color (0, 0, 0, 1);
-        }
-
-        if (score_ranking.Count > 2)
-        {
-            flame_list[1].transform.Find("Rank").gameObject.
-            transform.Find("Text(RANK)").gameObject.GetComponent<Text>().color = 
-            new Color (0.7f, 0.7f, 0.7f, 1);
-            flame_list[1].transform.Find("Rank").gameObject.
-            transform.Find("Text(RANK)").gameObject.GetComponent<Shadow>().effectColor =
-            new Color (0, 0, 0, 1);
-            flame_list[1].transform.Find("Score").gameObject.
-            transform.Find("Text(SCORE)").gameObject.GetComponent<Text>().color =
-            new Color (0.7f, 0.7f, 0.7f, 1);
-            flame_list[1].transform.Find("Score").gameObject.
-            transform.Find("Text(SCORE)").gameObject.GetComponent<Shadow>().effectColor =
-            new Color (0, 0, 0, 1);
-        }
-
-        if (score_ranking.Count > 3)
-        {
-            flame_list[2].transform.Find("Rank").gameObject.
-            transform.Find("Text(RANK)").gameObject.GetComponent<Text>().color = 
-            new Color (0.75f, 0.5f, 0.35f, 1);
-            flame_list[2].transform.Find("Rank").gameObject.
-            transform.Find("Text(RANK)").gameObject.GetComponent<Shadow>().effectColor =
-            new Color (0, 0, 0, 1);
-            flame_list[2].transform.Find("Score").gameObject.
-            transform.Find("Text(SCORE)").gameObject.GetComponent<Text>().color =
-            new Color (0.75f, 0.5f, 0.35f, 1);
-            flame_list[2].transform.Find("Score").gameObject.
-            transform.Find("Text(SCORE)").gameObject.GetComponent<Shadow>().effectColor =
-            new Color (0, 0, 0, 1);
-        }
-
-        if (my_score > 0)
-        {
-            my_ranking = score_ranking.IndexOf(my_score) + 1;
-
-            flame_list[my_ranking - 1].transform.Find("Rank").gameObject.
-            transform.Find("Text(RANK)").gameObject.GetComponent<Text>().fontStyle = FontStyle.Bold;
-            flame_list[my_ranking -1].transform.Find("Score").gameObject.
-            transform.Find("Text(SCORE)").gameObject.GetComponent<Text>().fontStyle  = FontStyle.Bold;
-            flame_list[my_ranking - 1].transform.Find("Rank").gameObject.GetComponent<Image>().color =
-            new Color (0.95f, 0.95f, 0.95f, 1);
-            flame_list[my_ranking - 1].transform.Find("Score").gameObject.GetComponent<Image>().color =
-            new Color (0.95f, 0.95f, 0.95f, 1);
-
-            if (flame_list.Count > 13)
-            {
-                if (my_ranking > 6 && my_ranking < flame_list.Count - 6)
-                {
-                    transform.Find("Viewport").gameObject.transform.Find("Panel").gameObject.transform.localPosition =
-                    new Vector3 (-flame_list[my_ranking - 1].transform.localPosition.x, 0, 0);
-                }
-
-                else if (my_ranking >= flame_list.Count - 6)
-                {
-                    transform.Find("Viewport").gameObject.transform.Find("Panel").gameObject.transform.localPosition =
-                    new Vector3 (-flame_list[flame_list.Count - 7].transform.localPosition.x, 0, 0);
-                }
-            }
         }
     }
 
@@ -159,52 +56,233 @@ public class RankingTable : MonoBehaviour
     {
         if (scrollbar.value <= 0 || scrollbar.size == 1)
         {
-            GameObject.Find("Button(LEFT)").GetComponent<Image>().color = new Color (0, 0, 0, 0.5f);
+            GameObject.Find("Button(BOTTOM)").GetComponent<Image>().color = new Color (0, 0, 0, 0.5f);
         }
 
         else
         {
-            GameObject.Find("Button(LEFT)").GetComponent<Image>().color = new Color (0, 0, 0, 1);
+            GameObject.Find("Button(BOTTOM)").GetComponent<Image>().color = new Color (0, 0, 0, 1);
         }
 
         if (scrollbar.value >= 1 || scrollbar.size == 1)
         {
-            GameObject.Find("Button(RIGHT)").GetComponent<Image>().color = new Color (0, 0, 0, 0.5f);
+            GameObject.Find("Button(TOP)").GetComponent<Image>().color = new Color (0, 0, 0, 0.5f);
         }
 
         else
         {
-            GameObject.Find("Button(RIGHT)").GetComponent<Image>().color = new Color (0, 0, 0, 1);
+            GameObject.Find("Button(TOP)").GetComponent<Image>().color = new Color (0, 0, 0, 1);
         }
 
-        if ((on_left || Input.GetKey(KeyCode.A)) && scrollbar.value > 0)
+        if ((on_bottom || Input.GetKey(KeyCode.S)) && scrollbar.value > 0)
         {
             scrollbar.value -= 0.01f;
         }
 
-        if ((on_right || Input.GetKey(KeyCode.D)) && scrollbar.value < 1)
+        if ((on_top || Input.GetKey(KeyCode.W)) && scrollbar.value < 1)
         {
             scrollbar.value += 0.01f;
         }
     }
 
-    public void down_click_left()
+    public void generate_ranking()
     {
-        on_left = true;
+        ranking_list = new Dictionary<string, int>();
+
+        flame_list = new List<GameObject>();
+
+        foreach (KeyValuePair<string, List<int>> item in database.score_list)
+        {
+            ranking_list.Add(item.Key, item.Value[mode]);
+        }
+
+        ranking_list = ranking_list.OrderByDescending(v => v.Value).ToDictionary(key => key.Key, val => val.Value);
+
+        if (ranking_list.Count > 8)
+        {
+            GameObject panel = GameObject.Find("Panel");
+            panel.GetComponent<RectTransform>().sizeDelta = new Vector2 (1040, 644 + (ranking_list.Count - 8) * 80);
+            panel.transform.localPosition = new Vector3 (0, -((644 + ((ranking_list.Count - 8) * 80)) / 2), 0);
+        }
+
+        int index = 0;
+
+        foreach (KeyValuePair<string, int> item in ranking_list)
+        {
+            GameObject obj = Instantiate(flame, new Vector3 (-8, 40 - 80 * (index + 1) - 2, 0), Quaternion.identity);
+
+            obj.transform.SetParent(transform.Find("Viewport").gameObject.transform.Find("Panel").gameObject.transform, false);
+            obj.transform.Find("Rank").gameObject.transform.Find("Text(RANK)").gameObject.GetComponent<Text>().text =
+            tokansuji.to_kansuji(index + 1, "-") + "位";
+            obj.transform.Find("PlayerName").gameObject.transform.Find("Text(PLAYERNAME)").gameObject.GetComponent<Text>().text =
+            item.Key;
+
+            if (item.Key == myscore.player_name)
+            {
+                my_ranking = index;
+            }
+
+            if (mode == 0)
+            {
+                obj.transform.Find("Score").gameObject.transform.Find("Text(SCORE)").gameObject.GetComponent<Text>().text =
+                tokansuji.to_kansuji(item.Value, "〇") + "人切り";
+            }
+
+            else
+            {
+                int seconds = item.Value;
+                int minutes = 0;
+
+                while (true)
+                {
+                    if (seconds >= 60)
+                    {
+                        minutes ++;
+                        seconds -= 60;
+                    }
+
+                    else
+                    {
+                        break;
+                    }
+                }
+
+                string time_str;
+
+                if (minutes == 0)
+                {
+                    time_str = tokansuji.to_kansuji(seconds, "-") + "秒";
+                }
+
+                else
+                {
+                    time_str = tokansuji.to_kansuji(minutes, "-") + "分" + tokansuji.to_kansuji(seconds, "-") + "秒";
+                }
+
+                obj.transform.Find("Score").gameObject.transform.Find("Text(SCORE)").gameObject.GetComponent<Text>().text = time_str;
+            }
+
+            flame_list.Add(obj);
+
+            index ++;
+        }
+        
+        if (ranking_list.Count > 0)
+        {
+            flame_list[0].transform.Find("Rank").gameObject.
+            transform.Find("Text(RANK)").gameObject.GetComponent<Text>().color = 
+            new Color (0.85f, 0.7f, 0, 1);
+            flame_list[0].transform.Find("Rank").gameObject.
+            transform.Find("Text(RANK)").gameObject.GetComponent<Shadow>().effectColor =
+            new Color (0, 0, 0, 1);
+            flame_list[0].transform.Find("PlayerName").gameObject.
+            transform.Find("Text(PLAYERNAME)").gameObject.GetComponent<Text>().color = 
+            new Color (0.85f, 0.7f, 0, 1);
+            flame_list[0].transform.Find("PlayerName").gameObject.
+            transform.Find("Text(PLAYERNAME)").gameObject.GetComponent<Shadow>().effectColor =
+            new Color (0, 0, 0, 1);
+            flame_list[0].transform.Find("Score").gameObject.
+            transform.Find("Text(SCORE)").gameObject.GetComponent<Text>().color =
+            new Color (0.85f, 0.7f, 0, 1);
+            flame_list[0].transform.Find("Score").gameObject.
+            transform.Find("Text(SCORE)").gameObject.GetComponent<Shadow>().effectColor =
+            new Color (0, 0, 0, 1);
+        }
+
+        if (ranking_list.Count > 1)
+        {
+            flame_list[1].transform.Find("Rank").gameObject.
+            transform.Find("Text(RANK)").gameObject.GetComponent<Text>().color = 
+            new Color (0.7f, 0.7f, 0.7f, 1);
+            flame_list[1].transform.Find("Rank").gameObject.
+            transform.Find("Text(RANK)").gameObject.GetComponent<Shadow>().effectColor =
+            new Color (0, 0, 0, 1);            
+            flame_list[1].transform.Find("PlayerName").gameObject.
+            transform.Find("Text(PLAYERNAME)").gameObject.GetComponent<Text>().color = 
+            new Color (0.7f, 0.7f, 0.7f, 1);
+            flame_list[1].transform.Find("PlayerName").gameObject.
+            transform.Find("Text(PLAYERNAME)").gameObject.GetComponent<Shadow>().effectColor =
+            new Color (0, 0, 0, 1);
+            flame_list[1].transform.Find("Score").gameObject.
+            transform.Find("Text(SCORE)").gameObject.GetComponent<Text>().color =
+            new Color (0.7f, 0.7f, 0.7f, 1);
+            flame_list[1].transform.Find("Score").gameObject.
+            transform.Find("Text(SCORE)").gameObject.GetComponent<Shadow>().effectColor =
+            new Color (0, 0, 0, 1);
+        }
+
+        if (ranking_list.Count > 2)
+        {
+            flame_list[2].transform.Find("Rank").gameObject.
+            transform.Find("Text(RANK)").gameObject.GetComponent<Text>().color = 
+            new Color (0.75f, 0.5f, 0.35f, 1);
+            flame_list[2].transform.Find("Rank").gameObject.
+            transform.Find("Text(RANK)").gameObject.GetComponent<Shadow>().effectColor =
+            new Color (0, 0, 0, 1);
+            flame_list[2].transform.Find("PlayerName").gameObject.
+            transform.Find("Text(PLAYERNAME)").gameObject.GetComponent<Text>().color = 
+            new Color (0.75f, 0.5f, 0.35f, 1);
+            flame_list[2].transform.Find("PlayerName").gameObject.
+            transform.Find("Text(PLAYERNAME)").gameObject.GetComponent<Shadow>().effectColor =
+            new Color (0, 0, 0, 1);
+            flame_list[2].transform.Find("Score").gameObject.
+            transform.Find("Text(SCORE)").gameObject.GetComponent<Text>().color =
+            new Color (0.75f, 0.5f, 0.35f, 1);
+            flame_list[2].transform.Find("Score").gameObject.
+            transform.Find("Text(SCORE)").gameObject.GetComponent<Shadow>().effectColor =
+            new Color (0, 0, 0, 1);
+        }
+
+        if (database.scene_number == 0)
+        {
+            flame_list[my_ranking].transform.Find("Rank").gameObject.
+            transform.Find("Text(RANK)").gameObject.GetComponent<Text>().fontStyle = FontStyle.Bold;
+            flame_list[my_ranking].transform.Find("PlayerName").gameObject.
+            transform.Find("Text(PLAYERNAME)").gameObject.GetComponent<Text>().fontStyle  = FontStyle.Bold;
+            flame_list[my_ranking].transform.Find("Score").gameObject.
+            transform.Find("Text(SCORE)").gameObject.GetComponent<Text>().fontStyle  = FontStyle.Bold;
+
+            flame_list[my_ranking].transform.Find("Rank").gameObject.GetComponent<Image>().color =
+            new Color (0.95f, 0.95f, 0.95f, 0.08f);
+            flame_list[my_ranking].transform.Find("PlayerName").gameObject.GetComponent<Image>().color =
+            new Color (0.95f, 0.95f, 0.95f, 0.08f);
+            flame_list[my_ranking].transform.Find("Score").gameObject.GetComponent<Image>().color =
+            new Color (0.95f, 0.95f, 0.95f, 0.08f);
+
+            if (flame_list.Count > 8)
+            {
+                if (my_ranking > 4 && my_ranking < flame_list.Count - 4)
+                {
+                    transform.Find("Viewport").gameObject.transform.Find("Panel").gameObject.transform.localPosition =
+                    new Vector3 (0, -flame_list[my_ranking].transform.localPosition.y, 0);
+                }
+
+                else if (my_ranking >= flame_list.Count - 4)
+                {
+                    transform.Find("Viewport").gameObject.transform.Find("Panel").gameObject.transform.localPosition =
+                    new Vector3 (0, -flame_list[flame_list.Count - 4].transform.localPosition.y, 0);
+                }
+            }
+        }
     }
 
-    public void up_click_left()
+    public void down_click_bottom()
     {
-        on_left = false;
+        on_bottom = true;
     }
 
-    public void down_click_right()
+    public void up_click_bottom()
     {
-        on_right = true;
+        on_bottom = false;
     }
 
-    public void up_click_right()
+    public void down_click_top()
     {
-        on_right = false;
+        on_top = true;
+    }
+
+    public void up_click_top()
+    {
+        on_top = false;
     }
 }

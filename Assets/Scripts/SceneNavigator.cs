@@ -170,25 +170,25 @@ public class SceneNavigator : MonoBehaviour
         {
             GameObject all_text_1 = button_list[i].transform.Find("Text1").gameObject;
             all_text_1.GetComponent<Text>().color = new Color(0, 0, 0, 1);
-            all_text_1.GetComponent<Shadow>().effectColor = new Color(1, 1, 1, 0.5f);
+            all_text_1.GetComponent<Shadow>().effectColor = new Color(1, 1, 1, 1);
 
             GameObject all_text_2 = button_list[i].transform.Find("Text2").gameObject;
             all_text_2.GetComponent<Text>().color = new Color(0, 0, 0, 1);
-            all_text_2.GetComponent<Shadow>().effectColor = new Color(1, 1, 1, 0.5f);
+            all_text_2.GetComponent<Shadow>().effectColor = new Color(1, 1, 1, 1);
             all_text_2.transform.Find("BorderLine").gameObject.GetComponent<Image>().color = new Color(0, 0, 0, 1);
-            all_text_2.transform.Find("BorderLine").gameObject.GetComponent<Shadow>().effectColor = new Color(1, 1, 1, 0.5f);
+            all_text_2.transform.Find("BorderLine").gameObject.GetComponent<Shadow>().effectColor = new Color(1, 1, 1, 1);
         }
 
         if (select_button)
         {
             GameObject text_1 = select_button.transform.Find("Text1").gameObject;
-            text_1.GetComponent<Text>().color = new Color(1, 1, 1, 0.5f);
+            text_1.GetComponent<Text>().color = new Color(1, 1, 1, 1);
             text_1.GetComponent<Shadow>().effectColor = new Color(0, 0, 0, 1);
 
             GameObject text_2 = select_button.transform.Find("Text2").gameObject;
-            text_2.GetComponent<Text>().color = new Color(1, 1, 1, 0.5f);
+            text_2.GetComponent<Text>().color = new Color(1, 1, 1, 1);
             text_2.GetComponent<Shadow>().effectColor = new Color(0, 0, 0, 1);
-            text_2.transform.Find("BorderLine").gameObject.GetComponent<Image>().color = new Color(1, 1, 1, 0.5f);
+            text_2.transform.Find("BorderLine").gameObject.GetComponent<Image>().color = new Color(1, 1, 1, 1);
             text_2.transform.Find("BorderLine").gameObject.GetComponent<Shadow>().effectColor = new Color(0, 0, 0, 1);
         }
     }
