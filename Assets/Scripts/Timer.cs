@@ -12,6 +12,8 @@ public class Timer : MonoBehaviour
     private int minutes;
     private float seconds;
 
+    private string time_str;
+
     public void Start()
     {
         tokansuji = GameObject.Find("ToKansuji").GetComponent<ToKansuji>();
@@ -31,8 +33,6 @@ public class Timer : MonoBehaviour
             minutes ++;
             seconds -= 60f;
         }
-
-        string time_str;
 
         if (minutes == 0)
         {

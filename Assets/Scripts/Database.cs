@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System;
 
 public class Database : MonoBehaviour
 {
@@ -14,8 +15,9 @@ public class Database : MonoBehaviour
     public int Stages;
     public int HP;
     public float skill_gauge;
+    public float playing_time;
 
-    public List<int> score_list;
+    public Dictionary<string, List<int>> score_list;
     public int scene_number;
 
     public void Start()
@@ -26,14 +28,20 @@ public class Database : MonoBehaviour
         Stages = 0;
         HP = 5;
         skill_gauge = 0;
+        playing_time = 0;
 
 #if !UNITY_EDITOR  //開発環境以外でデバッグモードを強制解除
         debug_mode = false;
 #endif 
 
-        score_list = new List<int>();
+        score_list = new Dictionary<string, List<int>>();
 
         DontDestroyOnLoad(gameObject);
+    }
+
+    public void FixedUpdate()
+    {
+        playing_time += Time.deltaTime;
     }
 
     public int get_rised_BPM()
@@ -77,5 +85,6 @@ public class Database : MonoBehaviour
         Stages = 0;
         HP = 5;
         skill_gauge = 0;
+        playing_time = 0;
     }
 }
