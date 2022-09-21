@@ -8,9 +8,11 @@ public class Enemy : MonoBehaviour
     public int color_number = 0;
     public Database database;
     public Animator anim;
+    public AudioSource[] missaudio;
     // Start is called before the first frame update
     public void Start()
     {
+        missaudio = GameObject.Find("AudioManager").GetComponents<AudioSource>();
         anim = GetComponent<Animator>();
         database = GameObject.Find("Database").GetComponent<Database>();
     }
@@ -44,6 +46,13 @@ public class Enemy : MonoBehaviour
     public void miss()
     {
         database.charge_HP(-1);
+        if(Input.anyKey && !Input.GetMouseButton(0) && !Input.GetMouseButton(1) && !Input.GetMouseButton(2))
+        {
+            missaudio[1].Play();
+        }
+        else
+        {
+            missaudio[2].Play();
+        }
     }
-
 }
