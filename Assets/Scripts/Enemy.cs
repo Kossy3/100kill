@@ -7,11 +7,14 @@ public class Enemy : MonoBehaviour
 {
     public int color_number = 0;
     public Database database;
-    public Animator anim;
-    public AudioSource[] missaudio;
+    private EffectManager effectmanager;
+    private Animator anim;
+    private AudioSource[] missaudio;
+
     // Start is called before the first frame update
     public void Start()
     {
+        effectmanager = GameObject.Find("EffectManager").GetComponent<EffectManager>();
         missaudio = GameObject.Find("AudioManager").GetComponents<AudioSource>();
         anim = GetComponent<Animator>();
         database = GameObject.Find("Database").GetComponent<Database>();
@@ -27,6 +30,7 @@ public class Enemy : MonoBehaviour
     }
     public void good()
     {
+        StartCoroutine(effectmanager.goodtext());
         if (gameObject.tag == "Enemy")
         {
             database.defeated_enemies += 1;
@@ -45,6 +49,7 @@ public class Enemy : MonoBehaviour
 
     public void miss()
     {
+        StartCoroutine(effectmanager.misstext());
         database.charge_HP(-1);
         if(Input.anyKey && !Input.GetMouseButton(0) && !Input.GetMouseButton(1) && !Input.GetMouseButton(2))
         {
