@@ -100,7 +100,7 @@ public class MusicPlayer : MonoBehaviour
         return score;
     }
 
-    void play_note(int mode, byte ch, byte no, float delta, float ms,byte velocity){
+    public void play_note(int mode, byte ch, byte no, float delta, float ms,byte velocity){
         if (mode == 0x9){
             StartCoroutine( play_note_c(ch, no, delta, ms, velocity));
         } else if (mode == 0xC){
