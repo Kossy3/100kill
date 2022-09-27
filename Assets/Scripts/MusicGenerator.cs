@@ -36,14 +36,15 @@ public class MusicGenerator : MonoBehaviour
         score.Add(generate_track0(rhythm));
         if (defeated_colors.Count < 1){
             //刻みだけ
+            //score.Add(generate_taiko(0));
             //score.Add(generate_track1(rhythm));
         } else {
             //ドラム
             //score.Add(generate_track1_drum(colors[0]));
         }
         //score.Add(generate_track1(rhythm));
-        //score.Add(generate_test(9));
-        score.Add(generate_taiko(0));
+        score.Add(generate_melody(rhythm));
+        
         
         //メインリズム変化形
         defeated_colors.Add(UnityEngine.Random.Range(1,1+3));
@@ -72,10 +73,11 @@ public class MusicGenerator : MonoBehaviour
                 track.Add(new Note(9, 38, 1f/2f, 1f/4f, 127));
             }else{
                 track.Add(new Note(9, 36, 1f/2f, 1f/4f, 100));
-            }       
+            }
         }
         return track;
     }
+
     List<Note> generate_track1_drum(int type){ //刻みの変化形
         List<Note> track = new List<Note>();
         float delta = 0;
@@ -114,17 +116,50 @@ public class MusicGenerator : MonoBehaviour
         return track;
     }
 
-    List<Note> generate_test(int type){ //てすと
+    List<Note> generate_test(int type){ //てすと しっくりこないリズムができる
         List<Note> track = new List<Note>();
+        float delta = 0;
         for (var i=0; i<4; i++){
-            float delta = 4f * i;
             float[] rhythm = create_1bar_rhythm_pattern(0);
+            Debug.Log(string.Join(",", rhythm));
+            track.Add(new Note(0, 1, 4f - delta, 1f/4f , 1));
+            delta = 0;
             for(int ii=0; ii < rhythm.Length; ii++){
-                track.Add(new Note(0, 72, rhythm[ii], 1f/4f , 127));
+                delta += rhythm[ii];
+                track.Add(new Note(0, 72, rhythm[ii], 1f/8f , 127));
                 ii++;
             }
         }
         return track;
+    }
+
+    List<Note> generate_melody(int[] rhythm){
+        List<Note> track = new List<Note>();
+        int[] scale = new int[]{0, 2, 4, 5, 7, 9, 11};
+        int scale_index = 0;
+        int base_note = 60;
+        float delta = 0;
+        for (var i=0; i<rhythm.Length; i++){
+            if (rhythm[i] > 0){
+                update_scale_index(ref scale_index);
+                int scale_index_fix = scale_index%scale.Length;
+                if (scale_index%scale.Length < 0){
+                    scale_index_fix = scale.Length + scale_index%scale.Length;
+                }
+                Debug.Log(scale_index_fix);
+                byte note = (byte)(base_note + (scale_index - scale_index % scale.Length) / scale.Length * 12 + scale[scale_index_fix]);
+                track.Add(new Note(0, note, delta, 1f/7f , 127));
+                delta = 0;
+            }
+            delta += 1f/2f;
+        }
+        return track;
+    }
+
+    void update_scale_index(ref int scale_index){
+        int vec = new int[]{1, -1}[GetRandomIndex(new int[]{1,1})];
+        int val = new int[]{0, 1, 2, 3, 4, 5, 6, 7}[GetRandomIndex(new int[]{64, 64, 32, 16, 8, 4, 2, 1})];
+        scale_index += vec * val;
     }
 
     int GetRandomIndex(params int[] weightTable){
@@ -163,7 +198,7 @@ public class MusicGenerator : MonoBehaviour
                 }
             }
         }
-        Array.Resize(ref pattern, index+1);
+        Array.Resize(ref pattern, index);
         return pattern;
     }
 }
