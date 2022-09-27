@@ -41,8 +41,9 @@ public class MusicGenerator : MonoBehaviour
             //ドラム
             //score.Add(generate_track1_drum(colors[0]));
         }
-        score.Add(generate_track1(rhythm));
-        score.Add(generate_test(9));
+        //score.Add(generate_track1(rhythm));
+        //score.Add(generate_test(9));
+        score.Add(generate_taiko(0));
         
         //メインリズム変化形
         defeated_colors.Add(UnityEngine.Random.Range(1,1+3));
@@ -89,6 +90,25 @@ public class MusicGenerator : MonoBehaviour
                 track.Add(new Note(9, 36, 1f/4f, 1f/8f, 100));
                 track.Add(new Note(9, 38, 1f/2f, 1f/8f, 127));
                 delta = 1f;
+            }
+        } 
+        return track;
+    }
+
+    List<Note> generate_taiko(int type){ //刻みの変化形
+        List<Note> track = new List<Note>();
+        float delta = 0;
+        track.Add(new Note(0, 117, 0, 0, 0).program_change());
+        if(type == type+0){
+            for (var i=0; i<8; i++){
+                track.Add(new Note(0, 48, delta, 1f/8f, 100));
+                track.Add(new Note(0, 48, 1f/2f, 1f/8f, 100));
+                track.Add(new Note(0, 52, 1f/2f, 1f/8f, 127));
+                track.Add(new Note(0, 48, 1f/4f, 1f/8f, 100));
+                track.Add(new Note(0, 48, 3f/4f, 1f/8f, 127));
+                track.Add(new Note(0, 52, 1f/1f, 1f/8f, 127));
+                track.Add(new Note(0, 48, 1f/2f, 1f/8f, 127));
+                delta = 1f/2f;
             }
         } 
         return track;
