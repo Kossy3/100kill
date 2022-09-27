@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using System;
 
 public class MusicGenerator : MonoBehaviour
 {
@@ -40,6 +41,7 @@ public class MusicGenerator : MonoBehaviour
             //ドラム
             //score.Add(generate_track1_drum(colors[0]));
         }
+        score.Add(generate_track1(rhythm));
         score.Add(generate_test(9));
         
         //メインリズム変化形
@@ -95,19 +97,19 @@ public class MusicGenerator : MonoBehaviour
     List<Note> generate_test(int type){ //てすと
         List<Note> track = new List<Note>();
         for (var i=0; i<4; i++){
+            float delta = 4f * i;
             float[] rhythm = create_1bar_rhythm_pattern(0);
-            int ii = 0;
-            while(rhythm[ii] > 0){
-                track.Add(new Note(0, 72, rhythm[ii], 1f/2f , 127));
+            for(int ii=0; ii < rhythm.Length; ii++){
+                track.Add(new Note(0, 72, rhythm[ii], 1f/4f , 127));
                 ii++;
-            }  
+            }
         }
         return track;
     }
 
     int GetRandomIndex(params int[] weightTable){
         var totalWeight = weightTable.Sum();
-        var value = Random.Range(1, totalWeight + 1);
+        var value = UnityEngine.Random.Range(1, totalWeight + 1);
         var retIndex = 0;
         for (var i = 0; i < weightTable.Length; i++)
         {
@@ -126,17 +128,22 @@ public class MusicGenerator : MonoBehaviour
         int index = 0;
         float delta = 0;
         int beat = notes;
+        Debug.Log($"------------------------------------");
         for (int i=0; i< bar_divide; i++){
+            Debug.Log($"---------");
             int beat_divide = new int[] {2, 3, 4} [GetRandomIndex(new int[]{4, 1, 16})];
             for (int ii=0; ii<beat_divide; ii++){
                 if (UnityEngine.Random.Range(0,2) > 0){
                     pattern[index] = delta;
+                    index ++;
                     Debug.Log($"区切り{bar_divide} 刻み{beat_divide} delta={delta}");
+                    delta = 4f/(float)bar_divide/(float)beat_divide;;
                 } else {
                     delta += 4f/(float)bar_divide/(float)beat_divide;
                 }
             }
         }
+        Array.Resize(ref pattern, index+1);
         return pattern;
     }
 }
