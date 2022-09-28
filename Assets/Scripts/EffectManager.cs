@@ -9,6 +9,7 @@ public class EffectManager : MonoBehaviour
     private int _defeated_enemies;
     public Database database;
     public Text good_misstext;
+    public Animator catchanim;
     // Start is called before the first frame update
     void Start()
     {
@@ -34,6 +35,7 @@ public class EffectManager : MonoBehaviour
     public IEnumerator goodtext()
     {
         good_misstext.text = "巧";
+        good_misstext.color = new Color(192f / 255f, 115f / 255f, 57f / 255f, 255f / 255f);
         yield return new WaitForSeconds(0.2f);
         good_misstext.text = null;
     }
@@ -41,6 +43,7 @@ public class EffectManager : MonoBehaviour
     public IEnumerator misstext()
     {
         good_misstext.text = "拙";
+        good_misstext.color = new Color(57f / 255f, 74f / 255f, 192f / 255f, 255f / 255f);
         yield return new WaitForSeconds(0.2f);
         good_misstext.text = null;
     }

@@ -37,6 +37,7 @@ public class Enemy : MonoBehaviour
             anim.SetTrigger("enemy_yarare");
             if (color_number != 0)
             {
+                effectmanager.catchanim.SetTrigger("catchanim");
                 database.add_defeat_color_number(color_number);
                 database.charge_HP(1);
             }
