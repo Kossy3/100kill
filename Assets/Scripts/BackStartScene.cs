@@ -7,6 +7,9 @@ using UnityEngine.EventSystems;
 
 public class BackStartScene : MonoBehaviour
 {
+    private Database database;
+    private MyScore myscore;
+
     private GameObject text1;
     private GameObject text2;
 
@@ -14,6 +17,16 @@ public class BackStartScene : MonoBehaviour
 
     public void Start()
     {
+        if (GameObject.Find("Database"))
+        {
+            database = GameObject.Find("Database").GetComponent<Database>();
+        }
+        
+        if (GameObject.Find("MyScore"))
+        {
+            myscore = GameObject.Find("MyScore").GetComponent<MyScore>();
+        }
+
         text1 = transform.Find("Text1").gameObject;
         text2 = transform.Find("Text2").gameObject;
 
@@ -29,7 +42,6 @@ public class BackStartScene : MonoBehaviour
         text2.GetComponent<Shadow>().effectColor = new Color (1, 1, 1, 1);
         text2.transform.Find("BorderLine").gameObject.GetComponent<Image>().color = new Color (0, 0, 0, 1);
         text2.transform.Find("BorderLine").gameObject.GetComponent<Shadow>().effectColor = new Color (1, 1, 1, 1);
-
 
         rayresult.Clear();
 
@@ -72,6 +84,11 @@ public class BackStartScene : MonoBehaviour
 
     public void on_click()
     {
+        if (GameObject.Find("Database") && GameObject.Find("MyScore") && myscore.mode == 1)
+        {
+            database.score_list.RemoveAt(database.score_list.Count - 1);
+        }
+
         SceneManager.LoadScene("Start");
     }
 }
