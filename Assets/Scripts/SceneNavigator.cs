@@ -41,11 +41,6 @@ public class SceneNavigator : MonoBehaviour
             }
         }
 
-        if (rayresult.Count == 0)
-        {
-            select_button = null;
-        }
-
         if (select_button == null)
         {
             if (Input.GetKeyDown(KeyCode.A))

@@ -17,7 +17,8 @@ public class Database : MonoBehaviour
     public float skill_gauge;
     public float playing_time;
 
-    public Dictionary<string, List<int>> score_list;
+    public List<Dictionary<string, List<int>>> score_list;
+
     public int scene_number;
 
     public void Start()
@@ -34,7 +35,7 @@ public class Database : MonoBehaviour
         debug_mode = false;
 #endif 
 
-        score_list = new Dictionary<string, List<int>>();
+        score_list = new List<Dictionary<string, List<int>>>();
 
         DontDestroyOnLoad(gameObject);
     }
