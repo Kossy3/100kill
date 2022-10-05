@@ -136,18 +136,14 @@ public class MusicGenerator : MonoBehaviour
     List<Note> generate_melody(int[] rhythm){
         List<Note> track = new List<Note>();
         int[] scale = new int[]{0, 2, 4, 5, 7, 9, 11};
-        int scale_index = 0;
-        int base_note = 60;
+        int scale_index =  5 * scale.Length;
         float delta = 0;
         for (var i=0; i<rhythm.Length; i++){
             if (rhythm[i] > 0){
                 update_scale_index(ref scale_index);
                 int scale_index_fix = scale_index%scale.Length;
-                if (scale_index%scale.Length < 0){
-                    scale_index_fix = scale.Length + scale_index%scale.Length;
-                }
-                Debug.Log(scale_index_fix);
-                byte note = (byte)(base_note + (scale_index - scale_index % scale.Length) / scale.Length * 12 + scale[scale_index_fix]);
+                byte note = (byte)((scale_index - scale_index % scale.Length) / scale.Length * 12 + scale[scale_index_fix]);
+                Debug.Log($"スケール{scale_index} 音程{note}");
                 track.Add(new Note(0, note, delta, 1f/7f , 127));
                 delta = 0;
             }
@@ -180,6 +176,7 @@ public class MusicGenerator : MonoBehaviour
     float[] create_1bar_rhythm_pattern(int notes){
         int bar_divide = new int[] {1, 2, 4} [GetRandomIndex(new int[]{1, 2, 4})];
         float[] pattern = new float[16];
+        float[] value = new float[16];
         int index = 0;
         float delta = 0;
         int beat = notes;
