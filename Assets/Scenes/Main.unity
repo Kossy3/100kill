@@ -6384,6 +6384,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d9840220010a36e4096036ca50a123cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  code_scale: 0000000002000000040000000500000007000000090000000b000000
+  melody_scale: 0000000002000000040000000700000009000000
+  melody_root: 60
+  melody_max: 4
+  melody_min: 0
 --- !u!4 &1744753915
 Transform:
   m_ObjectHideFlags: 0
