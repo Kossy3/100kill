@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class EffectManager : MonoBehaviour
 {
@@ -9,11 +10,17 @@ public class EffectManager : MonoBehaviour
     private int _defeated_enemies;
     public Database database;
     public Text good_misstext;
-    public Animator catchanim;
+    public ParticleSystem catchanim;
+    private int _defeated_color_enemies;
+    private float move = 1200f;
+    public RectTransform maku;
+
     // Start is called before the first frame update
     void Start()
     {
         _defeated_enemies = database.defeated_enemies;
+        _defeated_color_enemies = database.defeated_color_enemies;
+        maku.position = new Vector2(640, move);
     }
 
     // Update is called once per frame
@@ -23,6 +30,21 @@ public class EffectManager : MonoBehaviour
         {
             StartCoroutine(effect());
         }
+        if (_defeated_color_enemies < database.defeated_color_enemies)
+        {
+            StartCoroutine(catcheffect());
+        }
+        if (database.HP == 0)
+        {
+            
+            move -= 1200f * Time.deltaTime;
+            maku.position = new Vector2(640, move);
+            if (move < 350f)
+            {
+                move = 0f;
+                SceneManager.LoadScene("Score");
+            }
+        }
     }
     private IEnumerator effect()
     {
@@ -30,6 +52,14 @@ public class EffectManager : MonoBehaviour
         var x = Instantiate(slasheffect, new Vector2(-6, -2), Quaternion.identity);
         yield return new WaitForSeconds(0.2f);
         Destroy(x.gameObject);
+    }
+
+    public IEnumerator catcheffect()
+    {
+        _defeated_color_enemies = database.defeated_color_enemies;
+        var y = Instantiate(catchanim, new Vector2(-6, -2), Quaternion.identity);
+        yield return new WaitForSeconds(1.0f);
+        Destroy(y.gameObject);
     }
 
     public IEnumerator goodtext()

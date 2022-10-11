@@ -23,7 +23,7 @@ public class Enemy : MonoBehaviour
     public void FixedUpdate()
     {
         transform.Translate(new Vector2((-(16 / (60 / ((float)database.BPM / 4)))) * Time.deltaTime, 0));
-        if (Mathf.Floor(transform.position.x) == -10)
+        if (Mathf.Floor(transform.position.x) == -12)
         {
             Destroy(gameObject);
         }
@@ -37,7 +37,7 @@ public class Enemy : MonoBehaviour
             anim.SetTrigger("enemy_yarare");
             if (color_number != 0)
             {
-                effectmanager.catchanim.SetTrigger("catchanim");
+                database.defeated_color_enemies += 1;
                 database.add_defeat_color_number(color_number);
                 database.charge_HP(1);
             }
