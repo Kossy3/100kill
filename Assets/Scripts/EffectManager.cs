@@ -14,6 +14,7 @@ public class EffectManager : MonoBehaviour
     private int _defeated_color_enemies;
     private float move = 1200f;
     public RectTransform maku;
+    public bool finish = false;
 
     // Start is called before the first frame update
     void Start()
@@ -41,8 +42,8 @@ public class EffectManager : MonoBehaviour
             maku.position = new Vector2(640, move);
             if (move < 350f)
             {
-                move = 0f;
-                SceneManager.LoadScene("Score");
+                move = 350f;
+                finish = true;
             }
         }
     }

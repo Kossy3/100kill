@@ -15,12 +15,14 @@ public class Database : MonoBehaviour
     public int Stages;
     public int HP;
     public float skill_gauge;
+    private EffectManager effectmanager;
 
     public List<int> score_list;
     public int scene_number;
 
     public void Start()
     {
+        effectmanager = GameObject.Find("EffectManager").GetComponent<EffectManager>();
         BPM = 100;
         defeated_enemies = 0;
         defeated_color_enemies = 0;
@@ -58,10 +60,10 @@ public class Database : MonoBehaviour
         HP += n;
         HP = Mathf.Clamp(HP, 0, 5);
 
-        if (HP == 0 && !debug_mode)
+        if (HP == 0 && !debug_mode && effectmanager.finish)
         {
             scene_number = 0;
-            //SceneManager.LoadScene("Score");
+            SceneManager.LoadScene("Score");
         }
     }
 
