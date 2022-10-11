@@ -16,13 +16,9 @@ public class Database : MonoBehaviour
     public int Stages;
     public int HP;
     public float skill_gauge;
-<<<<<<< HEAD
     public float playing_time;
-
     public List<Dictionary<string, List<int>>> score_list;
-=======
     private EffectManager effectmanager;
->>>>>>> M_edit_various
 
     public int scene_number;
 
