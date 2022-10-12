@@ -14,6 +14,7 @@ public class MyScore : MonoBehaviour
     private GameObject escapebutton;
     private GameObject modechanger;
     private GameObject inputname;
+    private GameObject maku;
 
     private Text text_myscore;
     private Text text_myscoretime;
@@ -38,12 +39,14 @@ public class MyScore : MonoBehaviour
         escapebutton = GameObject.Find("EscapeButton");
         modechanger = GameObject.Find("ModeChanger");
         inputname = GameObject.Find("InputName");
+        maku = GameObject.Find("maku");
 
         button = inputname.transform.Find("Button").gameObject;
 
         rayresult = new List<RaycastResult>();
 
         gameObject.SetActive(true);
+        maku.SetActive(true);
         ranking.SetActive(false);
         escapebutton.SetActive(false);
         modechanger.SetActive(false);
@@ -95,6 +98,7 @@ public class MyScore : MonoBehaviour
         catch (System.Exception)
         {
             gameObject.SetActive(false);
+            maku.SetActive(false);
             ranking.SetActive(true);
             escapebutton.SetActive(true);
             modechanger.SetActive(true);

@@ -6,22 +6,24 @@ using UnityEngine.SceneManagement;
 
 public class EffectManager : MonoBehaviour
 {
+    [SerializeField]
     public ParticleSystem slasheffect;
-    private int _defeated_enemies;
+    public int _defeated_enemies;
     public Database database;
     public Text good_misstext;
     public ParticleSystem catchanim;
-    private int _defeated_color_enemies;
-    private float move = 1200f;
+    public int _defeated_color_enemies;
+    public float move;
     public RectTransform maku;
-    public bool finish = false;
 
     // Start is called before the first frame update
     void Start()
     {
         _defeated_enemies = database.defeated_enemies;
         _defeated_color_enemies = database.defeated_color_enemies;
+        move = 1200f;
         maku.position = new Vector2(640, move);
+        database = GameObject.Find("Database").GetComponent<Database>();
     }
 
     // Update is called once per frame
@@ -43,7 +45,7 @@ public class EffectManager : MonoBehaviour
             if (move < 350f)
             {
                 move = 350f;
-                finish = true;
+                database.finish = true;
             }
         }
     }
