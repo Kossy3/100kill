@@ -6386,7 +6386,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   code_scale: 0000000002000000040000000500000007000000090000000b000000
   melody_scale: 0000000002000000040000000700000009000000
-  melody_root: 60
+  melody_root: 72
   melody_max: 4
   melody_min: 0
 --- !u!4 &1744753915

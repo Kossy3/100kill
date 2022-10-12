@@ -12,6 +12,7 @@ public class MusicGenerator : MonoBehaviour
     MusicPlayer musicPlayer;
     //テスト用スクリプト
     List<int> defeated_colors = new List<int>();
+    int[] code_progress = new int[4]; //コード進行保存用
     [SerializeField]
     [Header("melody_scale: コードのスケール。0から")]
     int[] code_scale = new int[] { 0, 2, 4, 5, 7, 9, 11 };
@@ -64,8 +65,9 @@ public class MusicGenerator : MonoBehaviour
             //score.Add(generate_track1_drum(colors[0]));
         }
         //score.Add(generate_track1(rhythm));
-        score.Add(generate_melody(rhythm));
-        score.Add(generate_code(rhythm));
+        score.Add(generate_code(1));
+        score.Add(generate_melody(0, rhythm));
+
 
         //メインリズム変化形
         defeated_colors.Add(UnityEngine.Random.Range(1, 1 + 3));
@@ -173,10 +175,10 @@ public class MusicGenerator : MonoBehaviour
         return track;
     }
 
-    List<Note> generate_melody(int[] rhythm)
+    List<Note> generate_melody(int ch, int[] rhythm)
     { //メロディーの生成
         List<Note> track = new List<Note>();
-        track.Add(new Note(0, 77, 0, 0, 0).program_change());
+        track.Add(new Note(ch, 77, 0, 0, 0).program_change());
         int scale_index = (melody_root - (melody_root % 12)) / 12 * melody_scale.Length; //最初の音
         float delta = 0;
         for (var i = 0; i < rhythm.Length; i++)
@@ -189,58 +191,83 @@ public class MusicGenerator : MonoBehaviour
                 int modulation = melody_root % 12; //変調
                 int note = octave + trans + modulation;
                 Debug.Log($"スケール{scale_index} 音程{note}");
-                track.Add(new Note(0, note, delta, 1f/2f, 127));
+                track.Add(new Note(ch, note, delta, 1f / 2f, 127));
             }
             delta += 1f / 2f;
         }
-        for (int i=0; i+1 <track.Count; i++){
-            track[i].len = track[i+1].delta - track[i].delta - 1f/8f;
+        for (int i = 0; i + 1 < track.Count; i++)
+        {
+            track[i].len = track[i + 1].delta - track[i].delta - 1f / 8f;
         }
         track[track.Count - 1].len = 32f - track[track.Count - 1].delta;
         transrate_delta(ref track);
         return track;
     }
 
-    List<Note> generate_code(int[] rhythm)
+    List<Note> generate_code(int ch)
     {
         List<Note> track = new List<Note>();
-        track.Add(new Note(0, 107, 0, 0, 0).program_change());
-        int[] val = new int[6];
-        int[] rate = new int[6];
-        for (int i=0; i<6; i++){
-            rate[i] = 1;
-            val[i] = i;
-        }
+        track.Add(new Note(ch, 107, 0, 0, 0).program_change());
+        int[] val = new int[3]{2, 3, 6};
+        int[] rate = new int[3]{1, 1, 1};
         float delta = 0;
-        for (int i=0; i<8; i++){
+        for (int i = 0; i < 4; i++)
+        {
             int rnd = GetRandomIndex(rate);
+            code_progress[i] = val[rnd];
             int modulation = melody_root % 12; //変調
-            int bass_root = 32 + code_scale[val[rnd]] + modulation; //ベースの音
-            int code_root = 48 + code_scale[val[rnd]]  + modulation; //コードのルート音
-            int code_3rd  = 48 + code_scale[(val[rnd] + 2) % code_scale.Length] + modulation;
-            int code_5th  = 48 + code_scale[(val[rnd] + 4) % code_scale.Length] + modulation;
-            int[] code = new int[]{code_root, code_3rd, code_5th};
-            Array.Sort(code);
-            track.Add(new Note(0, bass_root, delta, 40f/11f, 100));
-            track.Add(new Note(0, code[0], delta, 2f/5f, 100));
-            delta += 1f/2f;
-            track.Add(new Note(0, code[2], delta, 2f/5f, 100));
-            delta += 1f/2f;
-            track.Add(new Note(0, code[1], delta, 2f/5f, 100));
-            delta += 1f/2f;
-            track.Add(new Note(0, code[2], delta, 2f/5f, 100));
-            delta += 1f/2f;
-            track.Add(new Note(0, code[0], delta, 2f/5f, 100));
-            delta += 1f/2f;
-            track.Add(new Note(0, code[2], delta, 2f/5f, 100));
-            delta += 1f/2f;
-            track.Add(new Note(0, code[1], delta, 2f/5f, 100));
-            delta += 1f/2f;
-            track.Add(new Note(0, code[2], delta, 2f/5f, 100));
-            delta += 1f/2f;
+            int code_root = 48 + code_scale[val[rnd]] + modulation; //コードのルート音
+            int code_3rd = 48 + code_scale[(val[rnd] + 2) % code_scale.Length] + modulation;
+            int code_5th = 48 + code_scale[(val[rnd] + 4) % code_scale.Length] + modulation;
+            int[] code = new int[] { code_root, code_3rd, code_5th };
+            delta = i * 8f;
+            code_acc_part(ref track, ch, delta, code, 2);
         }
         transrate_delta(ref track);
         return track;
+    }
+
+    void code_acc_part(ref List<Note> track, int ch, float delta, int[] code, int type)
+    {
+        int bass_root = code[0] - 12;    //ベースの音
+        Array.Sort(code);
+        switch (type)
+        {
+            case 1:
+                track.Add(new Note(ch, bass_root, delta, 40f / 11f, 100));
+                for (int i = 0; i < 2; i++)
+                {
+                    track.Add(new Note(ch, code[0], delta, 2f / 5f, 100));
+                    delta += 1f / 2f;
+                    track.Add(new Note(ch, code[2], delta, 2f / 5f, 100));
+                    delta += 1f / 2f;
+                    track.Add(new Note(ch, code[1], delta, 2f / 5f, 100));
+                    delta += 1f / 2f;
+                    track.Add(new Note(ch, code[2], delta, 2f / 5f, 100));
+                    delta += 1f / 2f;
+                }
+                break;
+            case 2:
+                track.Add(new Note(ch, bass_root, delta, 40f / 11f, 100));
+                for (int i = 0; i < 2; i++)
+                {
+                    track.Add(new Note(ch, code[0], delta, 4f / 5f, 100));
+                    delta += 1f / 1f;
+                    track.Add(new Note(ch, code[1], delta, 2f / 5f, 100));
+                    track.Add(new Note(ch, code[2], delta, 2f / 5f, 100));
+                    delta += 1f / 2f;
+                    track.Add(new Note(ch, code[0], delta, 2f / 5f, 100));
+                    delta += 1f / 1f;
+                    track.Add(new Note(ch, code[0], delta, 2f / 5f, 100));
+
+                    delta += 1f / 2f;
+                    track.Add(new Note(ch, code[1], delta, 4f / 5f, 100));
+                    track.Add(new Note(ch, code[2], delta, 4f / 5f, 100));
+                    delta += 1f / 1f;
+                }
+                break;
+
+        }
     }
 
     void update_scale_index(ref int scale_index)
@@ -249,7 +276,7 @@ public class MusicGenerator : MonoBehaviour
         int i_max = i_root + melody_max;
         int i_min = i_root + melody_min;
         int i = 0;
-        while (! (i_min <= i && i <= i_max) )
+        while (!(i_min <= i && i <= i_max))
         {
             int vec = new int[] { 1, -1 }[GetRandomIndex(new int[] { 1, 1 })];
             int val = new int[] { 0, 1, 2, 3, 4, 5, 6, 7 }[GetRandomIndex(new int[] { 16, 64, 32, 16, 8, 4, 2, 1 })];
@@ -306,14 +333,19 @@ public class MusicGenerator : MonoBehaviour
         return pattern;
     }
 
-    void transrate_delta(ref List<Note> track){
+    void transrate_delta(ref List<Note> track)
+    {
         List<Note> track_fix = new List<Note>();
         float delta = 0;
         float d_save = 0;
-        for (int i=0; i< track.Count; i++){
-            if(i > 0 && d_save != track[i].delta){
-                delta = track[i].delta - d_save;   
-            } else if (i > 0) {
+        for (int i = 0; i < track.Count; i++)
+        {
+            if (i > 0 && d_save != track[i].delta)
+            {
+                delta = track[i].delta - d_save;
+            }
+            else if (i > 0)
+            {
                 delta = 0;
             }
             d_save = track[i].delta;
@@ -331,9 +363,9 @@ public class Note
     public float len;
     public byte velocity;
     public int mode = 0x9;
-    public Note(byte ch, int no, float delta, float len, byte velocity)
+    public Note(int ch, int no, float delta, float len, byte velocity)
     {
-        this.ch = ch;
+        this.ch = (byte)ch;
         this.no = (byte)no;
         this.delta = delta;
         this.len = len;
