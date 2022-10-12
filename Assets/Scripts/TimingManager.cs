@@ -83,7 +83,6 @@ public class TimingManager : MonoBehaviour
         //musicplayer.play_music(score);
 
         StartCoroutine("enemy_generator");
-        StartCoroutine("scroll_background");
     }
 
     public void getkey(int KeyID)
@@ -163,6 +162,9 @@ public class TimingManager : MonoBehaviour
                 spawn_type.Add(rhythm[rhythm_num]);
                 spawn_time.Add(time + delta + get_delta(rhythm_num, 8));
             }
+            if(rhythm_num % 8 == 0){
+                StartCoroutine(scroll_background(delta));
+            }
             rhythm_num++;
         }
 
@@ -176,7 +178,7 @@ public class TimingManager : MonoBehaviour
         float delta = 0;
         for (int i = 0; i < n; i++)
         {
-            if (rhythm_num < 8)
+            if (rhythm_num + i < 8)
             {
                 delta += (60 / (float)database.BPM / 2);
             }
@@ -206,10 +208,9 @@ public class TimingManager : MonoBehaviour
         spawn_enemy.Add(enemy);
     }
 
-    private IEnumerator scroll_background()
+    private IEnumerator scroll_background(float delta)
     {
-        while (true)
-        {
+        yield return new WaitForSeconds(delta);
             if (background_num < 25)
             {
                 background = Instantiate(background_order[background_num], new Vector3(18, 0, 0), Quaternion.identity);
@@ -221,8 +222,5 @@ public class TimingManager : MonoBehaviour
             {
                 background = Instantiate(Stage4, new Vector3(18, 0, 0), Quaternion.identity);
             }
-
-            yield return new WaitForSeconds(60 / (float)database.BPM * 4);
-        }
     }
 }
