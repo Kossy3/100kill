@@ -7,8 +7,8 @@ using UnityEngine.SceneManagement;
 public class EffectManager : MonoBehaviour
 {
     [SerializeField]
-    public ParticleSystem slasheffect;
-    public ParticleSystem catchanim;
+    //public ParticleSystem slasheffect;
+    //public ParticleSystem catchanim;
     public int _defeated_enemies;
     public int _defeated_color_enemies;
     public Database database;
@@ -32,14 +32,14 @@ public class EffectManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (_defeated_enemies < database.defeated_enemies)
+        /*if (_defeated_enemies < database.defeated_enemies)
         {
             StartCoroutine(effect());
         }
         if (_defeated_color_enemies < database.defeated_color_enemies)
         {
             StartCoroutine(catcheffect());
-        }
+        }*/
         if (database.HP == 0 && !database.debug_mode)
         {
             move -= 1200f * Time.deltaTime;
@@ -52,7 +52,7 @@ public class EffectManager : MonoBehaviour
             }
         }
     }
-    private IEnumerator effect()
+    /*private IEnumerator effect()
     {
         _defeated_enemies = database.defeated_enemies;
         var x = Instantiate(slasheffect, new Vector2(-6, -2), Quaternion.identity);
@@ -66,7 +66,7 @@ public class EffectManager : MonoBehaviour
         var y = Instantiate(catchanim, new Vector2(-6, -2), Quaternion.identity);
         yield return new WaitForSeconds(1.0f);
         Destroy(y.gameObject);
-    }
+    }*/
 
     public IEnumerator goodtext()
     {
