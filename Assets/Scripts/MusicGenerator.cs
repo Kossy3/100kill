@@ -51,6 +51,7 @@ public class MusicGenerator : MonoBehaviour
     {
         List<List<Note>> score = new List<List<Note>>();
         var colors = defeated_colors;
+        get_random(colors);
         //アクションに合わせた音
         score.Add(generate_track0(rhythm));
         if (defeated_colors.Count < 1)
@@ -208,7 +209,7 @@ public class MusicGenerator : MonoBehaviour
     {
         List<Note> track = new List<Note>();
         track.Add(new Note(ch, 107, 0, 0, 0).program_change());
-        int[] val = new int[3]{2, 3, 6};
+        int[] val = new int[3]{2, 3, 5};
         int[] rate = new int[3]{1, 1, 1};
         float delta = 0;
         for (int i = 0; i < 4; i++)
@@ -353,6 +354,17 @@ public class MusicGenerator : MonoBehaviour
             Debug.Log(delta);
         }
     }
+
+    int[] get_random(List<int> colors){
+        string random_str = "";
+        int[] randoms = new int[colors.Count];
+        for (int i=0; i < colors.Count; i++){
+            random_str = $"{random_str}{colors[i]}";
+            randoms[i] = (int)((uint)random_str.GetHashCode() >> 16);
+            Debug.Log($"hash: {randoms[i]}");
+        }
+        return randoms;
+    }
 }
 
 public class Note
@@ -377,4 +389,8 @@ public class Note
         this.mode = 0xC;
         return this;
     }
+}
+
+class MusicPattern {
+    public List<Note> drums = new List<Note>(){};
 }
