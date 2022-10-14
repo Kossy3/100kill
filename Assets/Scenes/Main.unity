@@ -1063,7 +1063,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 220, y: 600}
-  m_SizeDelta: {x: 100, y: 100}
+  m_SizeDelta: {x: 95, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &184568789
 MonoBehaviour:
@@ -1315,10 +1315,10 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: c6c7181f1f1dbd24fa5fc650eed56773, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 6e2648787dede8443854072745e3a773, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 0.42
-  m_Pitch: 2.3
+  m_Volume: 0.306
+  m_Pitch: 2.23
   Loop: 0
   Mute: 0
   Spatialize: 0
@@ -4938,11 +4938,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slasheffect: {fileID: 6510125619236422600, guid: 6d7b01bdef4c9d44596d7108af762e72, type: 3}
-  _defeated_enemies: 0
-  database: {fileID: 450839139}
-  good_misstext: {fileID: 815378411}
   catchanim: {fileID: 19896670, guid: df8009dc85777cd40a227ce4d9a59d6e, type: 3}
+  _defeated_enemies: 0
   _defeated_color_enemies: 0
+  database: {fileID: 450839139}
+  audiomanager: {fileID: 291489192}
+  good_misstext: {fileID: 815378411}
   move: 0
   maku: {fileID: 1243450834}
 --- !u!4 &1097724069
@@ -6397,8 +6398,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 210.80782, y: 600}
-  m_SizeDelta: {x: 95.4039, y: 100}
+  m_AnchoredPosition: {x: 220, y: 600}
+  m_SizeDelta: {x: 95, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1575977233
 MonoBehaviour:

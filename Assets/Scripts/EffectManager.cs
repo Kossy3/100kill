@@ -8,13 +8,15 @@ public class EffectManager : MonoBehaviour
 {
     [SerializeField]
     public ParticleSystem slasheffect;
-    public int _defeated_enemies;
-    public Database database;
-    public Text good_misstext;
     public ParticleSystem catchanim;
+    public int _defeated_enemies;
     public int _defeated_color_enemies;
+    public Database database;
+    public GameObject audiomanager;
+    public Text good_misstext;
     public float move;
     public RectTransform maku;
+
 
     // Start is called before the first frame update
     void Start()
@@ -24,6 +26,7 @@ public class EffectManager : MonoBehaviour
         move = 1200f;
         maku.position = new Vector2(640, move);
         database = GameObject.Find("Database").GetComponent<Database>();
+        database.finish = false;
     }
 
     // Update is called once per frame
@@ -37,14 +40,14 @@ public class EffectManager : MonoBehaviour
         {
             StartCoroutine(catcheffect());
         }
-        if (database.HP == 0)
+        if (database.HP == 0 && !database.debug_mode)
         {
-            
             move -= 1200f * Time.deltaTime;
             maku.position = new Vector2(640, move);
             if (move < 350f)
             {
-                move = 350f;
+                audiomanager.SetActive(false);
+                move = 349f;
                 database.finish = true;
             }
         }

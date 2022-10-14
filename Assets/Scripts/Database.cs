@@ -8,7 +8,7 @@ public class Database : MonoBehaviour
 {
     [SerializeField]
     [Header("Debug_mode : trueで死亡時のシーン変更無効化")]
-    private bool debug_mode;
+    public bool debug_mode;
     public int BPM;
     public int defeated_enemies;
     public int defeated_color_enemies;
