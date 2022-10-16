@@ -12,6 +12,8 @@ public class MusicGenerator : MonoBehaviour
     MusicPlayer musicPlayer;
     //テスト用スクリプト
     List<int> defeated_colors = new List<int>();
+    [SerializeField]
+    Midi obj;
     int[] code_progress = new int[4]; //コード進行保存用
     [SerializeField]
     [Header("melody_scale: コードのスケール。0から")]
@@ -33,6 +35,7 @@ public class MusicGenerator : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Debug.Log(obj.ToString());
         database = GameObject.Find("Database").GetComponent<Database>();
         //test_start();
     }
@@ -58,7 +61,7 @@ public class MusicGenerator : MonoBehaviour
         {
             //刻みだけ
             //score.Add(generate_taiko(0));
-            //score.Add(generate_track1(rhythm));
+            //score.Add(generate_track1_drum(0));
         }
         else
         {
@@ -66,7 +69,7 @@ public class MusicGenerator : MonoBehaviour
             //score.Add(generate_track1_drum(colors[0]));
         }
         //score.Add(generate_track1(rhythm));
-        score.Add(generate_code(1));
+        score.Add(test_code(1));
         score.Add(generate_melody(0, rhythm));
 
 
@@ -87,27 +90,6 @@ public class MusicGenerator : MonoBehaviour
                 delta = 0;
             }
             delta += 1f / 2f;
-        }
-        return track;
-    }
-
-    List<Note> generate_track1(int[] rhythm)
-    { //刻みだけ
-        List<Note> track = new List<Note>();
-        for (var i = 0; i < rhythm.Length; i++)
-        {
-            if (i == 0)
-            {
-                track.Add(new Note(9, 36, 0, 1f / 4f, 100));
-            }
-            else if (i % 4 == 2)
-            {
-                track.Add(new Note(9, 38, 1f / 2f, 1f / 4f, 127));
-            }
-            else
-            {
-                track.Add(new Note(9, 36, 1f / 2f, 1f / 4f, 100));
-            }
         }
         return track;
     }
@@ -191,7 +173,7 @@ public class MusicGenerator : MonoBehaviour
                 int octave = (scale_index - scale_index % melody_scale.Length) / melody_scale.Length * 12; //オクターブ
                 int modulation = melody_root % 12; //変調
                 int note = octave + trans + modulation;
-                Debug.Log($"スケール{scale_index} 音程{note}");
+                //Debug.Log($"スケール{scale_index} 音程{note}");
                 track.Add(new Note(ch, note, delta, 1f / 2f, 127));
             }
             delta += 1f / 2f;
@@ -204,13 +186,38 @@ public class MusicGenerator : MonoBehaviour
         transrate_delta(ref track);
         return track;
     }
+    List<Note> test_code(int ch){
+        List<Note> track = new List<Note>();
+        track.Add(new Note(ch, 2, 0, 0, 0).program_change());
+        int[][] val = new int[][] {
+            new int[4]{4,12+7,24+0,24+2},
+            new int[4]{5,12+7,24+0,24+4},
+            new int[4]{7,12+7,24+0,24+2},
+            new int[4]{9,12+7,24+0,24+4},
+            new int[4]{4,12+7,24+0,24+2},
+            new int[4]{5,12+7,24+0,24+4},
+            new int[4]{7,12+7,24+0,24+2},
+            new int[4]{9,12+7,24+0,24+4}
+        };
+        float delta = 0;
+        for (int i = 0; i < 8; i++)
+        {
+            track.Add(new Note(ch, 36 +val[i][0], delta, 40f/12f, 80));
+            track.Add(new Note(ch, 36 +val[i][1], delta, 40f/12f, 80));
+            track.Add(new Note(ch, 36 +val[i][2], delta, 40f/12f, 80));
+            track.Add(new Note(ch, 36 +val[i][3], delta, 40f/12f, 80));
+            delta += 4f;
+        }
+        transrate_delta(ref track);
+        return track;
+    }
 
     List<Note> generate_code(int ch)
     {
         List<Note> track = new List<Note>();
         track.Add(new Note(ch, 107, 0, 0, 0).program_change());
-        int[] val = new int[3]{2, 3, 5};
-        int[] rate = new int[3]{1, 1, 1};
+        int[] val = new int[3] { 1, 2, 5 };
+        int[] rate = new int[3] { 1, 1, 1 };
         float delta = 0;
         for (int i = 0; i < 4; i++)
         {
@@ -351,14 +358,16 @@ public class MusicGenerator : MonoBehaviour
             }
             d_save = track[i].delta;
             track[i].delta = delta;
-            Debug.Log(delta);
+            //Debug.Log(delta);
         }
     }
 
-    int[] get_random(List<int> colors){
+    int[] get_random(List<int> colors)
+    {
         string random_str = "";
         int[] randoms = new int[colors.Count];
-        for (int i=0; i < colors.Count; i++){
+        for (int i = 0; i < colors.Count; i++)
+        {
             random_str = $"{random_str}{colors[i]}";
             randoms[i] = (int)((uint)random_str.GetHashCode() >> 16);
             Debug.Log($"hash: {randoms[i]}");
@@ -391,6 +400,52 @@ public class Note
     }
 }
 
-class MusicPattern {
-    public List<Note> drums = new List<Note>(){};
+class DrumPattern
+{
+    public List<Note>[]drums = new List<Note>[4];
+    public DrumPattern()
+    {
+        Drum_8beat(0);
+        Drum_maeda(1);
+
+    }
+    void Drum_8beat(int n){
+        List<Note> track = new List<Note>();
+        for (var i = 0; i < 64; i++)
+        {
+            if (i == 0)
+            {
+                track.Add(new Note(9, 36, 0, 1f / 4f, 100));
+            }
+            else if (i % 4 == 2)
+            {
+                track.Add(new Note(9, 38, 1f / 2f, 1f / 4f, 127));
+            }
+            else
+            {
+                track.Add(new Note(9, 36, 1f / 2f, 1f / 4f, 100));
+            }
+        }
+        drums[n] = track;
+    }
+    void Drum_maeda(int n)
+    {
+        var track = new List<Note>();
+        float delta = 0;
+        for (var i = 0; i < 8; i++)
+        {
+            track.Add(new Note(9, 48, delta, 1f / 8f, 100));
+            track.Add(new Note(9, 48, 1f / 2f, 1f / 8f, 100));
+            track.Add(new Note(9, 52, 1f / 2f, 1f / 8f, 127));
+            track.Add(new Note(9, 48, 1f / 4f, 1f / 8f, 100));
+            track.Add(new Note(9, 48, 3f / 4f, 1f / 8f, 127));
+            track.Add(new Note(9, 52, 1f / 1f, 1f / 8f, 127));
+            track.Add(new Note(9, 48, 1f / 2f, 1f / 8f, 127));
+            delta = 1f / 2f;
+        }
+        drums[n] = track;
+    }
 }
+
+
+
