@@ -24,6 +24,7 @@ public class DescriptionManager : MonoBehaviour
         animator[5].Play("enemy_discription1");
         animator[6].Play("enemy_discription2");
         animator[7].Play("enemy_discription3");
+        animator[8].Play("katana");
     }
 
 }

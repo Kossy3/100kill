@@ -19,12 +19,12 @@ public class Defeats : MonoBehaviour
 
         defeats_image_list = new List<GameObject>();
 
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < 5; i++)
         {
             defeats_image_list.Add(gameObject.transform.GetChild(i).gameObject);
         }
 
-        empty_list = new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+        empty_list = new int[] {0, 0, 0, 0, 0};
     }
 
     private void Update()
@@ -32,7 +32,7 @@ public class Defeats : MonoBehaviour
         defeated_color_list = new List<int>();
         List<int> defeated_color_number = database.defeated_color_number;
 
-        if (defeated_color_number.Count < 10)
+        if (defeated_color_number.Count < 5)
         {
             defeated_color_list.AddRange(defeated_color_number);
             defeated_color_list.AddRange(empty_list);
@@ -40,13 +40,13 @@ public class Defeats : MonoBehaviour
 
         else
         {
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 5; i++)
             {
-                defeated_color_list.Add(defeated_color_number[defeated_color_number.Count - 10 + i]);
+                defeated_color_list.Add(defeated_color_number[defeated_color_number.Count - 5 + i]);
             }
         }
 
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < 5; i++)
         {
             defeats_image_list[i].transform.GetChild(0).gameObject.SetActive(false);
             defeats_image_list[i].transform.GetChild(1).gameObject.SetActive(false);

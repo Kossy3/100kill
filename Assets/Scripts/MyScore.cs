@@ -14,14 +14,13 @@ public class MyScore : MonoBehaviour
     private GameObject escapebutton;
     private GameObject modechanger;
     private GameObject inputname;
+    private GameObject maku;
+    private GameObject audioplayer;
 
-    private Image image;
     private Text text_myscore;
     private Text text_myscoretime;
 
     private GameObject button;
-
-    private GameObject select_button;
 
     private List<RaycastResult> rayresult;
 
@@ -30,6 +29,7 @@ public class MyScore : MonoBehaviour
     private float my_scoretime;
 
     public string player_name;
+    public int mode;
 
     void Start()
     {
@@ -40,14 +40,16 @@ public class MyScore : MonoBehaviour
         escapebutton = GameObject.Find("EscapeButton");
         modechanger = GameObject.Find("ModeChanger");
         inputname = GameObject.Find("InputName");
+        maku = GameObject.Find("maku");
+       audioplayer = GameObject.Find("AudioPlayer");
 
         button = inputname.transform.Find("Button").gameObject;
-
-        select_button = null;
 
         rayresult = new List<RaycastResult>();
 
         gameObject.SetActive(true);
+        maku.SetActive(true);
+        audioplayer.SetActive(true);
         ranking.SetActive(false);
         escapebutton.SetActive(false);
         modechanger.SetActive(false);
@@ -55,6 +57,8 @@ public class MyScore : MonoBehaviour
 
         text_myscore = transform.Find("Text(MYSCORE)").gameObject.GetComponent<Text>();
         text_myscoretime = transform.Find("Text(MYSCORETIME)").gameObject.GetComponent<Text>();
+
+        mode = 0;
 
         try
         {
@@ -97,6 +101,8 @@ public class MyScore : MonoBehaviour
         catch (System.Exception)
         {
             gameObject.SetActive(false);
+            maku.SetActive(false);
+            audioplayer.SetActive(false);
             ranking.SetActive(true);
             escapebutton.SetActive(true);
             modechanger.SetActive(true);
@@ -105,56 +111,84 @@ public class MyScore : MonoBehaviour
 
     void Update()
     {
+        button.GetComponent<Image>().color = new Color (0, 0, 0, 1);
+        button.GetComponent<Shadow>().effectColor = new Color (1, 1, 1, 1);
+        button.transform.Find("Text").gameObject.GetComponent<Text>().color = new Color (0, 0, 0, 1);
+        button.transform.Find("Text").gameObject.GetComponent<Shadow>().effectColor = new Color (1, 1, 1, 1);
+
         rayresult.Clear();
 
         var currentPointData = new PointerEventData(EventSystem.current);
         currentPointData.position = Input.mousePosition;
         EventSystem.current.RaycastAll(currentPointData, rayresult);
 
-        foreach (var raycastresult in rayresult)
+        if (rayresult.Count > 1)
         {
-            if (raycastresult.gameObject.CompareTag("Button"))
+            if (rayresult[1].gameObject.CompareTag("Button"))
             {
-                select_button = raycastresult.gameObject;
-                break;
-            }
-
-            else
-            {
-                select_button = null;
+                button.GetComponent<Image>().color = new Color (1, 1, 1, 1);
+                button.GetComponent<Shadow>().effectColor = new Color (0, 0, 0, 1);
+                button.transform.Find("Text").gameObject.GetComponent<Text>().color = new Color (1, 1, 1, 1);
+                button.transform.Find("Text").gameObject.GetComponent<Shadow>().effectColor = new Color (0, 0, 0, 1);
             }
         }
 
-        if (select_button == null)
-        {
-            button.GetComponent<Image>().color = new Color (0, 0, 0, 1);
-            button.GetComponent<Shadow>().effectColor = new Color (1, 1, 1, 1);
-            button.transform.Find("Text").gameObject.GetComponent<Text>().color = new Color (0, 0, 0, 1);
-            button.transform.Find("Text").gameObject.GetComponent<Shadow>().effectColor = new Color (1, 1, 1, 1);
-
-            if (Input.anyKeyDown)
-            {
-                select_button = button;
-            }
-        }
-
-        if (select_button)
+        if (Input.GetKey(KeyCode.Return))
         {
             button.GetComponent<Image>().color = new Color (1, 1, 1, 1);
             button.GetComponent<Shadow>().effectColor = new Color (0, 0, 0, 1);
             button.transform.Find("Text").gameObject.GetComponent<Text>().color = new Color (1, 1, 1, 1);
             button.transform.Find("Text").gameObject.GetComponent<Shadow>().effectColor = new Color (0, 0, 0, 1);
-
-            if (Input.GetKey(KeyCode.Space))
-            {
-                select_button.GetComponent<Button>().onClick.Invoke();
-            }
         }
 
-        if (Input.anyKeyDown)
+        if (Input.GetKeyUp(KeyCode.Return))
+        {
+            button.GetComponent<Button>().onClick.Invoke();
+        }
+
+        if (Input.anyKey)
         {
             gameObject.GetComponent<Button>().onClick.Invoke();
         }
+
+        if (GameObject.Find("InputField"))
+        {
+            if (indexof_containkey(database.score_list, GameObject.Find("InputField").transform.Find("Text").gameObject.GetComponent<Text>().text))
+            {
+                GameObject text = inputname.transform.Find("Text").gameObject;
+                text.SetActive(true);
+                text.GetComponent<Text>().text = "その名前はすでに使われています";
+            }
+
+            else if (GameObject.Find("InputField").transform.Find("Text").gameObject.GetComponent<Text>().text == "")
+            {
+                GameObject text = inputname.transform.Find("Text").gameObject;
+                text.SetActive(true);
+                text.GetComponent<Text>().text = "未記入で決定された場合、記録は残りません";
+            }
+
+            else
+            {
+                inputname.transform.Find("Text").gameObject.SetActive(false);
+            }
+        }
+
+    }
+
+    private bool indexof_containkey(List<Dictionary<string, List<int>>> list, string dic_key)
+    {
+        bool overlap = false;
+
+        foreach (Dictionary<string, List<int>> dic in list)
+        {
+            if (dic.ContainsKey(dic_key))
+            {
+                overlap = true;
+                break;
+            }
+        }
+
+        return overlap;
     }
 
     private int index = 0;
@@ -168,30 +202,48 @@ public class MyScore : MonoBehaviour
             gameObject.transform.Find("Text(MYSCORE)").gameObject.SetActive(false);
             inputname.SetActive(true);
             inputname.transform.Find("Text").gameObject.SetActive(false);
+            inputname.transform.Find("WarningBoard").gameObject.SetActive(false);
+
+            inputname.transform.Find("InputField").gameObject.GetComponent<InputField>().Select();
         }
 
         index ++;
     }
 
-    public void On_click_mane()
+    public void on_click_name()
     {
-        try
+        if (indexof_containkey(database.score_list, GameObject.Find("InputField").transform.Find("Text").gameObject.GetComponent<Text>().text))
+        {
+            inputname.transform.Find("WarningBoard").gameObject.SetActive(true);
+            GameObject.Find("InputField").transform.Find("Text").gameObject.GetComponent<Text>().text = "";
+            mode = 0;
+
+            EventSystem.current.SetSelectedGameObject(null);
+        }
+
+        else if (GameObject.Find("InputField").transform.Find("Text").gameObject.GetComponent<Text>().text == "")
+        {
+            inputname.transform.Find("WarningBoard").gameObject.SetActive(true);
+            mode = 1;
+
+            EventSystem.current.SetSelectedGameObject(null);
+        }
+
+        else
         {
             player_name = GameObject.Find("InputField").transform.Find("Text").gameObject.GetComponent<Text>().text;
 
-            List<int> my_scores = new List<int> {database.defeated_enemies, (int)database.playing_time};
-            database.score_list.Add(player_name, my_scores);
+            List<int> scores_list = new List<int>() {database.defeated_enemies, (int)database.playing_time};
+            Dictionary<string, List<int>> scores_dic = new Dictionary<string, List<int>>() {{player_name, scores_list}};
+            database.score_list.Add(scores_dic);
 
             ranking.SetActive(true);
             escapebutton.SetActive(true);
             modechanger.SetActive(true);
             inputname.SetActive(false);
 
-            rankingtable.generate_ranking();
-        }
-        catch (System.Exception)
-        {
-            inputname.transform.Find("Text").gameObject.SetActive(true);
+            rankingtable.generate_ranking(player_name);
+            mode = 0;
         }
     }
 }

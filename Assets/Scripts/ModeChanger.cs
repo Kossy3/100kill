@@ -7,6 +7,7 @@ using UnityEngine.EventSystems;
 public class ModeChanger : MonoBehaviour
 {
     private RankingTable rankingtable;
+    private MyScore myscore;
 
     private GameObject text1;
     private GameObject text2;
@@ -17,10 +18,19 @@ public class ModeChanger : MonoBehaviour
     {
         rankingtable = GameObject.Find("RankingTable").GetComponent<RankingTable>();
 
+
         text1 = transform.Find("Text1").gameObject;
         text2 = transform.Find("Text2").gameObject;
 
         rayresult = new List<RaycastResult>();
+
+        try
+        {
+            myscore = GameObject.Find("MyScore").GetComponent<MyScore>();
+        }
+        catch (System.Exception)
+        {
+        }
     }
 
     public void Update()
@@ -106,11 +116,12 @@ public class ModeChanger : MonoBehaviour
                 Destroy(child.gameObject);
             }
 
-            rankingtable.generate_ranking(); 
+            rankingtable.generate_ranking(myscore.player_name); 
         }
 
         catch (System.Exception)
         {
+            rankingtable.generate_ranking(null);
         }
     }
 }

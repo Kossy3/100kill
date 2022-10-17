@@ -8,22 +8,25 @@ public class Database : MonoBehaviour
 {
     [SerializeField]
     [Header("Debug_mode : trueで死亡時のシーン変更無効化")]
-    private bool debug_mode;
+    public bool debug_mode;
     public int BPM;
     public int defeated_enemies;
+    public int defeated_color_enemies;
     public List<int> defeated_color_number;
     public int Stages;
     public int HP;
     public float skill_gauge;
     public float playing_time;
+    public List<Dictionary<string, List<int>>> score_list;
+    public bool finish;
 
-    public Dictionary<string, List<int>> score_list;
     public int scene_number;
 
     public void Start()
     {
         BPM = 100;
         defeated_enemies = 0;
+        defeated_color_enemies = 0;
         defeated_color_number = new List<int>();
         Stages = 0;
         HP = 5;
@@ -34,7 +37,7 @@ public class Database : MonoBehaviour
         debug_mode = false;
 #endif 
 
-        score_list = new Dictionary<string, List<int>>();
+        score_list = new List<Dictionary<string, List<int>>>();
 
         DontDestroyOnLoad(gameObject);
     }
@@ -64,9 +67,10 @@ public class Database : MonoBehaviour
         HP += n;
         HP = Mathf.Clamp(HP, 0, 5);
 
-        if (HP == 0 && !debug_mode)
+        if (HP == 0 && !debug_mode && finish)
         {
             scene_number = 0;
+            finish = false;
             SceneManager.LoadScene("Score");
         }
     }
@@ -74,7 +78,7 @@ public class Database : MonoBehaviour
     public void charge_skill_gauge(int n)
     {
         skill_gauge += n;
-        skill_gauge = Mathf.Clamp(skill_gauge, 0, 1);
+        skill_gauge = Mathf.Clamp(skill_gauge, 0, 4);
     }
 
     public void reset()
