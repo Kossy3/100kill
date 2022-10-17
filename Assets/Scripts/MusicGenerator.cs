@@ -13,7 +13,8 @@ public class MusicGenerator : MonoBehaviour
     //テスト用スクリプト
     List<int> defeated_colors = new List<int>();
     [SerializeField]
-    Midi obj;
+    Midi[] midi;
+    private List<List<List<Note>>> midi_score;
     int[] code_progress = new int[4]; //コード進行保存用
     [SerializeField]
     [Header("melody_scale: コードのスケール。0から")]
@@ -35,9 +36,13 @@ public class MusicGenerator : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Debug.Log(obj.ToString());
+        
         database = GameObject.Find("Database").GetComponent<Database>();
-        //test_start();
+        //test_start();]
+        midi_score = new List<List<List<Note>>>();
+        foreach(Midi m in midi){
+            midi_score.Add(m.Score());
+        }
     }
 
 
@@ -51,6 +56,10 @@ public class MusicGenerator : MonoBehaviour
     }
 
     public List<List<Note>> generate_8bar_music(int[] rhythm)
+    {
+        return midi_score[0];
+    }
+    public List<List<Note>> generate_8bar_music_old(int[] rhythm)
     {
         List<List<Note>> score = new List<List<Note>>();
         var colors = defeated_colors;
@@ -376,6 +385,7 @@ public class MusicGenerator : MonoBehaviour
     }
 }
 
+[System.Serializable]
 public class Note
 {
     public byte ch;
@@ -383,7 +393,7 @@ public class Note
     public float delta;
     public float len;
     public byte velocity;
-    public int mode = 0x9;
+    public byte mode = 0x9;
     public Note(int ch, int no, float delta, float len, byte velocity)
     {
         this.ch = (byte)ch;
@@ -397,6 +407,19 @@ public class Note
     {
         this.mode = 0xC;
         return this;
+    }
+
+    public Note off(){
+        this.mode = 0x8;
+        return this;
+    }
+}
+
+[System.Serializable]
+public class Track {
+    public List<Note> List;
+    public Track(List<Note> list){
+        List = list;
     }
 }
 
