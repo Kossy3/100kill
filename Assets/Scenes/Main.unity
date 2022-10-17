@@ -2471,7 +2471,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 927cdb60f6b691f40844e8aa831c59df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  debug_mode: 0
+  debug_mode: 1
   BPM: 108
   defeated_enemies: 0
   defeated_color_enemies: 0
@@ -2885,8 +2885,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 557973507}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.2, y: 1, z: 0}
-  m_LocalScale: {x: 1, y: 0.5, z: 1}
+  m_LocalPosition: {x: -0.01, y: 3.805, z: 0}
+  m_LocalScale: {x: 3.0641649, y: 1.1955338, z: 1}
   m_Children: []
   m_Father: {fileID: 923912046}
   m_RootOrder: 0
@@ -4594,7 +4594,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 8
-  m_Sprite: {fileID: 21300000, guid: b093cb9fbc47e57429ae164b343f754a, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 3810f25974bb1cf44910b96a9fd2a479, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -4614,7 +4614,7 @@ Transform:
   m_GameObject: {fileID: 923912043}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -6, y: -2, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.3, y: 0.3, z: 1}
   m_Children:
   - {fileID: 557973508}
   m_Father: {fileID: 0}
@@ -5080,8 +5080,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54e5bf2179d701940a4e6a9c5db26ff7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  slasheffect: {fileID: 6510125619236422600, guid: 6d7b01bdef4c9d44596d7108af762e72, type: 3}
-  catchanim: {fileID: 19896670, guid: df8009dc85777cd40a227ce4d9a59d6e, type: 3}
   _defeated_enemies: 0
   _defeated_color_enemies: 0
   database: {fileID: 450839139}
@@ -5089,7 +5087,6 @@ MonoBehaviour:
   good_misstext: {fileID: 815378411}
   move: 0
   maku: {fileID: 1243450834}
-  finish: 0
 --- !u!4 &1097724069
 Transform:
   m_ObjectHideFlags: 0
