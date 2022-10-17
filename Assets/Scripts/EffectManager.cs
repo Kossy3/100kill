@@ -6,48 +6,53 @@ using UnityEngine.SceneManagement;
 
 public class EffectManager : MonoBehaviour
 {
-    public ParticleSystem slasheffect;
-    private int _defeated_enemies;
+    [SerializeField]
+    //public ParticleSystem slasheffect;
+    //public ParticleSystem catchanim;
+    public int _defeated_enemies;
+    public int _defeated_color_enemies;
     public Database database;
+    public GameObject audiomanager;
     public Text good_misstext;
-    public ParticleSystem catchanim;
-    private int _defeated_color_enemies;
-    private float move = 1200f;
+    public float move;
     public RectTransform maku;
-    public bool finish = false;
+
 
     // Start is called before the first frame update
     void Start()
     {
         _defeated_enemies = database.defeated_enemies;
         _defeated_color_enemies = database.defeated_color_enemies;
+        move = 1200f;
         maku.position = new Vector2(640, move);
+        database = GameObject.Find("Database").GetComponent<Database>();
+        database.finish = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (_defeated_enemies < database.defeated_enemies)
+        /*if (_defeated_enemies < database.defeated_enemies)
         {
             StartCoroutine(effect());
         }
         if (_defeated_color_enemies < database.defeated_color_enemies)
         {
             StartCoroutine(catcheffect());
-        }
-        if (database.HP == 0)
+        }*/
+        if (database.HP == 0 && !database.debug_mode)
         {
-            
             move -= 1200f * Time.deltaTime;
             maku.position = new Vector2(640, move);
             if (move < 350f)
             {
-                move = 350f;
-                finish = true;
+                audiomanager.SetActive(false);
+                move = 349f;
+                database.finish = true;
             }
         }
     }
-    private IEnumerator effect()
+    /*private IEnumerator effect()
     {
         _defeated_enemies = database.defeated_enemies;
         var x = Instantiate(slasheffect, new Vector2(-6, -2), Quaternion.identity);
@@ -61,7 +66,7 @@ public class EffectManager : MonoBehaviour
         var y = Instantiate(catchanim, new Vector2(-6, -2), Quaternion.identity);
         yield return new WaitForSeconds(1.0f);
         Destroy(y.gameObject);
-    }
+    }*/
 
     public IEnumerator goodtext()
     {

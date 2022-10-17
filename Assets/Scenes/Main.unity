@@ -1145,7 +1145,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 220, y: 600}
-  m_SizeDelta: {x: 100, y: 100}
+  m_SizeDelta: {x: 95, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &184568789
 MonoBehaviour:
@@ -1167,7 +1167,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 14a950901f483184199e188d2705bb59, type: 3}
+  m_Sprite: {fileID: 5589852374903631101, guid: 69e7e0cb35bb6a1468bc8585ff1eadc6, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1397,10 +1397,10 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: c6c7181f1f1dbd24fa5fc650eed56773, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 6e2648787dede8443854072745e3a773, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 0.42
-  m_Pitch: 2.3
+  m_Volume: 0.306
+  m_Pitch: 2.23
   Loop: 0
   Mute: 0
   Spatialize: 0
@@ -2471,7 +2471,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 927cdb60f6b691f40844e8aa831c59df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  debug_mode: 1
+  debug_mode: 0
   BPM: 108
   defeated_enemies: 0
   defeated_color_enemies: 0
@@ -2480,6 +2480,7 @@ MonoBehaviour:
   HP: 5
   skill_gauge: 0
   playing_time: 0
+  finish: 0
   scene_number: 0
 --- !u!1 &457467152
 GameObject:
@@ -5080,9 +5081,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slasheffect: {fileID: 6510125619236422600, guid: 6d7b01bdef4c9d44596d7108af762e72, type: 3}
-  database: {fileID: 450839139}
-  good_misstext: {fileID: 815378411}
   catchanim: {fileID: 19896670, guid: df8009dc85777cd40a227ce4d9a59d6e, type: 3}
+  _defeated_enemies: 0
+  _defeated_color_enemies: 0
+  database: {fileID: 450839139}
+  audiomanager: {fileID: 291489192}
+  good_misstext: {fileID: 815378411}
+  move: 0
   maku: {fileID: 1243450834}
   finish: 0
 --- !u!4 &1097724069
@@ -5203,10 +5208,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58dda0160733f5e42860b2aba782dcb3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemy1_0: {fileID: 3794637243349461842, guid: a3e805492cbcdfc4c933e58e5e391fea, type: 3}
-  enemy1: {fileID: 5050000691190220249, guid: 6079a4dfaf91354409bde96f379ec0d4, type: 3}
-  enemy1_2: {fileID: 3332742408508000029, guid: 0bee74acc5aac1d4590bf30443ac598b, type: 3}
-  enemy1_3: {fileID: 6780735396237254868, guid: 564a1cb23a953dd4e88d58490d934d6e, type: 3}
+  enemy1_0: {fileID: 7136102207104742956, guid: 5d502c4ca74c29146a173546b9e05fec, type: 3}
+  enemy1: {fileID: 3980441359630169751, guid: 1cc8756c97bf85a43a07afa684adc230, type: 3}
+  enemy1_2: {fileID: 4290411905426074772, guid: 0e848ce1acc6acd4bab39eb9958f87ed, type: 3}
+  enemy1_3: {fileID: 1003899822845297161, guid: c6a29e75240c83d4ab8551169b618e81, type: 3}
   stone: {fileID: 421391495617002568, guid: fc0976f6e57761942bf643a4e32c59e6, type: 3}
   upthing: {fileID: 8507077371486527527, guid: 20256b4cc176a964f8d907225d7db138, type: 3}
   background_order:
@@ -6538,7 +6543,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 220, y: 600}
-  m_SizeDelta: {x: 100, y: 100}
+  m_SizeDelta: {x: 95, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1575977233
 MonoBehaviour:
@@ -6560,7 +6565,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: f985bcd5c69fe7244b63925480fc27de, type: 3}
+  m_Sprite: {fileID: 686285469728020020, guid: 69e7e0cb35bb6a1468bc8585ff1eadc6, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

@@ -8,7 +8,7 @@ public class Database : MonoBehaviour
 {
     [SerializeField]
     [Header("Debug_mode : trueで死亡時のシーン変更無効化")]
-    private bool debug_mode;
+    public bool debug_mode;
     public int BPM;
     public int defeated_enemies;
     public int defeated_color_enemies;
@@ -18,13 +18,12 @@ public class Database : MonoBehaviour
     public float skill_gauge;
     public float playing_time;
     public List<Dictionary<string, List<int>>> score_list;
-    private EffectManager effectmanager;
+    public bool finish;
 
     public int scene_number;
 
     public void Start()
     {
-        effectmanager = GameObject.Find("EffectManager").GetComponent<EffectManager>();
         BPM = 100;
         defeated_enemies = 0;
         defeated_color_enemies = 0;
@@ -68,9 +67,10 @@ public class Database : MonoBehaviour
         HP += n;
         HP = Mathf.Clamp(HP, 0, 5);
 
-        if (HP == 0 && !debug_mode && effectmanager.finish)
+        if (HP == 0 && !debug_mode && finish)
         {
             scene_number = 0;
+            finish = false;
             SceneManager.LoadScene("Score");
         }
     }
