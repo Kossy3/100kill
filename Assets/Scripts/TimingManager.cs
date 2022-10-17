@@ -209,12 +209,12 @@ public class TimingManager : MonoBehaviour
         if (rhythm == 2)
         {
             int rnd = UnityEngine.Random.Range(1, 4);
-            enemy = Instantiate(color_type[rnd], new Vector3(10, -2, 0), Quaternion.identity);
+            enemy = Instantiate(color_type[rnd], new Vector3(11, -1.6f, 0), Quaternion.identity);
             enemy.color_number = rnd;
         }
         else
         {
-            enemy = Instantiate(enemy_type[rhythm], new Vector3(10, -2, 0), Quaternion.identity);
+            enemy = Instantiate(enemy_type[rhythm], new Vector3(11, -1.6f, 0), Quaternion.identity);
         }
         spawn_enemy.Add(enemy);
     }
