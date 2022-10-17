@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SkillManager : MonoBehaviour
 {
-    public GameObject[] skill = new GameObject[2];
+    public GameObject[] skills = new GameObject[5];
     private float skill_gauge;
     public Database database;
     // Start is called before the first frame update
@@ -17,15 +17,35 @@ public class SkillManager : MonoBehaviour
     void Update()
     {
         skill_gauge = database.skill_gauge;
+
+        foreach (GameObject skill in skills)
+        {
+            skill.SetActive(false);
+        }
+
         if (skill_gauge == 0)
         {
-            skill[0].gameObject.SetActive(true);
-            skill[1].gameObject.SetActive(false);
+            skills[0].SetActive(true);
         }
-        if (skill_gauge == 1)
+
+        else if (skill_gauge == 1)
         {
-            skill[0].gameObject.SetActive(false);
-            skill[1].gameObject.SetActive(true);
+            skills[1].SetActive(true);
+        }
+
+        else if (skill_gauge == 2)
+        {
+            skills[2].SetActive(true);
+        }
+
+        else if (skill_gauge == 3)
+        {
+            skills[3].SetActive(true);
+        }
+
+        else if (skill_gauge == 4)
+        {
+            skills[4].SetActive(true);
         }
     }
 }
