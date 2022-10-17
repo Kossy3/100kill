@@ -40,6 +40,7 @@ public class Enemy : MonoBehaviour
                 database.defeated_color_enemies += 1;
                 database.add_defeat_color_number(color_number);
                 database.charge_HP(1);
+                database.charge_skill_gauge(1);
             }
         }
         if (gameObject.tag == "Obstacle")

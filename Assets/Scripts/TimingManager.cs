@@ -88,12 +88,24 @@ public class TimingManager : MonoBehaviour
     public void getkey(int KeyID)
     {
         float keyinput_time = Time.time;
-        if (spawn_enemy.Count > spawn_num)
+
+        if (KeyID == 2 && database.skill_gauge == 4)
+        {
+            GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
+
+            foreach (GameObject enemy in enemies)
+            {
+                enemy.GetComponent<Enemy>().good();
+                spawn_num ++;     
+            }
+        }
+
+        else if (spawn_enemy.Count > spawn_num)
         {
             float perfect_time = spawn_time[spawn_num];
-            if (Math.Abs(perfect_time - keyinput_time) <= 0.1f)
+            if (Math.Abs(perfect_time - keyinput_time) <= 0.1f )
             {
-                if (KeyID == spawn_type[spawn_num])
+                if (KeyID == spawn_type[spawn_num] || (KeyID == 4 && spawn_type[spawn_num] == 2))
                 {
                     spawn_enemy[spawn_num].good();
                 }
@@ -116,10 +128,10 @@ public class TimingManager : MonoBehaviour
             player.jump();
         }
 
-        else if (KeyID == 2 && database.skill_gauge == 1)
+        else if (KeyID == 2 && database.skill_gauge == 4)
         {
             player.skill();
-            database.charge_skill_gauge(-1);
+            database.charge_skill_gauge(-4);
         }
 
         else if (KeyID == 3)
@@ -139,7 +151,6 @@ public class TimingManager : MonoBehaviour
         var sw = new System.Diagnostics.Stopwatch();
         sw.Start();
         database.rise_BPM();
-        database.charge_skill_gauge(1);
         List<List<Note>> score = musicgenerator.generate_8bar_music(rhythm);
         musicplayer.play_music(score, database.BPM);
         sw.Stop();
