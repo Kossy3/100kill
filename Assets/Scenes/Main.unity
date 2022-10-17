@@ -5720,6 +5720,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d9840220010a36e4096036ca50a123cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  midi:
+  - {fileID: -6979533126094156877, guid: 4fa982277de11c246a89bc70019262ed, type: 3}
+  - {fileID: -6979533126094156877, guid: 4fa982277de11c246a89bc70019262ed, type: 3}
+  - {fileID: -6979533126094156877, guid: 4fa982277de11c246a89bc70019262ed, type: 3}
+  ch_index: 0900000000000000030000000100000002000000
 --- !u!4 &1744753915
 Transform:
   m_ObjectHideFlags: 0

@@ -100,6 +100,17 @@ public class MusicPlayer : MonoBehaviour
         return score;
     }
 
+    public void play_mid_event(byte mode, byte ch, byte no, float delta, byte velocity){
+        //Debug.Log($"ch{ch} no{no}, ve{velocity}, type{mode}, time{delta}");
+        StartCoroutine(play_mid_event_c(mode, ch, no, delta, velocity));
+    }
+    IEnumerator play_mid_event_c(byte mode, byte ch, byte no, float delta, byte velocity){
+        yield return new WaitForSeconds(delta);
+        
+        //Debug.Log((ch, noteno, delta, ms, velocity));
+        midiOutMsgFixed(handle, mode, ch, no, velocity);
+    }
+
     public void play_note(int mode, byte ch, byte no, float delta, float ms,byte velocity){
         if (mode == 0x9){
             StartCoroutine( play_note_c(ch, no, delta, ms, velocity));
@@ -171,6 +182,17 @@ public class MusicPlayer : MonoBehaviour
                 Note note = track[i];
                 delta_time += note.delta*C;
                 play_note(note.mode, note.ch, note.no, delta_time, note.len*C, note.velocity);
+            }
+        }
+    }
+
+    public void play_mid(List<List<Note>> score, float BPM){
+        float C = 60f/(float)BPM;
+        for (int j=0; j<score.Count; j++){
+            List<Note> track = score[j];
+            for (int i=0; i<track.Count; i++){
+                Note note = track[i];
+                play_mid_event(note.mode, note.ch, note.no, note.delta*C, note.velocity);
             }
         }
     }

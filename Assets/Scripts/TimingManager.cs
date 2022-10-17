@@ -152,9 +152,10 @@ public class TimingManager : MonoBehaviour
         sw.Start();
         database.rise_BPM();
         List<List<Note>> score = musicgenerator.generate_8bar_music(rhythm);
-        musicplayer.play_music(score, database.BPM);
+        //musicplayer.play_music(score, database.BPM);
+        musicplayer.play_mid(score, database.BPM);
         sw.Stop();
-        Debug.Log($"処理時間 {sw.Elapsed}");
+        //Debug.Log($"処理時間 {sw.Elapsed}");
     }
     public IEnumerator enemy_generator()
     {
