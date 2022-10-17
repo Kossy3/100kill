@@ -78,7 +78,7 @@ public class Database : MonoBehaviour
     public void charge_skill_gauge(int n)
     {
         skill_gauge += n;
-        skill_gauge = Mathf.Clamp(skill_gauge, 0, 1);
+        skill_gauge = Mathf.Clamp(skill_gauge, 0, 4);
     }
 
     public void reset()

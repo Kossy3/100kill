@@ -42,7 +42,7 @@ public class Defeats : MonoBehaviour
         {
             for (int i = 0; i < 5; i++)
             {
-                defeated_color_list.Add(defeated_color_number[defeated_color_number.Count - 10 + i]);
+                defeated_color_list.Add(defeated_color_number[defeated_color_number.Count - 5 + i]);
             }
         }
 
