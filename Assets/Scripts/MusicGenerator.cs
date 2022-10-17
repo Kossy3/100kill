@@ -13,22 +13,26 @@ public class MusicGenerator : MonoBehaviour
     //テスト用スクリプト
     List<int> defeated_colors = new List<int>();
     [SerializeField]
+    [Header("midi: midiファイルをいれる")]
     Midi[] midi;
+    [SerializeField]
+    [Header("track_index: チャンネルの指定（0~15）")]
+    int[] ch_index;
     private List<List<List<Note>>> midi_score;
     int[] code_progress = new int[4]; //コード進行保存用
-    [SerializeField]
+    //[SerializeField]
     [Header("melody_scale: コードのスケール。0から")]
     int[] code_scale = new int[] { 0, 2, 4, 5, 7, 9, 11 };
-    [SerializeField]
+    //[SerializeField]
     [Header("melody_scale: 旋律のスケール。0から")]
     int[] melody_scale = new int[] { 0, 2, 4, 7, 9 };
-    [SerializeField]
+    //[SerializeField]
     [Header("melody_root: 旋律の基準音 midiノート番号")]
     int melody_root = 60;
-    [SerializeField]
+    //[SerializeField]
     [Header("melody_max: 旋律の最高音 基準音からのスケール量")]
     int melody_max = 5;
-    [SerializeField]
+    //[SerializeField]
     [Header("melody_min: 旋律の最低音 基準音からのスケール量")]
     int melody_min = -5;
 
@@ -36,11 +40,12 @@ public class MusicGenerator : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+
         database = GameObject.Find("Database").GetComponent<Database>();
         //test_start();]
         midi_score = new List<List<List<Note>>>();
-        foreach(Midi m in midi){
+        foreach (Midi m in midi)
+        {
             midi_score.Add(m.Score());
         }
     }
@@ -57,7 +62,18 @@ public class MusicGenerator : MonoBehaviour
 
     public List<List<Note>> generate_8bar_music(int[] rhythm)
     {
-        return midi_score[0];
+
+        List<List<Note>> score = new List<List<Note>>();
+        for (int i=0; i < database.defeated_color_number.Count && i < ch_index.Length; i++)
+        {
+            List<Note> track = midi_score[database.defeated_color_number[database.defeated_color_number.Count - i - 1]-1][ch_index[i]];
+            score.Add(track);
+        }
+        if(database.defeated_color_number.Count == 0){
+            score.Add(generate_track1_drum(0));
+        }
+        var t = score[0];
+        return score;
     }
     public List<List<Note>> generate_8bar_music_old(int[] rhythm)
     {
@@ -112,14 +128,21 @@ public class MusicGenerator : MonoBehaviour
             for (var i = 0; i < 8; i++)
             {
                 track.Add(new Note(9, 36, delta, 1f / 8f, 100));
-                track.Add(new Note(9, 36, 1f / 2f, 1f / 8f, 100));
-                track.Add(new Note(9, 38, 1f / 2f, 1f / 8f, 127));
-                track.Add(new Note(9, 36, 1f / 2f, 1f / 8f, 100));
-                track.Add(new Note(9, 38, 1f / 4f, 1f / 8f, 127));
-                track.Add(new Note(9, 38, 1f / 2f, 1f / 8f, 127));
-                track.Add(new Note(9, 36, 1f / 4f, 1f / 8f, 100));
-                track.Add(new Note(9, 38, 1f / 2f, 1f / 8f, 127));
-                delta = 1f;
+                delta += 1f/2f;
+                track.Add(new Note(9, 36, delta, 1f / 8f, 100));
+                delta += 1f/2f;
+                track.Add(new Note(9, 38, delta, 1f / 8f, 127));
+                delta += 1f/2f;
+                track.Add(new Note(9, 36, delta, 1f / 8f, 100));
+                delta += 1f/2f;
+                track.Add(new Note(9, 36, delta, 1f / 8f, 127));
+                delta += 1f/2f;
+                track.Add(new Note(9, 36, delta, 1f / 8f, 127));
+                delta += 1f/2f;
+                track.Add(new Note(9, 38, delta, 1f / 8f, 100));
+                delta += 1f/2f;
+                track.Add(new Note(9, 36, delta, 1f / 8f, 127));
+                delta += 1f/2f;
             }
         }
         return track;
@@ -195,7 +218,8 @@ public class MusicGenerator : MonoBehaviour
         transrate_delta(ref track);
         return track;
     }
-    List<Note> test_code(int ch){
+    List<Note> test_code(int ch)
+    {
         List<Note> track = new List<Note>();
         track.Add(new Note(ch, 2, 0, 0, 0).program_change());
         int[][] val = new int[][] {
@@ -211,10 +235,10 @@ public class MusicGenerator : MonoBehaviour
         float delta = 0;
         for (int i = 0; i < 8; i++)
         {
-            track.Add(new Note(ch, 36 +val[i][0], delta, 40f/12f, 80));
-            track.Add(new Note(ch, 36 +val[i][1], delta, 40f/12f, 80));
-            track.Add(new Note(ch, 36 +val[i][2], delta, 40f/12f, 80));
-            track.Add(new Note(ch, 36 +val[i][3], delta, 40f/12f, 80));
+            track.Add(new Note(ch, 36 + val[i][0], delta, 40f / 12f, 80));
+            track.Add(new Note(ch, 36 + val[i][1], delta, 40f / 12f, 80));
+            track.Add(new Note(ch, 36 + val[i][2], delta, 40f / 12f, 80));
+            track.Add(new Note(ch, 36 + val[i][3], delta, 40f / 12f, 80));
             delta += 4f;
         }
         transrate_delta(ref track);
@@ -409,30 +433,34 @@ public class Note
         return this;
     }
 
-    public Note off(){
+    public Note off()
+    {
         this.mode = 0x8;
         return this;
     }
 }
 
 [System.Serializable]
-public class Track {
+public class Track
+{
     public List<Note> List;
-    public Track(List<Note> list){
+    public Track(List<Note> list)
+    {
         List = list;
     }
 }
 
 class DrumPattern
 {
-    public List<Note>[]drums = new List<Note>[4];
+    public List<Note>[] drums = new List<Note>[4];
     public DrumPattern()
     {
         Drum_8beat(0);
         Drum_maeda(1);
 
     }
-    void Drum_8beat(int n){
+    void Drum_8beat(int n)
+    {
         List<Note> track = new List<Note>();
         for (var i = 0; i < 64; i++)
         {
