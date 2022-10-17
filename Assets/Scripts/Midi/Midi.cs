@@ -4,13 +4,13 @@ using UnityEngine;
 using System.IO;
 using System;
 
-
+[CreateAssetMenu]
 public class Midi : ScriptableObject
 {
     public List<NoteData> noteList = new List<NoteData>();
     public HeaderChunkData headerChunk;
     public TrackChunkData[] trackChunks;
-    List<List<Note>> data;
+    public List<Track> score;
     public void load(BinaryReader reader)
     {
         headerChunk = new HeaderChunkData();
@@ -83,6 +83,7 @@ public class Midi : ScriptableObject
             // データ部解析
             TrackDataAnalysis(trackChunks[i].data, headerChunk);
         }
+        translate_Note();
     }
 
     public void TrackDataAnalysis(byte[] data, HeaderChunkData headerChunk)
@@ -149,6 +150,7 @@ public class Midi : ScriptableObject
 
                             // ロングノーツフラグ解除
                             longFlags[note.laneIndex] = false;
+                            //Debug.Log($"ch{note.ch} time{note.eventTime} no{note.laneIndex} type{note.type} ve{note.velocity}");
                         }
                         break;
                     case 0x90:  // ノートオン(ノートオフが呼ばれるまでは押しっぱなし扱い)
@@ -172,6 +174,7 @@ public class Midi : ScriptableObject
 
                             // リストにつっこむ
                             noteList.Add(note);
+                            //Debug.Log($"ch{note.ch} time{note.eventTime} no{note.laneIndex} type{note.type} ve{note.velocity}");
                         }
                         break;
                     case 0xa0:  // ポリフォニック キープレッシャー(鍵盤楽器で、キーを押した状態でさらに押し込んだ際に、その圧力に応じて送信される)
@@ -222,7 +225,17 @@ public class Midi : ScriptableObject
                         break;
 
                     case 0xc0:  // プログラムチェンジ(音色を変える命令)
-                        i += 1;
+                        dataByte0 = data[i++];
+                        {
+                            var note = new NoteData();
+                            note.ch = (int)(statusByte & 0x0f);
+                            note.eventTime = (int)currentTime;
+                            note.laneIndex = (int)dataByte0;
+                            note.velocity = (int)dataByte0;
+                            note.type = NoteType.ProgramChange;
+                            // リストにつっこむ
+                            noteList.Add(note);
+                        }
                         break;
 
                     case 0xd0:  // チャンネルプレッシャー(概ねポリフォニック キープレッシャーと同じだが、違いはそのチャンネルの全ノートナンバーに対して有効となる)
@@ -317,15 +330,38 @@ public class Midi : ScriptableObject
                 }
             }
         }
-        translate_Note();
+
     }
     private void translate_Note()
     {
+        score = new List<Track>();
+        for (int i = 0; i < 16; i++)
+        {
+            score.Add(new Track(new List<Note>()));
+        }
         foreach (var d in noteList)
         {
-            //Debug.Log($"ch{d.ch} no{d.laneIndex}, ve{d.velocity}, type{d.type}, time{d.eventTime}, ");
+            var note = new Note(d.ch, d.laneIndex, (float)(d.eventTime - (headerChunk.division * 4)) / headerChunk.division, 0, (byte)d.velocity);
+            if (d.type == NoteType.OFF)
+            {
+                note.off();
+            }
+            if (d.type == NoteType.ProgramChange){
+                note.program_change();
+            }
+            //Debug.Log($"ch{note.ch} no{note.no}, ve{note.velocity}, type{note.mode}, time{note.delta}");
+            score[d.ch].List.Add(note);
         }
-        //Debug.Log(headerChunk);
+    }
+    public List<List<Note>> Score (){
+        List<List<Note>> sc = new List<List<Note>>();
+        foreach (Track tr in score){
+            sc.Add(new List<Note>());
+            foreach(Note no in tr.List){
+                sc[sc.Count-1].Add(no);
+            }
+        }
+        return sc;
     }
 
     public struct HeaderChunkData
@@ -351,6 +387,7 @@ public class Midi : ScriptableObject
         LongEnd,     // ロング終端
         OFF, //ノーツ終了
         ON, //ノーツ開始
+        ProgramChange,
     }
 
     public struct NoteData
@@ -361,5 +398,4 @@ public class Midi : ScriptableObject
         public int laneIndex;  // レーン番号
         public NoteType type;   // ノーツの種類
     }
-
 }

@@ -1,10 +1,13 @@
 using UnityEngine;
+using System.Collections.Generic;
 using System.IO;
 using UnityEditor.AssetImporters;
 
 [ScriptedImporter(1, "mid")]
 public class MidiImporter : ScriptedImporter
 {
+    [SerializeField]
+    private float _scale = 1;
     public override void OnImportAsset(AssetImportContext ctx)
     {
         using (var stream = new FileStream(ctx.assetPath, FileMode.Open, FileAccess.Read))
