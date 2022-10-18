@@ -341,7 +341,11 @@ public class Midi : ScriptableObject
         }
         foreach (var d in noteList)
         {
-            var note = new Note(d.ch, d.laneIndex, (float)(d.eventTime - (headerChunk.division * 4)) / headerChunk.division, 0, (byte)d.velocity);
+            int eventtime = d.eventTime;
+            if(d.ch == 9 && d.type == NoteType.OFF){
+                eventtime += 14;
+            }
+            var note = new Note(d.ch, d.laneIndex, (float)(eventtime - (headerChunk.division * 4)) / headerChunk.division, 0, (byte)d.velocity);
             if (d.type == NoteType.OFF)
             {
                 note.off();
