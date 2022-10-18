@@ -25,6 +25,16 @@ public class DescriptionManager : MonoBehaviour
         animator[6].Play("enemy_discription2");
         animator[7].Play("enemy_discription3");
         animator[8].Play("katana");
+        animator[9].Play("use_katana");
+        animator[10].Play("enemy_discription2");
+        animator[11].Play("enemy_discription1");
+        animator[12].Play("enemy_discription3");
+        animator[13].Play("enemy_discription");
+        animator[14].Play("enemy_discription");
+        animator[15].Play("enemy_discription");
+        animator[16].Play("enemy_discription2");
+        animator[17].Play("enemy_discription");
+        animator[18].Play("slash_discription");
     }
 
 }

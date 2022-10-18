@@ -26,6 +26,32 @@ AnimatorState:
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
   m_TimeParameter: 
+--- !u!1102 &-7263792919404906627
+AnimatorState:
+  serializedVersion: 6
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: use_katana
+  m_Speed: 1
+  m_CycleOffset: 0
+  m_Transitions: []
+  m_StateMachineBehaviours: []
+  m_Position: {x: 50, y: 50, z: 0}
+  m_IKOnFeet: 0
+  m_WriteDefaultValues: 1
+  m_Mirror: 0
+  m_SpeedParameterActive: 0
+  m_MirrorParameterActive: 0
+  m_CycleOffsetParameterActive: 0
+  m_TimeParameterActive: 0
+  m_Motion: {fileID: 7400000, guid: 65dd75a926365a64896a40e289394bce, type: 2}
+  m_Tag: 
+  m_SpeedParameter: 
+  m_MirrorParameter: 
+  m_CycleOffsetParameter: 
+  m_TimeParameter: 
 --- !u!1102 &-6689789516149734886
 AnimatorState:
   serializedVersion: 6
@@ -115,16 +141,16 @@ AnimatorStateMachine:
   m_ChildStates:
   - serializedVersion: 1
     m_State: {fileID: -6689789516149734886}
-    m_Position: {x: 210, y: 110, z: 0}
+    m_Position: {x: -210, y: 160, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -9144402560389838727}
-    m_Position: {x: 355, y: 305, z: 0}
+    m_Position: {x: -210, y: 370, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 4951221738343200508}
-    m_Position: {x: 24.84082, y: 341.6077, z: 0}
+    m_Position: {x: -210, y: 30, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 5505880771094026457}
-    m_Position: {x: 279.2829, y: -48.107452, z: 0}
+    m_Position: {x: -210, y: -30, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -1223712045647732761}
     m_Position: {x: -210, y: 100, z: 0}
@@ -133,7 +159,10 @@ AnimatorStateMachine:
     m_Position: {x: 59.709167, y: 141.01685, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -4004806980545485835}
-    m_Position: {x: 94.70917, y: 206.01685, z: 0}
+    m_Position: {x: -210, y: 230, z: 0}
+  - serializedVersion: 1
+    m_State: {fileID: -7263792919404906627}
+    m_Position: {x: -210, y: 300, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions: []
   m_EntryTransitions: []
