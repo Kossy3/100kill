@@ -16,7 +16,7 @@ public class DescriptionManager : MonoBehaviour
     void Update()
     {
         animator[0].Play("slash_discription");
-        animator[1].Play("skill_discription");
+        animator[1].Play("slash_discription");
         animator[2].Play("jump_discription");
         animator[3].Play("sliding_discription");
 
@@ -31,9 +31,9 @@ public class DescriptionManager : MonoBehaviour
         animator[12].Play("enemy_discription3");
         animator[13].Play("enemy_discription");
         animator[14].Play("enemy_discription");
-        animator[15].Play("enemy_discription");
-        animator[16].Play("enemy_discription2");
-        animator[17].Play("enemy_discription");
+        animator[15].Play("enemy_discription2");
+        animator[16].Play("upthing_discription");
+        animator[17].Play("stone_discription");
         animator[18].Play("slash_discription");
     }
 

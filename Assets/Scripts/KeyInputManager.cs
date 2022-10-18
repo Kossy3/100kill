@@ -6,9 +6,11 @@ public class KeyInputManager : MonoBehaviour
 {
     private AudioSource audios;
     public TimingManager timingmanager;
+    private Database database;
     // Start is called before the first frame update
     void Start()
     {
+        database = GameObject.Find("Database").GetComponent<Database>();
         audios = GameObject.Find("AudioManager").GetComponent<AudioSource>();
     }
 
@@ -22,7 +24,7 @@ public class KeyInputManager : MonoBehaviour
                 timingmanager.getkey(1);
                 audios.Play();
             }
-            else if (Input.GetKeyDown(KeyCode.A))
+            else if (Input.GetKeyDown(KeyCode.A) && database.skill_gauge == 4)
             {
                 timingmanager.getkey(2);
                 audios.Play();
