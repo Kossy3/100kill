@@ -9,6 +9,7 @@ public class StopMenu : MonoBehaviour
 {
     private CountDown countdown;
     private EventSystem eventsystem;
+    private Database database;
 
     private Image image;
 
@@ -23,6 +24,7 @@ public class StopMenu : MonoBehaviour
     {
         countdown = GameObject.Find("CountDown").GetComponent<CountDown>();
         eventsystem = GameObject.Find("EventSystem").GetComponent<EventSystem>();
+        database = GameObject.Find("Database").GetComponent<Database>();
 
         image = gameObject.GetComponent<UnityEngine.UI.Image>();
         image.enabled = false;
@@ -181,15 +183,15 @@ public class StopMenu : MonoBehaviour
 
     public void on_click_startover()
     {
-        Debug.Log(9);
         GameObject.Find("Database").GetComponent<Database>().reset();
-        //Destroy(GameObject.Find("Database"));
         SceneManager.LoadScene("Main");
+        database.reset();
     }
 
     public void on_click_giveup()
     {
         SceneManager.LoadScene("Start");
+        database.reset();
     }
 
     public void on_click_stopmenu()

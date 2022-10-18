@@ -83,12 +83,6 @@ public class Database : MonoBehaviour
 
     public void reset()
     {
-        BPM = 100;
-        defeated_enemies = 0;
-        defeated_color_number = new List<int>();
-        Stages = 0;
-        HP = 5;
-        skill_gauge = 0;
-        playing_time = 0;
+        Destroy(this);
     }
 }

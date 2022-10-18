@@ -3,12 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using UnityEngine.Networking;
+using System;
+using System.IO;
+using System.Text;
+using System.Text.RegularExpressions;
 
 public class MyScore : MonoBehaviour
 {
     private Database database;
     private ToKansuji tokansuji;
     private RankingTable rankingtable;
+    private Online online;
 
     private GameObject ranking;
     private GameObject escapebutton;
@@ -31,17 +37,20 @@ public class MyScore : MonoBehaviour
     public string player_name;
     public int mode;
 
+    public string textResult;
+
     void Start()
     {
         tokansuji = GameObject.Find("ToKansuji").GetComponent<ToKansuji>();
         rankingtable = GameObject.Find("RankingTable").GetComponent<RankingTable>();
+        online = GameObject.Find("Online").GetComponent<Online>();
 
         ranking = GameObject.Find("Ranking");
         escapebutton = GameObject.Find("EscapeButton");
         modechanger = GameObject.Find("ModeChanger");
         inputname = GameObject.Find("InputName");
         maku = GameObject.Find("maku");
-       audioplayer = GameObject.Find("AudioPlayer");
+        audioplayer = GameObject.Find("AudioPlayer");
 
         button = inputname.transform.Find("Button").gameObject;
 
@@ -63,11 +72,6 @@ public class MyScore : MonoBehaviour
         try
         {
             database =  GameObject.Find("Database").GetComponent<Database>(); 
-            bool[] scene_number_identifier = new bool[1];
-
-            if (scene_number_identifier[database.scene_number])
-            {                
-            }
 
             my_score = database.defeated_enemies;
 
@@ -172,7 +176,6 @@ public class MyScore : MonoBehaviour
                 inputname.transform.Find("Text").gameObject.SetActive(false);
             }
         }
-
     }
 
     private bool indexof_containkey(List<Dictionary<string, List<int>>> list, string dic_key)
@@ -237,6 +240,8 @@ public class MyScore : MonoBehaviour
             Dictionary<string, List<int>> scores_dic = new Dictionary<string, List<int>>() {{player_name, scores_list}};
             database.score_list.Add(scores_dic);
 
+            StartCoroutine(SendText());
+
             ranking.SetActive(true);
             escapebutton.SetActive(true);
             modechanger.SetActive(true);
@@ -244,6 +249,33 @@ public class MyScore : MonoBehaviour
 
             rankingtable.generate_ranking(player_name);
             mode = 0;
+        }
+    }
+
+    private IEnumerator SendText()
+    {
+        online.StartCoroutine("GetText");
+
+        int playing_time = (int)database.playing_time;
+
+        string URL = "http://plsk.net/edit.php?id=100kill&txt=" +
+        online.scores_str + "%0A" +
+        Convert.ToBase64String(Encoding.GetEncoding("UTF-8").GetBytes(player_name)) + ";" +
+        database.defeated_enemies.ToString() + ";" +
+        playing_time.ToString();
+
+        UnityWebRequest request = UnityWebRequest.Get(URL);
+
+        yield return request.SendWebRequest();
+     
+        if (request.isNetworkError || request.isHttpError) 
+        {
+            Debug.Log(request.error);
+        }
+
+        else 
+        {
+            Debug.Log("Get upload complete!");
         }
     }
 }

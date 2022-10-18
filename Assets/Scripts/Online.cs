@@ -4,41 +4,40 @@ using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
 using System.IO;
+using System;
+using System.Text;
+using System.Text.RegularExpressions;
 
 public class Online : MonoBehaviour
 {
+    public List<Dictionary<string, List<int>>> scores_list;
+
+    public string scores_str;
+
     private const string URL = "http://plsk.net/100kill";
-    public string textResult;
-    public Database database;
-    public string defeates;
-    // Start is called before the first frame update
+
     void Start()
     {
-        database = GameObject.Find("Database").GetComponent<Database>();
-        defeates = database.defeated_enemies.ToString();
-        StartCoroutine(GetText());
+        scores_list = new List<Dictionary<string, List<int>>>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-    IEnumerator GetText()
+    private IEnumerator GetText()
     {
         UnityWebRequest request = UnityWebRequest.Get(URL);
         yield return request.SendWebRequest();
-        if (request.result != UnityWebRequest.Result.Success)
+
+        if (request.isNetworkError || request.isHttpError)
         {
             Debug.Log(request.error);
         }
+
         else
         {
-            Debug.Log(request.downloadHandler.text);
-            textResult = request.downloadHandler.text;
-            byte[] results = request.downloadHandler.data;
+            string textResult = request.downloadHandler.text;
 
+            Match match = Regex.Match(textResult, "id=\"message\" >(.*)<\\/textarea>");
+            scores_str = match.Groups[1].Value;
+            Debug.Log(match.Groups[1]);
         }
     }
 }

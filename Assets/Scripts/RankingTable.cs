@@ -3,22 +3,24 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
+using System;
 
 public class RankingTable : MonoBehaviour
 {
-    private Database database;
     private ToKansuji tokansuji;
+    private Scrollbar scrollbar;
+    private Online online;
 
     public GameObject flame;
 
     private Text text_rank;
     private Text text_score;
 
-    private Scrollbar scrollbar;
 
     private int my_score;
     private int my_ranking;
 
+    private List<Dictionary<string, List<int>>> scores_list;
     private Dictionary<string, int> ranking_dic;
     private List<Dictionary<string, int>> ranking_list;
 
@@ -33,21 +35,9 @@ public class RankingTable : MonoBehaviour
     {
         tokansuji = GameObject.Find("ToKansuji").GetComponent<ToKansuji>();
         scrollbar = GameObject.Find("Scrollbar").GetComponent<Scrollbar>();
+        online = GameObject.Find("Online").GetComponent<Online>();
 
         mode = 0;
-        
-        try
-        {
-            database = GameObject.Find("Database").GetComponent<Database>();
-            if (database.scene_number == 1)
-            {
-                generate_ranking(null);
-            }
-        }
-
-        catch (System.Exception)
-        {
-        }
     }
 
     public void Update()
@@ -85,17 +75,39 @@ public class RankingTable : MonoBehaviour
 
     public void generate_ranking(string player_name)
     {
+        online.StartCoroutine("GetText");
+
+
+
+        if (online.scores_str != null)
+        {
+            List<int> scores = new List<int>();
+            Dictionary<string, List<int>> scores_dic = new Dictionary<string, List<int>>();
+
+            string[] del = {"\n"};
+
+            foreach (string lists in online.scores_str.Split(del, StringSplitOptions.None))
+            {
+                string[] list = lists.Split(';');
+                scores.Add((int.Parse(list[1])));
+                scores.Add((int.Parse(list[2])));
+                scores_dic.Add(list[0], scores);
+                scores_list.Add(scores_dic);
+
+                scores.Clear();
+                scores_dic.Clear();
+            }
+        }
 
         ranking_dic = new Dictionary<string, int>();
         ranking_list = new List<Dictionary<string, int>>();
 
         flame_list = new List<GameObject>();
 
-        foreach (Dictionary<string, List<int>> dic in database.score_list)
+        foreach (Dictionary<string, List<int>> dic in online.scores_list)
         {
             ranking_dic.Add(dic.FirstOrDefault().Key, dic.FirstOrDefault().Value[mode]);   
             
-
             ranking_list.Add(ranking_dic);
 
             ranking_dic = new Dictionary<string, int>();
@@ -249,7 +261,7 @@ public class RankingTable : MonoBehaviour
             new Color (0, 0, 0, 1);
         }
 
-        if (database.scene_number == 0)
+        if (GameObject.Find("Database"))
         {
             flame_list[my_ranking].transform.Find("Rank").gameObject.
             transform.Find("Text(RANK)").gameObject.GetComponent<Text>().fontStyle = FontStyle.Bold;

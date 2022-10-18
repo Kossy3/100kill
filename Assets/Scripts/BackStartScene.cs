@@ -84,11 +84,11 @@ public class BackStartScene : MonoBehaviour
 
     public void on_click()
     {
-        if (GameObject.Find("Database") && GameObject.Find("MyScore") && myscore.mode == 1)
+        if (GameObject.Find("Database"))
         {
-            database.score_list.RemoveAt(database.score_list.Count - 1);
+            Destroy(GameObject.Find("Database"));
         }
-
+        
         SceneManager.LoadScene("Start");
     }
 }
