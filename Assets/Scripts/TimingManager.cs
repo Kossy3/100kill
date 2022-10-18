@@ -12,6 +12,7 @@ public class TimingManager : MonoBehaviour
     private MusicPlayer musicplayer;
     private Player player;
     private BackGround background;
+    private CameraShake shake;
 
     public Enemy enemy1_0;
     public Enemy enemy1;
@@ -41,6 +42,7 @@ public class TimingManager : MonoBehaviour
         musicgenerator = GameObject.Find("MusicGenerator").GetComponent<MusicGenerator>();
         musicplayer = GameObject.Find("MusicPlayer").GetComponent<MusicPlayer>();
         player = GameObject.Find("Player").GetComponent<Player>();
+        shake = GameObject.Find("Main Camera").GetComponent<CameraShake>();
 
         enemy_type = new Enemy[] { null, stone, null, upthing, enemy1_0 };
         color_type = new Enemy[] { null, enemy1, enemy1_2, enemy1_3 };
@@ -91,6 +93,7 @@ public class TimingManager : MonoBehaviour
 
         if (KeyID == 2 && database.skill_gauge == 4)
         {
+            shake.Shake(0.1f, 0.3f);
             GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
 
 

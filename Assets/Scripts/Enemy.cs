@@ -10,10 +10,12 @@ public class Enemy : MonoBehaviour
     private EffectManager effectmanager;
     private Animator anim;
     private AudioSource[] missaudio;
+    private CameraShake shake;
 
     // Start is called before the first frame update
     public void Start()
     {
+        shake = GameObject.Find("Main Camera").GetComponent<CameraShake>();
         effectmanager = GameObject.Find("EffectManager").GetComponent<EffectManager>();
         missaudio = GameObject.Find("AudioManager").GetComponents<AudioSource>();
         anim = GetComponent<Animator>();
@@ -33,6 +35,7 @@ public class Enemy : MonoBehaviour
         StartCoroutine(effectmanager.goodtext());
         if (gameObject.tag == "Enemy")
         {
+            shake.Shake(0.1f, 0.05f); 
             database.defeated_enemies += 1;
             anim.SetTrigger("enemy_yarare");
             if (color_number != 0)
@@ -53,11 +56,11 @@ public class Enemy : MonoBehaviour
     {
         StartCoroutine(effectmanager.misstext());
         database.charge_HP(-1);
-        if(Input.anyKey && !Input.GetMouseButton(0) && !Input.GetMouseButton(1) && !Input.GetMouseButton(2))
+        if(database.HP != 0 &&Input.anyKey && !Input.GetMouseButton(0) && !Input.GetMouseButton(1) && !Input.GetMouseButton(2))
         {
             missaudio[1].Play();
         }
-        else
+        else if (database.HP != 0)
         {
             missaudio[2].Play();
         }

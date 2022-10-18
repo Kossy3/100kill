@@ -24,10 +24,13 @@ public class KeyInputManager : MonoBehaviour
                 timingmanager.getkey(1);
                 audios.Play();
             }
-            else if (Input.GetKeyDown(KeyCode.A) && database.skill_gauge == 4)
+            else if (Input.GetKeyDown(KeyCode.A))
             {
                 timingmanager.getkey(2);
-                audios.Play();
+                if (database.skill_gauge == 4)
+                {
+                    audios.Play();
+                }
             }
             else if (Input.GetKeyDown(KeyCode.S))
             {

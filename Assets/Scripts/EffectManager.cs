@@ -17,7 +17,6 @@ public class EffectManager : MonoBehaviour
     public float move;
     public RectTransform maku;
 
-
     // Start is called before the first frame update
     void Start()
     {
@@ -44,9 +43,10 @@ public class EffectManager : MonoBehaviour
         {
             move -= 1200f * Time.deltaTime;
             maku.position = new Vector2(640, move);
+            //audiomanager.SetActive(false);
             if (move < 350f)
             {
-                audiomanager.SetActive(false);
+
                 move = 349f;
                 database.finish = true;
             }
