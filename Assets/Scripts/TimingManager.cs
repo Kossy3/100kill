@@ -93,10 +93,15 @@ public class TimingManager : MonoBehaviour
         {
             GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
 
+
             foreach (GameObject enemy in enemies)
             {
                 enemy.GetComponent<Enemy>().good();
-                spawn_num ++;     
+                spawn_num ++;
+                if (enemy.tag == "obstacle")
+                {
+                    enemy.GetComponent<Animation>().Play();
+                }
             }
         }
 
