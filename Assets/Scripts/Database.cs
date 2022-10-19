@@ -17,7 +17,6 @@ public class Database : MonoBehaviour
     public int HP;
     public float skill_gauge;
     public float playing_time;
-    public List<Dictionary<string, List<int>>> score_list;
     public bool finish;
 
     public int scene_number;
@@ -37,14 +36,15 @@ public class Database : MonoBehaviour
         debug_mode = false;
 #endif 
 
-        score_list = new List<Dictionary<string, List<int>>>();
-
         DontDestroyOnLoad(gameObject);
     }
 
     public void FixedUpdate()
     {
-        playing_time += Time.deltaTime;
+        if (HP != 0)
+        {
+            playing_time += Time.deltaTime;
+        }
     }
 
     public int get_rised_BPM()
@@ -83,12 +83,6 @@ public class Database : MonoBehaviour
 
     public void reset()
     {
-        BPM = 100;
-        defeated_enemies = 0;
-        defeated_color_number = new List<int>();
-        Stages = 0;
-        HP = 5;
-        skill_gauge = 0;
-        playing_time = 0;
+        Destroy(this);
     }
 }

@@ -120,12 +120,12 @@ public class WarningBoard : MonoBehaviour
 
         if (Input.GetKeyUp(KeyCode.Y))
         {
-            select_button.GetComponent<Button>().onClick.Invoke();
+            button_list[0].GetComponent<Button>().onClick.Invoke();
         }
 
         else if (Input.GetKeyUp(KeyCode.N))
         {
-            select_button.GetComponent<Button>().onClick.Invoke();
+            button_list[1].GetComponent<Button>().onClick.Invoke();
         }
     }
 
@@ -135,32 +135,32 @@ public class WarningBoard : MonoBehaviour
         {
             myscore.player_name = GameObject.Find("InputField").transform.Find("Text").gameObject.GetComponent<Text>().text;
 
-            List<int> scores_list = new List<int>() {database.defeated_enemies, (int)database.playing_time};
-            Dictionary<string, List<int>> scores_dic = new Dictionary<string, List<int>>() {{myscore.player_name, scores_list}};
-            database.score_list.Add(scores_dic);
+            int my_time = (int)database.playing_time;
+            int my_score = database.defeated_enemies;
+            myscore.my_scores = new int[] {my_score, my_time};
 
             ranking.SetActive(true);
             escapebutton.SetActive(true);
             modechanger.SetActive(true);
             inputname.SetActive(false);
 
-            rankingtable.generate_ranking(myscore.player_name);
+            rankingtable.generate_ranking(myscore.player_name, myscore.my_scores, true);
         }
 
         else
         {
-            myscore.player_name = "guest";
+            int my_score = database.defeated_enemies;
+            int my_time = (int)database.playing_time;
+            myscore.my_scores = new int[] {my_score, my_time};
 
-            List<int> scores_list = new List<int>() {database.defeated_enemies, (int)database.playing_time};
-            Dictionary<string, List<int>> scores_dic = new Dictionary<string, List<int>>() {{myscore.player_name, scores_list}};
-            database.score_list.Add(scores_dic);
+            myscore.player_name = "guestplay";
 
             ranking.SetActive(true);
             escapebutton.SetActive(true);
             modechanger.SetActive(true);
             inputname.SetActive(false);
 
-            rankingtable.generate_ranking(myscore.player_name);
+            rankingtable.generate_ranking(myscore.player_name, myscore.my_scores, true);
         }
     }
 
