@@ -2921,7 +2921,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 0}
+    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
     m_FontSize: 40
     m_FontStyle: 0
     m_BestFit: 0
@@ -3943,7 +3943,7 @@ MonoBehaviour:
   good_misstext: {fileID: 815378411}
   move: 0
   maku: {fileID: 1243450834}
-  musicplayer: {fileID: 0}
+  musicplayer: {fileID: 1036851633}
 --- !u!4 &1097724069
 Transform:
   m_ObjectHideFlags: 0
