@@ -9,6 +9,7 @@ public class BackStartScene : MonoBehaviour
 {
     private Database database;
     private MyScore myscore;
+    private Online online;
 
     private GameObject text1;
     private GameObject text2;
@@ -26,6 +27,8 @@ public class BackStartScene : MonoBehaviour
         {
             myscore = GameObject.Find("MyScore").GetComponent<MyScore>();
         }
+
+        online = GameObject.Find("Online").GetComponent<Online>();
 
         text1 = transform.Find("Text1").gameObject;
         text2 = transform.Find("Text2").gameObject;
@@ -88,6 +91,8 @@ public class BackStartScene : MonoBehaviour
         {
             Destroy(GameObject.Find("Database"));
         }
+
+        online.StartCoroutine("SendText");
         
         SceneManager.LoadScene("Start");
     }

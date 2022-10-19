@@ -3,11 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
-using UnityEngine.Networking;
 using System;
-using System.IO;
 using System.Text;
-using System.Text.RegularExpressions;
 
 public class MyScore : MonoBehaviour
 {
@@ -16,6 +13,7 @@ public class MyScore : MonoBehaviour
     private RankingTable rankingtable;
     private Online online;
 
+    private GameObject scoreUI;
     private GameObject ranking;
     private GameObject escapebutton;
     private GameObject modechanger;
@@ -30,14 +28,11 @@ public class MyScore : MonoBehaviour
 
     private List<RaycastResult> rayresult;
 
-    private int my_score;
-
-    private float my_scoretime;
-
     public string player_name;
-    public int mode;
+    public int[] my_scores;
+    public List<string> name_list;
 
-    public string textResult;
+    public int mode;
 
     void Start()
     {
@@ -45,6 +40,7 @@ public class MyScore : MonoBehaviour
         rankingtable = GameObject.Find("RankingTable").GetComponent<RankingTable>();
         online = GameObject.Find("Online").GetComponent<Online>();
 
+        scoreUI = GameObject.Find("ScoreUI");
         ranking = GameObject.Find("Ranking");
         escapebutton = GameObject.Find("EscapeButton");
         modechanger = GameObject.Find("ModeChanger");
@@ -53,6 +49,8 @@ public class MyScore : MonoBehaviour
         audioplayer = GameObject.Find("AudioPlayer");
 
         button = inputname.transform.Find("Button").gameObject;
+
+        name_list = new List<string>();
 
         rayresult = new List<RaycastResult>();
 
@@ -73,13 +71,13 @@ public class MyScore : MonoBehaviour
         {
             database =  GameObject.Find("Database").GetComponent<Database>(); 
 
-            my_score = database.defeated_enemies;
+            int my_score = database.defeated_enemies;
 
             text_myscore.text = tokansuji.to_kansuji(my_score, "〇") + "人切り";
 
             int minutes = 0;
 
-            my_scoretime = database.playing_time;
+            float my_scoretime = database.playing_time;
 
             if (my_scoretime >= 60f)
             {
@@ -157,7 +155,15 @@ public class MyScore : MonoBehaviour
 
         if (GameObject.Find("InputField"))
         {
-            if (indexof_containkey(database.score_list, GameObject.Find("InputField").transform.Find("Text").gameObject.GetComponent<Text>().text))
+            foreach (string lists in online.scores_str.Split(':'))
+            {
+                string[] list = lists.Split(';');
+
+                name_list.Add(Encoding.GetEncoding("UTF-8").GetString(Convert.FromBase64String(list[0])));
+
+            }
+
+            if (indexof_containkey(name_list, GameObject.Find("InputField").transform.Find("Text").gameObject.GetComponent<Text>().text))
             {
                 GameObject text = inputname.transform.Find("Text").gameObject;
                 text.SetActive(true);
@@ -178,13 +184,13 @@ public class MyScore : MonoBehaviour
         }
     }
 
-    private bool indexof_containkey(List<Dictionary<string, List<int>>> list, string dic_key)
+    private bool indexof_containkey(List<string> name_list, string player_name)
     {
         bool overlap = false;
 
-        foreach (Dictionary<string, List<int>> dic in list)
+        foreach (string name in name_list)
         {
-            if (dic.ContainsKey(dic_key))
+            if (player_name == name)
             {
                 overlap = true;
                 break;
@@ -215,7 +221,14 @@ public class MyScore : MonoBehaviour
 
     public void on_click_name()
     {
-        if (indexof_containkey(database.score_list, GameObject.Find("InputField").transform.Find("Text").gameObject.GetComponent<Text>().text))
+        foreach (string lists in online.scores_str.Split(':'))
+        {
+            string[] list = lists.Split(';');
+
+            name_list.Add(Encoding.GetEncoding("UTF-8").GetString(Convert.FromBase64String(list[0])));
+        }
+
+        if (indexof_containkey(name_list, GameObject.Find("InputField").transform.Find("Text").gameObject.GetComponent<Text>().text))
         {
             inputname.transform.Find("WarningBoard").gameObject.SetActive(true);
             GameObject.Find("InputField").transform.Find("Text").gameObject.GetComponent<Text>().text = "";
@@ -234,48 +247,19 @@ public class MyScore : MonoBehaviour
 
         else
         {
+            int my_score = database.defeated_enemies;
+            int my_time = (int)database.playing_time;
+            my_scores = new int[] {my_score, my_time};
+
             player_name = GameObject.Find("InputField").transform.Find("Text").gameObject.GetComponent<Text>().text;
-
-            List<int> scores_list = new List<int>() {database.defeated_enemies, (int)database.playing_time};
-            Dictionary<string, List<int>> scores_dic = new Dictionary<string, List<int>>() {{player_name, scores_list}};
-            database.score_list.Add(scores_dic);
-
-            StartCoroutine(SendText());
 
             ranking.SetActive(true);
             escapebutton.SetActive(true);
             modechanger.SetActive(true);
             inputname.SetActive(false);
 
-            rankingtable.generate_ranking(player_name);
+            rankingtable.generate_ranking(player_name, my_scores, true);
             mode = 0;
-        }
-    }
-
-    private IEnumerator SendText()
-    {
-        online.StartCoroutine("GetText");
-
-        int playing_time = (int)database.playing_time;
-
-        string URL = "http://plsk.net/edit.php?id=100kill&txt=" +
-        online.scores_str + "%0A" +
-        Convert.ToBase64String(Encoding.GetEncoding("UTF-8").GetBytes(player_name)) + ";" +
-        database.defeated_enemies.ToString() + ";" +
-        playing_time.ToString();
-
-        UnityWebRequest request = UnityWebRequest.Get(URL);
-
-        yield return request.SendWebRequest();
-     
-        if (request.isNetworkError || request.isHttpError) 
-        {
-            Debug.Log(request.error);
-        }
-
-        else 
-        {
-            Debug.Log("Get upload complete!");
         }
     }
 }

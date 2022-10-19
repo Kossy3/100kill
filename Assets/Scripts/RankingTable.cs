@@ -4,11 +4,13 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
 using System;
+using System.Text;
 
 public class RankingTable : MonoBehaviour
 {
     private ToKansuji tokansuji;
     private Scrollbar scrollbar;
+    private MyScore myscore;
     private Online online;
 
     public GameObject flame;
@@ -36,6 +38,11 @@ public class RankingTable : MonoBehaviour
         tokansuji = GameObject.Find("ToKansuji").GetComponent<ToKansuji>();
         scrollbar = GameObject.Find("Scrollbar").GetComponent<Scrollbar>();
         online = GameObject.Find("Online").GetComponent<Online>();
+
+        if (GameObject.Find("MyScore"))
+        {
+            myscore = GameObject.Find("MyScore").GetComponent<MyScore>();
+        }
 
         mode = 0;
     }
@@ -73,30 +80,39 @@ public class RankingTable : MonoBehaviour
         }
     }
 
-    public void generate_ranking(string player_name)
+    public void generate_ranking(string player_name, int[] my_scores, bool bl)
     {
-        online.StartCoroutine("GetText");
+        scores_list = new List<Dictionary<string, List<int>>>();
 
-
-
-        if (online.scores_str != null)
+        if (bl && myscore.player_name != "guestplay")
         {
-            List<int> scores = new List<int>();
-            Dictionary<string, List<int>> scores_dic = new Dictionary<string, List<int>>();
+            online.scores_str = online.scores_str + ":" + 
+            Convert.ToBase64String(Encoding.GetEncoding("UTF-8").GetBytes(player_name)) + ";" +
+            my_scores[0].ToString() + ";" + my_scores[1].ToString();
+        }
 
-            string[] del = {"\n"};
+        List<int> scores = new List<int>();
+        Dictionary<string, List<int>> scores_dic = new Dictionary<string, List<int>>();
 
-            foreach (string lists in online.scores_str.Split(del, StringSplitOptions.None))
-            {
-                string[] list = lists.Split(';');
-                scores.Add((int.Parse(list[1])));
-                scores.Add((int.Parse(list[2])));
-                scores_dic.Add(list[0], scores);
-                scores_list.Add(scores_dic);
+        foreach (string lists in online.scores_str.Split(':'))
+        {
+            string[] list = lists.Split(';');
+            scores.Add((int.Parse(list[1])));
+            scores.Add((int.Parse(list[2])));
 
-                scores.Clear();
-                scores_dic.Clear();
-            }
+            scores_dic.Add(Encoding.GetEncoding("UTF-8").GetString(Convert.FromBase64String(list[0])), scores);
+
+            scores_list.Add(scores_dic);
+            scores = new List<int>();
+            scores_dic = new Dictionary<string,  List<int>>();
+        }
+
+        if (myscore.player_name == "guestplay")
+        {
+            scores.AddRange(my_scores);
+            Debug.Log(string.Join(",", scores));
+            scores_dic.Add(player_name, scores);
+            scores_list.Add(scores_dic);
         }
 
         ranking_dic = new Dictionary<string, int>();
@@ -104,7 +120,7 @@ public class RankingTable : MonoBehaviour
 
         flame_list = new List<GameObject>();
 
-        foreach (Dictionary<string, List<int>> dic in online.scores_list)
+        foreach (Dictionary<string, List<int>> dic in scores_list)
         {
             ranking_dic.Add(dic.FirstOrDefault().Key, dic.FirstOrDefault().Value[mode]);   
             
@@ -134,7 +150,7 @@ public class RankingTable : MonoBehaviour
             obj.transform.Find("PlayerName").gameObject.transform.Find("Text(PLAYERNAME)").gameObject.GetComponent<Text>().text =
             dic.FirstOrDefault().Key;
 
-            if (dic.FirstOrDefault().Key == player_name)
+            if (dic.FirstOrDefault().Key == player_name && dic.FirstOrDefault().Value == my_scores[mode])
             {
                 my_ranking = index;
             }
@@ -207,8 +223,6 @@ public class RankingTable : MonoBehaviour
             flame_list[0].transform.Find("Score").gameObject.
             transform.Find("Text(SCORE)").gameObject.GetComponent<Shadow>().effectColor =
             new Color (0, 0, 0, 1);
-
-
         }
 
         if (ranking_list.Count > 1)

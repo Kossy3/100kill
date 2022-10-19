@@ -116,12 +116,12 @@ public class ModeChanger : MonoBehaviour
                 Destroy(child.gameObject);
             }
 
-            rankingtable.generate_ranking(myscore.player_name); 
+            rankingtable.generate_ranking(myscore.player_name, myscore.my_scores, false); 
         }
 
         catch (System.Exception)
         {
-            rankingtable.generate_ranking(null);
+            rankingtable.generate_ranking(null, null, false);
         }
     }
 }
