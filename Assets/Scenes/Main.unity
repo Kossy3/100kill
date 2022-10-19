@@ -4139,8 +4139,8 @@ MonoBehaviour:
   enemy1: {fileID: 3980441359630169751, guid: 1cc8756c97bf85a43a07afa684adc230, type: 3}
   enemy1_2: {fileID: 4290411905426074772, guid: 0e848ce1acc6acd4bab39eb9958f87ed, type: 3}
   enemy1_3: {fileID: 1003899822845297161, guid: c6a29e75240c83d4ab8551169b618e81, type: 3}
-  stone: {fileID: 6394487417630416173, guid: da2f2b6fd058e4645af485f4b255ecf2, type: 3}
-  upthing: {fileID: 3082598862260105106, guid: 6467b4cbf6267c2488fe07624f91ecc5, type: 3}
+  stone: {fileID: 3936887038969042798, guid: da2f2b6fd058e4645af485f4b255ecf2, type: 3}
+  upthing: {fileID: 2852287086081743398, guid: 6467b4cbf6267c2488fe07624f91ecc5, type: 3}
   background_order:
   - {fileID: 4180953931411658302, guid: f7b94f6cd856e464bbafd181bd12d2da, type: 3}
   - {fileID: 4180953931411658302, guid: f7b94f6cd856e464bbafd181bd12d2da, type: 3}

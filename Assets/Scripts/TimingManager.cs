@@ -93,18 +93,21 @@ public class TimingManager : MonoBehaviour
 
         if (KeyID == 2 && database.skill_gauge == 4)
         {
-            shake.Shake(0.1f, 0.3f);
             GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
-
 
             foreach (GameObject enemy in enemies)
             {
                 enemy.GetComponent<Enemy>().good();
                 spawn_num ++;
-                if (enemy.tag == "obstacle")
-                {
-                    enemy.GetComponent<Animation>().Play();
-                }
+            }
+
+            GameObject[] obstacles = GameObject.FindGameObjectsWithTag("Obstacle");
+
+            foreach (GameObject obstacle in obstacles)
+            {
+                obstacle.GetComponent<Enemy>().good();
+                obstacle.GetComponent<Animator>().SetTrigger("obstacle");
+                spawn_num ++;
             }
         }
 
@@ -139,6 +142,7 @@ public class TimingManager : MonoBehaviour
         else if (KeyID == 2 && database.skill_gauge == 4)
         {
             player.skill();
+            shake.Shake(0.5f, 0.1f);
             database.charge_skill_gauge(-4);
         }
 
