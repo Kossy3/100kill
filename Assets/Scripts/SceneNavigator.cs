@@ -190,16 +190,6 @@ public class SceneNavigator : MonoBehaviour
 
     public void on_click_space()
     {
-        try
-        {
-            GameObject.Find("Database").GetComponent<Database>().reset();
-        }
-
-        catch (System.NullReferenceException)
-        {
-        }
-
-        //Destroy(GameObject.Find("Database"));
         SceneManager.LoadScene("Main");
     }
 
@@ -210,16 +200,6 @@ public class SceneNavigator : MonoBehaviour
 
     public void on_click_Tab()
     {
-        //Destroy(GameObject.Find("Database"));
-        try
-        {
-            GameObject.Find("Database").GetComponent<Database>().scene_number = 1;
-        }
-
-        catch (System.NullReferenceException)
-        {
-        }
-
         SceneManager.LoadScene("Score");
     }
 

@@ -1721,7 +1721,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 927cdb60f6b691f40844e8aa831c59df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  debug_mode: 1
+  debug_mode: 0
   BPM: 108
   defeated_enemies: 0
   defeated_color_enemies: 0

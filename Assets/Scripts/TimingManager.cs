@@ -95,7 +95,7 @@ public class TimingManager : MonoBehaviour
         {
             shake.Shake(0.1f, 0.3f);
             GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
-
+            
 
             foreach (GameObject enemy in enemies)
             {

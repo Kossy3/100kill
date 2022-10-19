@@ -40,14 +40,19 @@ public class Online : MonoBehaviour
 
             Match match = Regex.Match(textResult, "id=\"message\" >(.*)<\\/textarea>");
             scores_str = match.Groups[1].Value;
-            Debug.Log(match.Groups[1]);
+
+            foreach (string lists in scores_str.Split(':'))
+            {
+                string[] list = lists.Split(';');
+
+                myscore.name_list.Add(Encoding.GetEncoding("UTF-8").GetString(Convert.FromBase64String(list[0])));
+            }
 
             if (GameObject.Find("Database") == null)
             {
-                rankingtable.generate_ranking(null, null, false);
+                rankingtable.generate_ranking(null, null);
             }
         }
-
     }
 
     public IEnumerator SendText(string player_name, int[] my_scores)
@@ -66,7 +71,6 @@ public class Online : MonoBehaviour
 
             Match match = Regex.Match(textResult, "id=\"message\" >(.*)<\\/textarea>");
             scores_str = match.Groups[1].Value;
-            Debug.Log(match.Groups[1]);
 
             if (player_name != "guestplay")
             {
@@ -88,7 +92,7 @@ public class Online : MonoBehaviour
             {
                 Debug.Log("Get upload complete!");
 
-                rankingtable.generate_ranking(player_name, my_scores, true);
+                rankingtable.generate_ranking(player_name, my_scores);
             }
         }
     }

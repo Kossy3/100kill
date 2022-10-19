@@ -8,7 +8,7 @@ public class Database : MonoBehaviour
 {
     [SerializeField]
     [Header("Debug_mode : trueで死亡時のシーン変更無効化")]
-    public bool debug_mode;
+    public bool debug_mode = false;
     public int BPM;
     public int defeated_enemies;
     public int defeated_color_enemies;
@@ -79,10 +79,5 @@ public class Database : MonoBehaviour
     {
         skill_gauge += n;
         skill_gauge = Mathf.Clamp(skill_gauge, 0, 4);
-    }
-
-    public void reset()
-    {
-        Destroy(this);
     }
 }

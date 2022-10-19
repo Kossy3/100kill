@@ -89,8 +89,6 @@ public class WarningBoard : MonoBehaviour
             }
         }
 
-
-
         if (select_button == null)
         {
             foreach (GameObject button in button_list)
@@ -131,22 +129,29 @@ public class WarningBoard : MonoBehaviour
         }
     }
 
-    public void on_click_ture()
+    public void on_click_true()
+    {
+        StartCoroutine("on_click");
+    }
+
+    public IEnumerator on_click()
     {
         if (myscore.mode == 0)
         {
             myscore.player_name = GameObject.Find("InputField").transform.Find("Text").gameObject.GetComponent<Text>().text;
 
-            int my_time = (int)database.playing_time;
             int my_score = database.defeated_enemies;
+            int my_time = (int)database.playing_time;
+
             myscore.my_scores = new int[] {my_score, my_time};
 
             ranking.SetActive(true);
             escapebutton.SetActive(true);
             modechanger.SetActive(true);
-            inputname.SetActive(false);
 
-            rankingtable.generate_ranking(myscore.player_name, myscore.my_scores, true);
+            yield return online.SendText(myscore.player_name, myscore.my_scores);
+        
+            inputname.SetActive(false);
         }
 
         else
@@ -160,9 +165,10 @@ public class WarningBoard : MonoBehaviour
             ranking.SetActive(true);
             escapebutton.SetActive(true);
             modechanger.SetActive(true);
-            inputname.SetActive(false);
 
-            StartCoroutine(online.SendText(myscore.player_name, myscore.my_scores));
+            yield return online.SendText(myscore.player_name, myscore.my_scores);
+
+            inputname.SetActive(false);
         }
     }
 
