@@ -10,15 +10,18 @@ using System.Text.RegularExpressions;
 
 public class Online : MonoBehaviour
 {
-    public RankingTable rankingtable;
+    private RankingTable rankingtable;
+    private MyScore myscore;
 
     public string scores_str;
 
     void Start()
     {
         rankingtable = GameObject.Find("RankingTable").GetComponent<RankingTable>();
+        myscore = GameObject.Find("MyScore").GetComponent<MyScore>();
 
-        StartCoroutine(GetText());
+        StartCoroutine("GetText");
+
     }
 
     public IEnumerator GetText()
@@ -38,30 +41,55 @@ public class Online : MonoBehaviour
             Match match = Regex.Match(textResult, "id=\"message\" >(.*)<\\/textarea>");
             scores_str = match.Groups[1].Value;
             Debug.Log(match.Groups[1]);
+
+            if (GameObject.Find("Database") == null)
+            {
+                rankingtable.generate_ranking(null, null, false);
+            }
         }
 
-        if (GameObject.Find("Database") == null)
-        {
-            rankingtable.generate_ranking(null, null, false);
-        }
     }
 
-    public IEnumerator SendText()
+    public IEnumerator SendText(string player_name, int[] my_scores)
     {
-        string URL = "http://plsk.net/edit.php?id=100kill&txt=" + scores_str;
+        UnityWebRequest get_request = UnityWebRequest.Get("http://plsk.net/100kill");
+        yield return get_request.SendWebRequest();
 
-        UnityWebRequest request = UnityWebRequest.Get(URL);
-
-        yield return request.SendWebRequest();
-     
-        if (request.isNetworkError || request.isHttpError) 
+        if (get_request.isNetworkError || get_request.isHttpError)
         {
-            Debug.Log(request.error);
+            Debug.Log(get_request.error);
         }
 
-        else 
+        else
         {
-            Debug.Log("Get upload complete!");
+            string textResult = get_request.downloadHandler.text;
+
+            Match match = Regex.Match(textResult, "id=\"message\" >(.*)<\\/textarea>");
+            scores_str = match.Groups[1].Value;
+            Debug.Log(match.Groups[1]);
+
+            if (player_name != "guestplay")
+            {
+                scores_str = scores_str + ":" + 
+                Convert.ToBase64String(Encoding.GetEncoding("UTF-8").GetBytes(player_name)) + ";" +
+                my_scores[0].ToString() + ";" + my_scores[1].ToString();
+            }
+
+            UnityWebRequest send_request = UnityWebRequest.Get("http://plsk.net/edit.php?id=100kill&txt=" + scores_str);
+
+            yield return send_request.SendWebRequest();
+     
+            if (send_request.isNetworkError || send_request.isHttpError) 
+            {
+                Debug.Log(send_request.error);
+            }
+
+            else 
+            {
+                Debug.Log("Get upload complete!");
+
+                rankingtable.generate_ranking(player_name, my_scores, true);
+            }
         }
     }
 }

@@ -258,7 +258,7 @@ public class MyScore : MonoBehaviour
             modechanger.SetActive(true);
             inputname.SetActive(false);
 
-            rankingtable.generate_ranking(player_name, my_scores, true);
+            StartCoroutine(online.SendText(player_name, my_scores));
             mode = 0;
         }
     }

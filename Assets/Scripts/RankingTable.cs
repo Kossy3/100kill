@@ -84,13 +84,6 @@ public class RankingTable : MonoBehaviour
     {
         scores_list = new List<Dictionary<string, List<int>>>();
 
-        if (bl && myscore.player_name != "guestplay")
-        {
-            online.scores_str = online.scores_str + ":" + 
-            Convert.ToBase64String(Encoding.GetEncoding("UTF-8").GetBytes(player_name)) + ";" +
-            my_scores[0].ToString() + ";" + my_scores[1].ToString();
-        }
-
         List<int> scores = new List<int>();
         Dictionary<string, List<int>> scores_dic = new Dictionary<string, List<int>>();
 

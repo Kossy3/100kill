@@ -9,6 +9,7 @@ public class WarningBoard : MonoBehaviour
     private Database database;
     private MyScore myscore;
     private RankingTable rankingtable;
+    private Online online;
 
     private GameObject ranking;
     private GameObject escapebutton;
@@ -26,6 +27,7 @@ public class WarningBoard : MonoBehaviour
     {
         myscore = GameObject.Find("MyScore").GetComponent<MyScore>();
         rankingtable = GameObject.Find("RankingTable").GetComponent<RankingTable>();
+        online = GameObject.Find("Online").GetComponent<Online>();
 
         ranking = GameObject.Find("Ranking");
         escapebutton = GameObject.Find("EscapeButton");
@@ -149,18 +151,18 @@ public class WarningBoard : MonoBehaviour
 
         else
         {
+            myscore.player_name = "guestplay";
+
             int my_score = database.defeated_enemies;
             int my_time = (int)database.playing_time;
             myscore.my_scores = new int[] {my_score, my_time};
-
-            myscore.player_name = "guestplay";
 
             ranking.SetActive(true);
             escapebutton.SetActive(true);
             modechanger.SetActive(true);
             inputname.SetActive(false);
 
-            rankingtable.generate_ranking(myscore.player_name, myscore.my_scores, true);
+            StartCoroutine(online.SendText(myscore.player_name, myscore.my_scores));
         }
     }
 
