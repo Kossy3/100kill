@@ -2921,21 +2921,19 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 12800000, guid: 16cd1f16ebd40c3468097176c3adec03, type: 3}
+    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
     m_FontSize: 40
     m_FontStyle: 0
     m_BestFit: 0
-    m_MinSize: 4
-    m_MaxSize: 60
+    m_MinSize: 0
+    m_MaxSize: 100
     m_Alignment: 0
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: '
-
-'
+  m_Text: 
 --- !u!222 &815378412
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3736,7 +3734,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 753cee186a9f502459de1295e24012f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  volume: 0
   database: {fileID: 450839139}
   KeyOn: 0
   device_init: 0
