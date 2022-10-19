@@ -1721,7 +1721,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 927cdb60f6b691f40844e8aa831c59df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  debug_mode: 1
+  debug_mode: 0
   BPM: 108
   defeated_enemies: 0
   defeated_color_enemies: 0
@@ -3736,6 +3736,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 753cee186a9f502459de1295e24012f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  volume: 0
   database: {fileID: 450839139}
   KeyOn: 0
   device_init: 0
@@ -3943,6 +3944,7 @@ MonoBehaviour:
   good_misstext: {fileID: 815378411}
   move: 0
   maku: {fileID: 1243450834}
+  musicplayer: {fileID: 1036851633}
 --- !u!4 &1097724069
 Transform:
   m_ObjectHideFlags: 0

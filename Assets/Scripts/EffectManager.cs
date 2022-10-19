@@ -16,6 +16,8 @@ public class EffectManager : MonoBehaviour
     public Text good_misstext;
     public float move;
     public RectTransform maku;
+    public MusicPlayer musicplayer;
+  
 
     // Start is called before the first frame update
     void Start()
@@ -41,12 +43,14 @@ public class EffectManager : MonoBehaviour
         }*/
         if (database.HP == 0 && !database.debug_mode)
         {
+            if(move == 1200f){
+                musicplayer.DeviceClose();
+            }
             move -= 1200f * Time.deltaTime;
             maku.position = new Vector2(640, move);
             //audiomanager.SetActive(false);
             if (move < 350f)
             {
-
                 move = 349f;
                 database.finish = true;
             }
