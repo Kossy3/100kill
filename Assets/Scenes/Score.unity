@@ -708,7 +708,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 853322272}
         m_TargetAssemblyTypeName: WarningBoard, Assembly-CSharp
-        m_MethodName: on_click_ture
+        m_MethodName: on_click_true
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3699,8 +3699,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player_name: 
+  my_scores: 
+  name_list: []
   mode: 0
-  textResult: 
 --- !u!114 &1787812460
 MonoBehaviour:
   m_ObjectHideFlags: 0
