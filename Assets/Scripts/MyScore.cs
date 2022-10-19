@@ -155,14 +155,6 @@ public class MyScore : MonoBehaviour
 
         if (GameObject.Find("InputField"))
         {
-            foreach (string lists in online.scores_str.Split(':'))
-            {
-                string[] list = lists.Split(';');
-
-                name_list.Add(Encoding.GetEncoding("UTF-8").GetString(Convert.FromBase64String(list[0])));
-
-            }
-
             if (indexof_containkey(name_list, GameObject.Find("InputField").transform.Find("Text").gameObject.GetComponent<Text>().text))
             {
                 GameObject text = inputname.transform.Find("Text").gameObject;
@@ -221,13 +213,6 @@ public class MyScore : MonoBehaviour
 
     public void on_click_name()
     {
-        foreach (string lists in online.scores_str.Split(':'))
-        {
-            string[] list = lists.Split(';');
-
-            name_list.Add(Encoding.GetEncoding("UTF-8").GetString(Convert.FromBase64String(list[0])));
-        }
-
         if (indexof_containkey(name_list, GameObject.Find("InputField").transform.Find("Text").gameObject.GetComponent<Text>().text))
         {
             inputname.transform.Find("WarningBoard").gameObject.SetActive(true);

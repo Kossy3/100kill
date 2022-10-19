@@ -94,6 +94,10 @@ public class TimingManager : MonoBehaviour
         if (KeyID == 2 && database.skill_gauge == 4)
         {
             GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
+<<<<<<< HEAD
+=======
+            
+>>>>>>> S_Fix_bug
 
             foreach (GameObject enemy in enemies)
             {

@@ -80,7 +80,7 @@ public class RankingTable : MonoBehaviour
         }
     }
 
-    public void generate_ranking(string player_name, int[] my_scores, bool bl)
+    public void generate_ranking(string player_name, int[] my_scores)
     {
         scores_list = new List<Dictionary<string, List<int>>>();
 
@@ -103,7 +103,6 @@ public class RankingTable : MonoBehaviour
         if (myscore.player_name == "guestplay")
         {
             scores.AddRange(my_scores);
-            Debug.Log(string.Join(",", scores));
             scores_dic.Add(player_name, scores);
             scores_list.Add(scores_dic);
         }
