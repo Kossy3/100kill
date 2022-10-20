@@ -345,7 +345,7 @@ public class Midi : ScriptableObject
             if(d.ch == 9 && d.type == NoteType.OFF){
                 eventtime += 14;
             }
-            var note = new Note(d.ch, d.laneIndex, (float)(eventtime - (headerChunk.division * 4)) / headerChunk.division, 0, (byte)d.velocity);
+            var note = new Note(d.ch, d.laneIndex, (float)(eventtime - (headerChunk.division * 4.5f)) / headerChunk.division, 0, (byte)d.velocity);
             if (d.type == NoteType.OFF)
             {
                 note.off();
