@@ -197,6 +197,8 @@ public class StopMenu : MonoBehaviour
     public void on_click_stopmenu()
     {
         Time.timeScale = 0;
+        MusicPlayer music_player = GameObject.Find("MusicPlayer").GetComponent<MusicPlayer>();
+        music_player.StopMusic();
         image.enabled = true;
             
         for (int i = 0; i < 3; i++)

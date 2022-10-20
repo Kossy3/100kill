@@ -161,6 +161,12 @@ public class MusicPlayer : MonoBehaviour
         }
     }
 
+    public void StopMusic(){
+        for(int i=0; i < 16; i++){
+            play_mid_event(0xB, (byte)i, 123, 0, 0);
+        }
+    }
+
  
     void OnDestroy()
     {
