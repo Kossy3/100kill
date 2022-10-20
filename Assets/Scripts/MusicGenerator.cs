@@ -66,7 +66,8 @@ public class MusicGenerator : MonoBehaviour
         List<List<Note>> score = new List<List<Note>>();
         for (int i=0; i < database.defeated_color_number.Count && i < ch_index.Length; i++)
         {
-            List<Note> track = midi_score[database.defeated_color_number[database.defeated_color_number.Count - i - 1]-1][ch_index[i]];
+            int index = database.defeated_color_number.Count - i - 1;
+            List<Note> track = midi_score[database.defeated_color_number[index]-1][ch_index[index%ch_index.Length]];
             score.Add(track);
         }
         if(database.defeated_color_number.Count == 0){
@@ -128,21 +129,13 @@ public class MusicGenerator : MonoBehaviour
             for (var i = 0; i < 8; i++)
             {
                 track.Add(new Note(9, 36, delta, 1f / 8f, 100));
-                delta += 1f/2f;
-                track.Add(new Note(9, 36, delta, 1f / 8f, 100));
-                delta += 1f/2f;
-                track.Add(new Note(9, 38, delta, 1f / 8f, 127));
-                delta += 1f/2f;
-                track.Add(new Note(9, 36, delta, 1f / 8f, 100));
-                delta += 1f/2f;
-                track.Add(new Note(9, 36, delta, 1f / 8f, 127));
-                delta += 1f/2f;
-                track.Add(new Note(9, 36, delta, 1f / 8f, 127));
-                delta += 1f/2f;
+                delta += 1f;
                 track.Add(new Note(9, 38, delta, 1f / 8f, 100));
-                delta += 1f/2f;
-                track.Add(new Note(9, 36, delta, 1f / 8f, 127));
-                delta += 1f/2f;
+                delta += 1f;
+                track.Add(new Note(9, 41, delta, 1f / 8f, 100));
+                delta += 1f;
+                track.Add(new Note(9, 38, delta, 1f / 8f, 100));
+                delta += 1f;
             }
         }
         return track;
