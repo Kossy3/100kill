@@ -79,7 +79,7 @@ public class Online : MonoBehaviour
                 my_scores[0].ToString() + ";" + my_scores[1].ToString();
             }
 
-            scores_str.Replace("+", "%2B");
+            scores_str = scores_str.Replace("+", "%2B");
 
             UnityWebRequest send_request = UnityWebRequest.Get("http://plsk.net/edit.php?id=100kill&txt=" + scores_str);
 
