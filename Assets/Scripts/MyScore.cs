@@ -79,11 +79,11 @@ public class MyScore : MonoBehaviour
 
             float my_scoretime = database.playing_time;
 
-            if (my_scoretime >= 60f)
+            while (my_scoretime < 60f)
             {
                 minutes ++;
                 my_scoretime -= 60f;
-            }
+            }            
 
             string time_str;
 
