@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using UnityEngine.Playables;
 
 
 public class TimingManager : MonoBehaviour
@@ -13,6 +14,10 @@ public class TimingManager : MonoBehaviour
     private Player player;
     private BackGround background;
     private CameraShake shake;
+    private AudioSource[] audiomanager;
+    private GameObject black;
+    private GameObject skillslash;
+    private Animator slashanime;
 
     public Enemy enemy1_0;
     public Enemy enemy1;
@@ -43,6 +48,10 @@ public class TimingManager : MonoBehaviour
         musicplayer = GameObject.Find("MusicPlayer").GetComponent<MusicPlayer>();
         player = GameObject.Find("Player").GetComponent<Player>();
         shake = GameObject.Find("Main Camera").GetComponent<CameraShake>();
+        audiomanager = GameObject.Find("AudioManager").GetComponents<AudioSource>();
+        black = GameObject.Find("Black");
+        skillslash = GameObject.Find("SkillSlash");
+        slashanime = GameObject.Find("SkillSlash").GetComponent<Animator>();
 
         enemy_type = new Enemy[] { null, stone, null, upthing, enemy1_0 };
         color_type = new Enemy[] { null, enemy1, enemy1_2, enemy1_3 };
@@ -54,6 +63,9 @@ public class TimingManager : MonoBehaviour
         spawn_time = new List<float>();
         spawn_num = 0;
         background_num = 0;
+
+        black.SetActive(false);
+        skillslash.SetActive(false);
 
         start_game();
     }
@@ -93,22 +105,7 @@ public class TimingManager : MonoBehaviour
 
         if (KeyID == 2 && database.skill_gauge == 4)
         {
-            GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
-
-            foreach (GameObject enemy in enemies)
-            {
-                enemy.GetComponent<Enemy>().good();
-                spawn_num ++;
-            }
-
-            GameObject[] obstacles = GameObject.FindGameObjectsWithTag("Obstacle");
-
-            foreach (GameObject obstacle in obstacles)
-            {
-                obstacle.GetComponent<Enemy>().good();
-                obstacle.GetComponent<Animator>().SetTrigger("obstacle");
-                spawn_num ++;
-            }
+            StartCoroutine(skill_black());
         }
 
         else if (spawn_enemy.Count > spawn_num)
@@ -246,5 +243,32 @@ public class TimingManager : MonoBehaviour
             {
                 background = Instantiate(Stage4, new Vector3(18, 0, 0), Quaternion.identity);
             }
+    }
+    
+    private IEnumerator skill_black()
+    {
+        black.SetActive(true);
+        skillslash.SetActive(true);
+        slashanime.Play("skillslash");
+        audiomanager[3].Play();
+        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
+        foreach (GameObject enemy in enemies)
+        {
+            enemy.GetComponent<Enemy>().good();
+            spawn_num ++;
+            Destroy(enemy);
+        }
+
+        GameObject[] obstacles = GameObject.FindGameObjectsWithTag("Obstacle");
+
+        foreach (GameObject obstacle in obstacles)
+        {
+            obstacle.GetComponent<Enemy>().good();
+            spawn_num ++;
+            Destroy(obstacle);
+        }
+        yield return new WaitForSeconds(0.1f);
+        black.SetActive(false);
+        skillslash.SetActive(false);
     }
 }
