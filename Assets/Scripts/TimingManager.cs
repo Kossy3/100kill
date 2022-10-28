@@ -19,6 +19,8 @@ public class TimingManager : MonoBehaviour
     private GameObject skillslash;
     private Animator slashanime;
 
+    public float judgment_width;
+
     public Enemy enemy1_0;
     public Enemy enemy1;
     public Enemy enemy1_2;
@@ -111,7 +113,7 @@ public class TimingManager : MonoBehaviour
         else if (spawn_enemy.Count > spawn_num)
         {
             float perfect_time = spawn_time[spawn_num];
-            if (Math.Abs(perfect_time - keyinput_time) <= 0.1f )
+            if (Math.Abs(perfect_time - keyinput_time) <= judgment_width * (108f / (float)database.BPM))
             {
                 if (KeyID == spawn_type[spawn_num] || (KeyID == 4 && spawn_type[spawn_num] == 2))
                 {
@@ -124,7 +126,7 @@ public class TimingManager : MonoBehaviour
                 spawn_num++;
             }
 
-            else if (Math.Abs(perfect_time - keyinput_time) <= 0.2f)
+            else if (Math.Abs(perfect_time - keyinput_time) <= 2f * judgment_width * (108f / (float)database.BPM))
             {
                 spawn_enemy[spawn_num].miss();
                 spawn_num++;
@@ -219,12 +221,12 @@ public class TimingManager : MonoBehaviour
         if (rhythm == 2)
         {
             int rnd = UnityEngine.Random.Range(1, 4);
-            enemy = Instantiate(color_type[rnd], new Vector3(11, -1.6f, 0), Quaternion.identity);
+            enemy = Instantiate(color_type[rnd], new Vector3(11.5f, -1.6f, 0), Quaternion.identity);
             enemy.color_number = rnd;
         }
         else
         {
-            enemy = Instantiate(enemy_type[rhythm], new Vector3(11, -1.6f, 0), Quaternion.identity);
+            enemy = Instantiate(enemy_type[rhythm], new Vector3(11.5f, -1.6f, 0), Quaternion.identity);
         }
         spawn_enemy.Add(enemy);
     }
