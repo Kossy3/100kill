@@ -22,11 +22,7 @@ public class RankingTable : MonoBehaviour
     private int my_score;
     private int my_ranking;
 
-    private List<Dictionary<string, List<int>>> scores_list;
-    private Dictionary<string, int> ranking_dic;
-    private List<Dictionary<string, int>> ranking_list;
-
-    private List<GameObject> flame_list;
+    private List<GameObject> flame_list = new List<GameObject> ();
 
     private bool on_bottom;
     private bool on_top;
@@ -82,57 +78,25 @@ public class RankingTable : MonoBehaviour
 
     public void generate_ranking(string player_name, int[] my_scores)
     {
-        scores_list = new List<Dictionary<string, List<int>>>();
-
-        List<int> scores = new List<int>();
-        Dictionary<string, List<int>> scores_dic = new Dictionary<string, List<int>>();
-
-        foreach (string lists in online.scores_str.Split(':'))
-        {
-            string[] list = lists.Split(';');
-            scores.Add((int.Parse(list[1])));
-            scores.Add((int.Parse(list[2])));
-
-            scores_dic.Add(Encoding.GetEncoding("UTF-8").GetString(Convert.FromBase64String(list[0])), scores);
-
-            scores_list.Add(scores_dic);
-            scores = new List<int>();
-            scores_dic = new Dictionary<string,  List<int>>();
-        }
+        ScoresDatas rankingDatas = online.scoresDatas;
 
         if (myscore.player_name == "guestplay")
         {
-            scores.AddRange(my_scores);
-            scores_dic.Add(player_name, scores);
-            scores_list.Add(scores_dic);
+            rankingDatas.scoresDatas.Add(new ScoresData (player_name, new List<int> (my_scores)));
         }
 
-        ranking_dic = new Dictionary<string, int>();
-        ranking_list = new List<Dictionary<string, int>>();
+        rankingDatas.scoresDatas.Sort((a, b) => b.scores[mode] - a.scores[mode]);
 
-        flame_list = new List<GameObject>();
-
-        foreach (Dictionary<string, List<int>> dic in scores_list)
-        {
-            ranking_dic.Add(dic.FirstOrDefault().Key, dic.FirstOrDefault().Value[mode]);   
-            
-            ranking_list.Add(ranking_dic);
-
-            ranking_dic = new Dictionary<string, int>();
-        }
-
-        ranking_list.Sort((a, b) => b.FirstOrDefault().Value - a.FirstOrDefault().Value);
-
-        if (ranking_list.Count > 8)
+        if (rankingDatas.scoresDatas.Count > 8)
         {
             GameObject panel = GameObject.Find("Panel");
-            panel.GetComponent<RectTransform>().sizeDelta = new Vector2 (1040, 644 + (ranking_list.Count - 8) * 80);
-            panel.transform.localPosition = new Vector3 (0, -((644 + ((ranking_list.Count - 8) * 80)) / 2), 0);
+            panel.GetComponent<RectTransform>().sizeDelta = new Vector2 (1040, 644 + (rankingDatas.scoresDatas.Count - 8) * 80);
+            panel.transform.localPosition = new Vector3 (0, -((644 + ((rankingDatas.scoresDatas.Count - 8) * 80)) / 2), 0);
         }
 
         int index = 0;
 
-        foreach (Dictionary<string, int> dic in ranking_list)
+        foreach (ScoresData scores in rankingDatas.scoresDatas)
         {
             GameObject obj = Instantiate(flame, new Vector3 (-8, 40 - 80 * (index + 1) - 2, 0), Quaternion.identity);
 
@@ -140,9 +104,9 @@ public class RankingTable : MonoBehaviour
             obj.transform.Find("Rank").gameObject.transform.Find("Text(RANK)").gameObject.GetComponent<Text>().text =
             tokansuji.to_kansuji(index + 1, "-") + "位";
             obj.transform.Find("PlayerName").gameObject.transform.Find("Text(PLAYERNAME)").gameObject.GetComponent<Text>().text =
-            dic.FirstOrDefault().Key;
+            scores.playerName;
 
-            if (dic.FirstOrDefault().Key == player_name && dic.FirstOrDefault().Value == my_scores[mode])
+            if (scores.playerName == player_name && scores.scores[mode] == my_scores[mode])
             {
                 my_ranking = index;
             }
@@ -150,12 +114,12 @@ public class RankingTable : MonoBehaviour
             if (mode == 0)
             {
                 obj.transform.Find("Score").gameObject.transform.Find("Text(SCORE)").gameObject.GetComponent<Text>().text =
-                tokansuji.to_kansuji(dic.FirstOrDefault().Value, "〇") + "人切り";
+                tokansuji.to_kansuji(scores.scores[mode], "〇") + "人切り";
             }
 
             else
             {
-                int seconds = dic.FirstOrDefault().Value;
+                int seconds = scores.scores[mode];
                 int minutes = 0;
 
                 while (true)
@@ -192,7 +156,7 @@ public class RankingTable : MonoBehaviour
             index ++;
         }
         
-        if (ranking_list.Count > 0)
+        if (rankingDatas.scoresDatas.Count > 0)
         {
             flame_list[0].transform.Find("Rank").gameObject.
             transform.Find("Text(RANK)").gameObject.GetComponent<Text>().fontSize = 60;
@@ -217,7 +181,7 @@ public class RankingTable : MonoBehaviour
             new Color (0, 0, 0, 1);
         }
 
-        if (ranking_list.Count > 1)
+        if (rankingDatas.scoresDatas.Count > 1)
         {
             flame_list[1].transform.Find("Rank").gameObject.
             transform.Find("Text(RANK)").gameObject.GetComponent<Text>().fontSize = 60;
@@ -242,7 +206,7 @@ public class RankingTable : MonoBehaviour
             new Color (0, 0, 0, 1);
         }
 
-        if (ranking_list.Count > 2)
+        if (rankingDatas.scoresDatas.Count > 2)
         {
             flame_list[2].transform.Find("Rank").gameObject.
             transform.Find("Text(RANK)").gameObject.GetComponent<Text>().fontSize = 60;
